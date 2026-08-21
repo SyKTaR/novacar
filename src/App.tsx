@@ -1,8 +1,41 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import BlurText from "./components/BlurText";
+import StatsSection from "./components/StatsSection";
+import ServicesSection from "./components/ServicesSection";
+import RealisationsSection from "./components/RealisationsSection";
+import TestimonialsSection from "./components/TestimonialsSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
+import { SITE_NAVIGATION } from "./data/navigation";
+import logoNovacar from "./assets/brand/logo_fondclair.svg";
+import heroBackground from "./assets/brand/fond3.png";
 
 export default function App() {
   const appRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+
+    function handleViewportChange(event: MediaQueryListEvent) {
+      if (event.matches) setIsMenuOpen(false);
+    }
+
+    const desktopViewport = window.matchMedia("(min-width: 62rem)");
+    document.addEventListener("keydown", handleKeyDown);
+    desktopViewport.addEventListener("change", handleViewportChange);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      desktopViewport.removeEventListener("change", handleViewportChange);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     let cleanup = () => {};
@@ -32,7 +65,7 @@ export default function App() {
             duration: 0.55,
           }, 0)
           .from(
-            ".nav-side > *",
+            ".nav-links a, .nav-divider",
             {
               y: -8,
               opacity: 0,
@@ -42,131 +75,299 @@ export default function App() {
             0.04,
           )
           .from(
-            [".hero-badge", ".hero-copy", ".access-bar", ".hero-note"],
+            ".nav-cta",
             {
-              y: 10,
+              y: -8,
               opacity: 0,
-              duration: 0.58,
-              stagger: 0.06,
+              duration: 0.45,
             },
-            0.2,
+            0.1,
           )
           .from(
-            ".signal-tile",
+            ".hero-kicker",
             {
-              scale: 0.9,
+              y: 14,
               opacity: 0,
-              filter: "blur(4px)",
-              duration: 0.58,
-              stagger: 0.07,
+              duration: 0.55,
             },
-            0.34,
-          );
-
-        gsap.utils.toArray<HTMLElement>(".signal-tile").forEach((tile, index) => {
-          gsap.to(tile, {
-            y: index % 2 === 0 ? -7 : 7,
-            duration: 4.8 + index * 0.65,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-          });
-        });
-
-        gsap.from([".section-kicker", ".impact-intro"], {
-          y: 24,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: ".daily-impact",
-            start: "top 72%",
-          },
-        });
-
-        gsap.utils.toArray<HTMLElement>(".benefit-row").forEach((row, index) => {
-          const rowTimeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: row,
-              start: "top 92%",
-              end: "top 48%",
-              scrub: 0.65,
-            },
-          });
-          const animatedChildren = Array.from(row.children).filter(
-            (child) => !child.classList.contains("timeline-connector"),
-          );
-
-          rowTimeline
-            .fromTo(
-              row,
-              {
-                y: index === 0 ? 28 : 96,
-                scale: index === 0 ? 0.995 : 0.975,
-                opacity: 0,
-              },
-              {
-                y: 0,
-                scale: 1,
-                opacity: 1,
-                ease: "none",
-              },
-            )
-            .from(
-              animatedChildren,
-              {
-                y: 24,
-                opacity: 0,
-                stagger: 0.06,
-                ease: "none",
-              },
-              0.12,
-            );
-
-          gsap.fromTo(
-            row,
-            { "--rail-progress": 0 },
+            0.18,
+          )
+          .from(
+            ".hero-actions, .hero-copy",
             {
-              "--rail-progress": 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: row,
-                start: "top 52%",
-                end: "bottom 52%",
-                scrub: 0.4,
-                onUpdate: (self) => {
-                  row.classList.toggle(
-                    "is-timeline-active",
-                    self.progress >= 0.5,
-                  );
-                },
-              },
+              y: 16,
+              opacity: 0,
+              duration: 0.6,
+              stagger: 0.08,
             },
+            0.4,
+          )
+          .from(
+            ".hero-media",
+            {
+              opacity: 0,
+              scale: 1.04,
+              duration: 0.9,
+            },
+            0.1,
           );
 
-          const connectorFill = row.querySelector<HTMLElement>(
-            ".timeline-connector-fill",
-          );
+        const statItems = gsap.utils.toArray<HTMLElement>(".stats-item");
+        if (statItems.length) {
+          gsap.set(statItems, { autoAlpha: 0, y: 24 });
 
-          if (connectorFill) {
-            gsap.fromTo(
-              connectorFill,
-              { scaleY: 0 },
-              {
-                scaleY: 1,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: row,
-                  start: "bottom 52%",
-                  end: () =>
-                    `+=${window.innerHeight * (window.innerWidth >= 768 ? 0.22 : 0.18)}`,
-                  scrub: 0.4,
-                },
-              },
+          ScrollTrigger.create({
+            trigger: ".stats",
+            start: "top 82%",
+            once: true,
+            onEnter: () => {
+              gsap.to(statItems, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "expo.out",
+                stagger: 0.1,
+              });
+
+              statItems.forEach((item) => {
+                const valueEl = item.querySelector<HTMLElement>(".stats-value");
+                if (!valueEl) return;
+
+                const target = Number(valueEl.dataset.value ?? 0);
+                const suffix = valueEl.dataset.suffix ?? "";
+                const counter = { value: 0 };
+
+                valueEl.textContent = `0${suffix}`;
+
+                gsap.to(counter, {
+                  value: target,
+                  duration: 1.4,
+                  ease: "power2.out",
+                  onUpdate: () => {
+                    valueEl.textContent = `${Math.round(counter.value)}${suffix}`;
+                  },
+                });
+              });
+            },
+          });
+        }
+
+        const servicesPanel = document.querySelector<HTMLElement>(".services-panel");
+        if (servicesPanel) {
+          const servicesHeader = servicesPanel.querySelector<HTMLElement>(".services-header");
+          const serviceGroups = gsap.utils.toArray<HTMLElement>(
+            ".services-group",
+            servicesPanel,
+          );
+          const servicesCta = servicesPanel.querySelector<HTMLElement>(".services-cta");
+
+          gsap.set(servicesPanel, { autoAlpha: 0, y: 32 });
+          if (servicesHeader) gsap.set(servicesHeader, { autoAlpha: 0, y: 18 });
+
+          ScrollTrigger.create({
+            trigger: ".services",
+            start: "top 82%",
+            once: true,
+            onEnter: () => {
+              const panelTimeline = gsap.timeline({ defaults: { ease: "expo.out" } });
+              panelTimeline.to(servicesPanel, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.75,
+              });
+
+              if (servicesHeader) {
+                panelTimeline.to(
+                  servicesHeader,
+                  { autoAlpha: 1, y: 0, duration: 0.55 },
+                  0.18,
+                );
+              }
+            },
+          });
+
+          serviceGroups.forEach((group, index) => {
+            const serviceCards = gsap.utils.toArray<HTMLElement>(".service-card", group);
+            const serviceTag = group.querySelector<HTMLElement>(".services-tag");
+            const serviceTagInner = group.querySelector<HTMLElement>(".services-tag-inner");
+            const carouselControls = group.querySelector<HTMLElement>(
+              ".services-carousel-controls",
             );
+
+            // L'animation d'entrée (fondu + slide) porte sur .services-tag-inner,
+            // jamais sur .services-tag lui-même : ce dernier garde son transform
+            // CSS statique (translate(-50%, -50%) rotate(180deg)) qui le centre
+            // pile sur le bord du panneau. Si GSAP animait x directement sur
+            // .services-tag, il écraserait ce transform et le tag se retrouverait
+            // décalé entièrement à l'intérieur du panneau une fois l'animation
+            // terminée.
+            if (serviceTag) {
+              gsap.set(serviceTag, { autoAlpha: 0 });
+            }
+            if (serviceTagInner) {
+              gsap.set(serviceTagInner, {
+                x: index % 2 === 0 ? -12 : 12,
+              });
+            }
+            gsap.set(serviceCards, { autoAlpha: 0, y: 26, scale: 0.975 });
+            if (carouselControls) {
+              gsap.set(carouselControls, { autoAlpha: 0, y: 8 });
+            }
+
+            ScrollTrigger.create({
+              trigger: group,
+              start: "top 88%",
+              once: true,
+              onEnter: () => {
+                const groupTimeline = gsap.timeline({ defaults: { ease: "expo.out" } });
+                if (serviceTag) {
+                  groupTimeline.to(serviceTag, {
+                    autoAlpha: 1,
+                    duration: 0.5,
+                  });
+                }
+                if (serviceTagInner) {
+                  groupTimeline.to(
+                    serviceTagInner,
+                    {
+                      x: 0,
+                      duration: 0.5,
+                    },
+                    "<",
+                  );
+                }
+                groupTimeline.to(
+                  serviceCards,
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.62,
+                    stagger: 0.075,
+                  },
+                  serviceTag ? 0.08 : 0,
+                );
+                if (carouselControls) {
+                  groupTimeline.to(
+                    carouselControls,
+                    { autoAlpha: 1, y: 0, duration: 0.4 },
+                    "-=0.28",
+                  );
+                }
+              },
+            });
+          });
+
+          if (servicesCta) {
+            gsap.set(servicesCta, { autoAlpha: 0, y: 18 });
+            ScrollTrigger.create({
+              trigger: servicesCta,
+              start: "top 92%",
+              once: true,
+              onEnter: () => {
+                gsap.to(servicesCta, {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                  ease: "expo.out",
+                });
+              },
+            });
           }
-        });
+        }
+
+        const realisationsHeader = document.querySelector<HTMLElement>(".realisations-header");
+        const realisationItems = gsap.utils.toArray<HTMLElement>(".realisation-item");
+        if (realisationsHeader || realisationItems.length) {
+          if (realisationsHeader) {
+            gsap.set(realisationsHeader, { autoAlpha: 0, y: 24 });
+          }
+          if (realisationItems.length) {
+            gsap.set(realisationItems, { autoAlpha: 0, y: 26 });
+          }
+
+          ScrollTrigger.create({
+            trigger: ".realisations",
+            start: "top 82%",
+            once: true,
+            onEnter: () => {
+              const realisationsTimeline = gsap.timeline({ defaults: { ease: "expo.out" } });
+              if (realisationsHeader) {
+                realisationsTimeline.to(realisationsHeader, {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                });
+              }
+              if (realisationItems.length) {
+                realisationsTimeline.to(
+                  realisationItems,
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                  },
+                  realisationsHeader ? "-=0.25" : 0,
+                );
+              }
+            },
+          });
+        }
+
+        const testimonialsPanel = document.querySelector<HTMLElement>(".testimonials-panel");
+        if (testimonialsPanel) {
+          const testimonialCards = gsap.utils.toArray<HTMLElement>(".testimonial-card");
+
+          gsap.set(testimonialsPanel, { autoAlpha: 0, y: 40 });
+          if (testimonialCards.length) {
+            gsap.set(testimonialCards, { autoAlpha: 0, y: 20 });
+          }
+
+          ScrollTrigger.create({
+            trigger: ".testimonials",
+            start: "top 78%",
+            once: true,
+            onEnter: () => {
+              gsap.to(testimonialsPanel, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "expo.out",
+              });
+
+              if (testimonialCards.length) {
+                gsap.to(testimonialCards, {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.55,
+                  ease: "expo.out",
+                  stagger: 0.08,
+                  delay: 0.15,
+                });
+              }
+            },
+          });
+        }
+
+        const contactGrid = document.querySelector<HTMLElement>(".contact-grid");
+        if (contactGrid) {
+          gsap.set(contactGrid, { autoAlpha: 0, y: 32 });
+
+          ScrollTrigger.create({
+            trigger: ".contact",
+            start: "top 80%",
+            once: true,
+            onEnter: () => {
+              gsap.to(contactGrid, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                ease: "expo.out",
+              });
+            },
+          });
+        }
       }, appRef);
 
       if (reduceMotion) {
@@ -197,191 +398,91 @@ export default function App() {
 
   return (
     <div ref={appRef} className="app-shell">
-      <header className="site-header">
-        <nav className="nav-shell" aria-label="Navigation principale">
-          <div className="nav-side nav-side-left">
-            <a href="#produit">Produit</a>
-            <a href="#methode">Méthode</a>
-          </div>
-
-          <a className="brand" href="#accueil" aria-label="KLIC, accueil">
-            <span className="brand-symbol" aria-hidden="true">K</span>
-            <span>KLIC</span>
+      <a className="skip-link" href="#main-content">
+        Aller au contenu principal
+      </a>
+      <header className={`site-header${isMenuOpen ? " site-header--menu-open" : ""}`}>
+        <div className="nav-left">
+          <a className="brand" href="#accueil" aria-label="Novacar, accueil">
+            <img src={logoNovacar} alt="Novacar" />
           </a>
+          <span className="nav-divider" aria-hidden="true" />
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="nav-menu-button"
+            aria-controls="main-navigation"
+            aria-expanded={isMenuOpen}
+            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            onClick={() => setIsMenuOpen((open) => !open)}
+          >
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
+          <nav
+            id="main-navigation"
+            className={`nav-links${isMenuOpen ? " nav-links--open" : ""}`}
+            aria-label="Navigation principale"
+          >
+            {SITE_NAVIGATION.map((item) => (
+              <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
+                {item.label}
+              </a>
+            ))}
+            <a className="nav-mobile-cta" href="#contact" onClick={() => setIsMenuOpen(false)}>
+              Demander un devis
+            </a>
+          </nav>
+        </div>
 
-          <div className="nav-side nav-side-right">
-            <a className="login-link" href="#connexion">Se connecter</a>
-            <a className="nav-cta" href="#contact">Demander une démo</a>
-          </div>
-        </nav>
+        <a className="nav-cta" href="#contact">
+          Prendre contact
+        </a>
       </header>
 
-      <main id="accueil">
-        <section className="hero" aria-labelledby="hero-title">
-          <div className="signal-tile tile-plan" role="img" aria-label="Planning de production synchronisé">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path className="chart-baseline" d="M4.5 19h15" />
-              <path
-                className="chart-trace"
-                pathLength="1"
-                d="M5 16.5 9 12l3 2.5L19 7"
-              />
-              <circle className="chart-point" cx="19" cy="7" r="1.45" />
-            </svg>
-          </div>
-          <div className="signal-tile tile-quote" role="img" aria-label="Devis prêt à envoyer">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path className="quote-sheet" d="M7 4.5h7l3 3v12H7z" />
-              <path className="quote-fold" d="M14 4.5v3h3" />
-              <path className="quote-line quote-line-primary" pathLength="1" d="M9.5 11h5" />
-              <path className="quote-line quote-line-secondary" pathLength="1" d="M9.5 14h3.5" />
-            </svg>
-          </div>
-          <div className="signal-tile tile-workshop" role="img" aria-label="Activité de l’atelier suivie en temps réel">
-            <span /><span /><span /><span />
-          </div>
-          <div className="signal-tile tile-delivery" role="img" aria-label="Livraison confirmée">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle className="delivery-ring" cx="12" cy="12" r="8" />
-              <path className="delivery-check" pathLength="1" d="m7.5 12.2 3 3 6.4-6.6" />
-            </svg>
+      <main id="main-content">
+        <section id="accueil" className="hero" aria-labelledby="hero-title">
+          <div className="hero-media" aria-hidden="true">
+            <img src={heroBackground} alt="" />
           </div>
 
           <div className="hero-content">
-            <p className="hero-badge">
-              Pensé pour les entrepreneurs qui n'ont pas le temps
-            </p>
+            <p className="hero-kicker">Retouche Jantes &amp; carrosserie en Île-de-France</p>
 
             <BlurText
+              as="h1"
               id="hero-title"
-              text="Toute votre entreprise. Dans une seule application."
-              delay={64}
+              text="Vos jantes et votre carrosserie, comme sorties d'usine"
+              delay={40}
               animateBy="words"
               direction="bottom"
               className="hero-title"
-              stepDuration={0.26}
+              stepDuration={0.24}
             />
 
             <p className="hero-copy">
-              Priorités, devis, production, livraisons. Klic rassemble votre
-              activité et vous aide à décider, sans changer vos habitudes.
+              Rénovation de jantes, retouche peinture et lustrage. Devis
+              gratuit, intervention sous 72h en moyenne.
             </p>
 
-            <div className="access-bar" id="contact">
-              <span>Découvrez Klic en 15 minutes</span>
-              <a href="mailto:bonjour@klic.fr?subject=Demande%20de%20démonstration%20Klic">
-                Demander une démo
-                <svg viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M4 10h11M11 6l4 4-4 4" />
-                </svg>
+            <div className="hero-actions">
+              <a className="btn btn-primary" href="#contact">
+                Demander un devis
+              </a>
+              <a className="btn btn-secondary" href="#tarifs">
+                Voir les tarifs
               </a>
             </div>
-
-            <p className="hero-note">
-              Vos priorités. Vos opérations. Un seul fil.
-            </p>
           </div>
         </section>
 
-        <section className="daily-impact" id="produit" aria-labelledby="impact-title">
-          <div className="impact-shell">
-            <header className="impact-heading">
-              <p className="section-kicker">Une journée avec Klic</p>
-              <BlurText
-                as="h2"
-                id="impact-title"
-                text={"Moins de choses à retenir.\nPlus d’espace pour avancer."}
-                delay={64}
-                animateBy="words"
-                direction="bottom"
-                className="impact-title"
-                stepDuration={0.26}
-              />
-              <p className="impact-intro">
-                Sur le terrain, à l’atelier ou chez un client, Klic garde le fil
-                de votre activité et vous présente la bonne information au bon moment.
-              </p>
-            </header>
-
-            <div className="benefit-list">
-              <article className="benefit-row">
-                <div className="benefit-time">
-                  <span>08:10</span>
-                  <strong>Décider</strong>
-                </div>
-                <div className="benefit-copy">
-                  <h3>Commencez par ce qui compte vraiment.</h3>
-                  <p>
-                    Klic rassemble urgences, rendez-vous et tâches en attente pour
-                    vous donner une priorité claire dès le début de la journée.
-                  </p>
-                </div>
-                <div className="benefit-visual visual-priorities" aria-hidden="true">
-                  <span className="visual-label">Aujourd’hui</span>
-                  <div className="priority-line is-active"><i />Rappeler Martin</div>
-                  <div className="priority-line"><i />Valider la commande</div>
-                  <div className="priority-line"><i />Préparer l’intervention</div>
-                </div>
-                <span className="timeline-connector" aria-hidden="true">
-                  <span className="timeline-connector-fill" />
-                </span>
-              </article>
-
-              <article className="benefit-row">
-                <div className="benefit-time">
-                  <span>12:35</span>
-                  <strong>Répondre</strong>
-                </div>
-                <div className="benefit-copy">
-                  <h3>Transformez une demande en action.</h3>
-                  <p>
-                    Un message client devient un devis, une relance ou une tâche,
-                    sans recopier l’information d’un outil à l’autre.
-                  </p>
-                </div>
-                <div className="benefit-visual visual-conversation" aria-hidden="true">
-                  <div className="message message-client">Le devis est toujours valable&nbsp;?</div>
-                  <div className="message message-klic">
-                    <span className="mini-k">K</span>
-                    Prêt à envoyer. Échéance mise à jour.
-                  </div>
-                </div>
-                <span className="timeline-connector" aria-hidden="true">
-                  <span className="timeline-connector-fill" />
-                </span>
-              </article>
-
-              <article className="benefit-row">
-                <div className="benefit-time">
-                  <span>17:40</span>
-                  <strong>Anticiper</strong>
-                </div>
-                <div className="benefit-copy">
-                  <h3>Terminez sans rien laisser derrière vous.</h3>
-                  <p>
-                    Klic résume ce qui a avancé, signale ce qui bloque et prépare
-                    la suite. Vous fermez votre journée avec l’esprit libre.
-                  </p>
-                </div>
-                <div className="benefit-visual visual-recap" aria-hidden="true">
-                  <span className="recap-ring">
-                    <svg viewBox="0 0 32 32">
-                      <circle cx="16" cy="16" r="12" />
-                      <path pathLength="1" d="m10.5 16 3.6 3.6 7.6-8" />
-                    </svg>
-                  </span>
-                  <span><strong>Journée à jour</strong>3 actions préparées pour demain</span>
-                </div>
-              </article>
-            </div>
-
-            <footer className="impact-footer">
-              <p>Klic ne vous demande pas de mieux gérer. Il vous aide à moins gérer.</p>
-              <a href="#contact">Voir Klic en action <span aria-hidden="true">↗</span></a>
-            </footer>
-          </div>
-        </section>
+        <StatsSection />
+        <ServicesSection />
+        <RealisationsSection />
+        <TestimonialsSection />
+        <ContactSection />
       </main>
+      <Footer />
     </div>
   );
 }
