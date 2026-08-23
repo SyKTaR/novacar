@@ -5,11 +5,11 @@ import Footer from "../components/Footer";
 const RESOURCES = [
   [
     "Google Fonts (police Manrope)",
-    "Ressource externe chargée depuis les serveurs de Google pour l'affichage de la typographie du site. Ne dépose aucun cookie mais transmet l'adresse IP du visiteur à Google.",
+    "Ressource externe chargée depuis les serveurs de Google pour l’affichage de la typographie du site. Ne dépose aucun cookie mais transmet l’adresse IP du visiteur à Google.",
   ],
   [
     "Web3Forms",
-    "Service tiers utilisé uniquement lors de l'envoi du formulaire de contact, pour acheminer le message à Novacar. Ne dépose aucun cookie de suivi.",
+    "Service tiers utilisé uniquement lors de l’envoi du formulaire de contact, pour acheminer le message à Novacar. Ne dépose aucun cookie de suivi.",
   ],
 ] as const;
 
@@ -50,9 +50,9 @@ export default function Cookies() {
             <p className="legal-page-eyebrow">État actuel</p>
             <h2 id="legal-etat-title">Aucun cookie soumis à consentement</h2>
             <p>
-              À ce jour, le site Novacar ne dépose aucun cookie de mesure d'audience, de
-              publicité ou de traceur nécessitant votre consentement au sens de l'article
-              82 de la loi Informatique et Libertés. Aucun bandeau de consentement n'est
+              À ce jour, le site Novacar ne dépose aucun cookie de mesure d’audience, de
+              publicité ou de traceur nécessitant votre consentement au sens de l’article
+              82 de la loi Informatique et Libertés. Aucun bandeau de consentement n’est
               donc affiché.
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function Cookies() {
             <h2 id="legal-ressources-title">Ce que le site charge malgré tout</h2>
             <p>
               Deux ressources externes sont utilisées par le site, sans dépôt de cookie de
-              suivi :
+              suivi&nbsp;:
             </p>
           </div>
 
@@ -83,10 +83,10 @@ export default function Cookies() {
             <p className="legal-page-eyebrow">Évolution</p>
             <h2 id="legal-evolution-title">Si des cookies sont ajoutés</h2>
             <p>
-              Si Novacar ajoute un jour un outil de mesure d'audience, un pixel publicitaire
+              Si Novacar ajoute un jour un outil de mesure d’audience, un pixel publicitaire
               ou tout autre traceur non strictement nécessaire au fonctionnement du site, un
               bandeau de consentement conforme aux recommandations de la CNIL sera mis en
-              place avant leur activation, avec possibilité d'accepter, de refuser et de
+              place avant leur activation, avec possibilité d’accepter, de refuser et de
               retirer son consentement à tout moment.
             </p>
           </div>

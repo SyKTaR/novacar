@@ -17,11 +17,10 @@ export type Realisation = {
   /** Courte description de l'intervention réalisée. */
   description: string;
   /**
-   * Chemin de la photo "avant" une fois disponible (import Vite, ex.
+   * Chemin de la photo "avant" (import Vite, ex.
    * `import beforeJante from "../assets/realisations/jante-avant.jpg"`).
-   * `null` tant qu'aucune vraie photo n'a été fournie par Lucas : le
-   * composant affiche alors un placeholder explicite, jamais une image
-   * générée ou une fausse preuve.
+   * `null` si aucune photo n’est disponible : le composant affiche alors
+   * un placeholder explicite, jamais une image générée ou une fausse preuve.
    */
   beforeImage: string | null;
   afterImage: string | null;
@@ -32,9 +31,8 @@ export type Realisation = {
 
 /**
  * 3 réalisations, une par grande catégorie de service (voir
- * src/data/services.ts). Aucune vraie photo avant/après n'est disponible à
- * ce stade : beforeImage/afterImage valent `null` et l'interface affiche un
- * placeholder honnête ("Photo avant à venir" / "Photo après à venir").
+ * src/data/services.ts). Chaque réalisation référence actuellement une
+ * paire d’images avant/après et des textes alternatifs descriptifs.
  *
  * Pour Lucas : pour brancher une vraie photo, importer le fichier image
  * (placé dans src/assets/realisations/) puis renseigner beforeImage /
@@ -47,18 +45,18 @@ export const REALISATIONS: Realisation[] = [
     title: "Rénovation de jante",
     category: "jantes",
     categoryLabel: "Jantes",
-    description: "Jante rayée et arrachée, reprise et repeinte à l'identique.",
+    description: "Jante rayée et arrachée, reprise et repeinte à l’identique.",
     beforeImage: janteAvant,
     afterImage: janteApres,
     beforeAlt: "Jante rayée et arrachée avant rénovation",
-    afterAlt: "Jante repeinte à l'identique après rénovation",
+    afterAlt: "Jante repeinte à l’identique après rénovation",
   },
   {
     id: "retouche-carrosserie",
-    title: "Retouche peinture & carrosserie",
+    title: "Retouche de peinture & carrosserie",
     category: "peinture",
-    categoryLabel: "Peinture / carrosserie",
-    description: "Impact de choc sur portière, teinte raccordée sans repeindre l'élément entier.",
+    categoryLabel: "Peinture/carrosserie",
+    description: "Impact de choc sur portière, teinte raccordée sans repeindre l’élément entier.",
     beforeImage: carrosserieAvant,
     afterImage: carrosserieApres,
     beforeAlt: "Impact de choc sur portière avant retouche",

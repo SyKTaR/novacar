@@ -55,7 +55,7 @@ export default function BeforeAfterSlider({ realisation }: BeforeAfterSliderProp
           step={1}
           value={percent}
           onChange={(event) => setPercent(Number(event.target.value))}
-          aria-label={`Curseur avant / après — ${title}`}
+          aria-label={`Curseur avant/après — ${title}`}
           aria-valuetext={`${percent}% de la photo après révélée`}
         />
 

@@ -11,9 +11,8 @@ import BeforeAfterSlider from "./BeforeAfterSlider";
  * Cela crée aussi une alternance de rythme blanc/orange sur la page plutôt
  * que trois blocs oranges consécutifs.
  *
- * Aucune vraie photo disponible à ce stade : voir src/data/realisations.ts
- * (beforeImage/afterImage à `null`) et BeforeAfterSlider (placeholders
- * explicites "Photo avant/après à venir").
+ * Les paires d’images avant/après et leurs textes alternatifs sont centralisés
+ * dans src/data/realisations.ts.
  */
 export default function RealisationsSection() {
   return (
@@ -22,12 +21,11 @@ export default function RealisationsSection() {
         <header className="realisations-header">
           <p className="realisations-eyebrow">Nos réalisations</p>
           <h2 id="realisations-title" className="realisations-title">
-            L'avant / après de nos interventions
+            L’avant/après de nos interventions
           </h2>
           <p className="realisations-intro">
-            Trois exemples représentatifs de nos prestations. Les photos
-            ci-dessous sont des emplacements réservés : les vraies photos
-            clients seront ajoutées prochainement.
+            Trois exemples représentatifs de nos prestations, de l’état initial
+            au résultat après intervention.
           </p>
         </header>
 

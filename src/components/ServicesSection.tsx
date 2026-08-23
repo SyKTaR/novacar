@@ -54,9 +54,9 @@ export default function ServicesSection() {
 
         <div className="services-cta">
           <div className="services-cta-text">
-            <p className="services-cta-title">Une autre demande ?</p>
+            <p className="services-cta-title">Une autre demande&nbsp;?</p>
             <p className="services-cta-copy">
-              Chaque véhicule est différent, on établit un devis gratuit sous 48h.
+              Chaque véhicule est différent, on établit un devis gratuit sous 48&nbsp;h.
             </p>
           </div>
           <a className="btn btn-primary" href="#contact">

@@ -8,7 +8,7 @@ const EDITEUR_FIELDS = [
   ["Capital social", "À compléter si société à capital (sans objet pour une entreprise individuelle)"],
   ["Adresse du siège social", "À compléter — adresse complète"],
   ["SIRET", "À compléter — numéro SIRET"],
-  ["RCS / RM", "À compléter — ville d'immatriculation et numéro"],
+  ["RCS/RM", "À compléter — ville d’immatriculation et numéro"],
   ["N° TVA intracommunautaire", "À compléter si assujetti à la TVA"],
   ["Directeur de la publication", "À compléter — nom et qualité du responsable de publication"],
   ["Téléphone", "01 85 10 00 01"],
@@ -16,9 +16,9 @@ const EDITEUR_FIELDS = [
 ] as const;
 
 const HEBERGEUR_FIELDS = [
-  ["Hébergeur", "À compléter — raison sociale de l'hébergeur du site"],
-  ["Adresse", "À compléter — adresse de l'hébergeur"],
-  ["Téléphone", "À compléter — téléphone de l'hébergeur"],
+  ["Hébergeur", "À compléter — raison sociale de l’hébergeur du site"],
+  ["Adresse", "À compléter — adresse de l’hébergeur"],
+  ["Téléphone", "À compléter — téléphone de l’hébergeur"],
 ] as const;
 
 export default function MentionsLegales() {
@@ -47,8 +47,8 @@ export default function MentionsLegales() {
             <h1 id="legal-page-title">Mentions légales</h1>
             <p className="legal-page-summary">
               Conformément aux articles 6-III et 19 de la loi n° 2004-575 du 21 juin 2004
-              pour la confiance dans l'économie numérique (LCEN), il est précisé aux
-              utilisateurs du site Novacar l'identité des différents intervenants dans le
+              pour la confiance dans l’économie numérique (LCEN), il est précisé aux
+              utilisateurs du site Novacar l’identité des différents intervenants dans le
               cadre de sa réalisation et de son suivi.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function MentionsLegales() {
             <p>
               Champs réglementaires obligatoires. Les valeurs marquées « à compléter »
               seront remplacées par les informations réelles de Novacar avant mise en ligne
-              — aucune donnée n'est publiée sans validation.
+              — aucune donnée n’est publiée sans validation.
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export default function MentionsLegales() {
           <div className="legal-page-intro">
             <p className="legal-page-eyebrow">Article 2</p>
             <h2 id="legal-hebergeur-title">Hébergement</h2>
-            <p>Coordonnées de l'hébergeur du site, conformément à la LCEN.</p>
+            <p>Coordonnées de l’hébergeur du site, conformément à la LCEN.</p>
           </div>
 
           <dl className="legal-page-list">
@@ -97,7 +97,7 @@ export default function MentionsLegales() {
             <p className="legal-page-eyebrow">Article 3</p>
             <h2 id="legal-pi-title">Propriété intellectuelle</h2>
             <p>
-              L'ensemble des éléments du site (textes, images, logos, mise en page) est la
+              L’ensemble des éléments du site (textes, images, logos, mise en page) est la
               propriété de Novacar ou de ses partenaires, sauf mention contraire. Toute
               reproduction, représentation ou diffusion, totale ou partielle, sans
               autorisation préalable est interdite.
@@ -113,7 +113,7 @@ export default function MentionsLegales() {
               Le traitement des données personnelles collectées via le formulaire de
               contact est détaillé dans la{" "}
               <a href="/politique-confidentialite">politique de confidentialité</a>. Les
-              cookies et traceurs éventuellement utilisés sont décrits dans la page{" "}
+              cookies et traceurs éventuellement utilisés sont décrits dans la page de{" "}
               <a href="/cookies">gestion des cookies</a>.
             </p>
           </div>

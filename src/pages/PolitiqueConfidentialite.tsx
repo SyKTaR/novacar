@@ -9,7 +9,7 @@ const RESPONSABLE_FIELDS = [
 
 const DONNEES_COLLECTEES = [
   [
-    "Formulaire de contact / demande de devis",
+    "Formulaire de contact et de demande de devis",
     "Nom, prénom, e-mail, téléphone, marque et modèle du véhicule, description du besoin.",
   ],
 ] as const;
@@ -17,7 +17,7 @@ const DONNEES_COLLECTEES = [
 const DESTINATAIRES = [
   [
     "Web3Forms",
-    "Prestataire technique utilisé pour l'acheminement des messages du formulaire de contact vers Novacar. Aucune autre diffusion à des tiers.",
+    "Prestataire technique utilisé pour l’acheminement des messages du formulaire de contact vers Novacar. Aucune autre diffusion à des tiers.",
   ],
 ] as const;
 
@@ -99,8 +99,8 @@ export default function PolitiqueConfidentialite() {
             <p className="legal-page-eyebrow">3. Base légale</p>
             <h2 id="legal-base-title">Fondement du traitement</h2>
             <p>
-              Le traitement repose sur l'exécution de mesures précontractuelles prises à
-              la demande de la personne concernée (article 6.1.b du RGPD) : répondre à une
+              Le traitement repose sur l’exécution de mesures précontractuelles prises à
+              la demande de la personne concernée (article 6.1.b du RGPD)&nbsp;: répondre à une
               demande de devis suppose de traiter les informations transmises.
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function PolitiqueConfidentialite() {
             <h2 id="legal-destinataires-title">Qui a accès aux données</h2>
             <p>
               Les données transmises via le formulaire sont destinées à Novacar et à son
-              prestataire technique d'envoi de formulaire.
+              prestataire technique d’envoi de formulaire.
             </p>
           </div>
 
@@ -132,7 +132,7 @@ export default function PolitiqueConfidentialite() {
             <h2 id="legal-duree-title">Combien de temps</h2>
             <p>
               Durée de conservation à confirmer par Novacar — recommandation CNIL usuelle
-              pour un contact commercial non suivi d'effet : 3 ans à compter du dernier
+              pour un contact commercial non suivi d’effet&nbsp;: 3 ans à compter du dernier
               contact.
             </p>
           </div>
@@ -143,8 +143,8 @@ export default function PolitiqueConfidentialite() {
             <p className="legal-page-eyebrow">6. Vos droits</p>
             <h2 id="legal-droits-title">Exercer vos droits</h2>
             <p>
-              Conformément au RGPD, vous disposez d'un droit d'accès, de rectification,
-              d'effacement, de limitation, d'opposition et de portabilité de vos données.
+              Conformément au RGPD, vous disposez d’un droit d’accès, de rectification,
+              d’effacement, de limitation, d’opposition et de portabilité de vos données.
               Pour les exercer, contactez{" "}
               <a href="mailto:contact@nova-car.fr">contact@nova-car.fr</a>. Vous pouvez
               également introduire une réclamation auprès de la CNIL (
@@ -162,8 +162,8 @@ export default function PolitiqueConfidentialite() {
             <h2 id="legal-tiers-title">Ressources externes chargées par le site</h2>
             <p>
               Le site charge la police Manrope depuis les serveurs Google Fonts, ce qui
-              transmet l'adresse IP du visiteur à Google lors du chargement de la page.
-              Aucun cookie n'est déposé par cette ressource. Le détail des cookies et
+              transmet l’adresse IP du visiteur à Google lors du chargement de la page.
+              Aucun cookie n’est déposé par cette ressource. Le détail des cookies et
               traceurs utilisés est disponible sur la page{" "}
               <a href="/cookies">gestion des cookies</a>.
             </p>

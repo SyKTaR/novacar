@@ -21,8 +21,8 @@ export const STATS: Stat[] = [
   },
   {
     value: 72,
-    suffix: "H",
-    label: "Délai moyen d'intervention",
+    suffix: " h",
+    label: "Délai moyen d’intervention",
   },
   {
     value: 2500,

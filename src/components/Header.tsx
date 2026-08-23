@@ -28,6 +28,24 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    // Empêche le contenu de défiler derrière le menu mobile/tablette ouvert
+    // (dropdown sans fond assombri) et suspend le scroll fluide Lenis quand
+    // il est présent (page d'accueil uniquement, absent sur les pages légales
+    // et si prefers-reduced-motion est actif).
+    document.body.classList.toggle("menu-open", isMenuOpen);
+    if (isMenuOpen) {
+      window.__lenis?.stop();
+    } else {
+      window.__lenis?.start();
+    }
+
+    return () => {
+      document.body.classList.remove("menu-open");
+      window.__lenis?.start();
+    };
+  }, [isMenuOpen]);
+
   return (
     <header className={`site-header${isMenuOpen ? " site-header--menu-open" : ""}`}>
       <div className="nav-left">

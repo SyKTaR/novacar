@@ -27,7 +27,7 @@ export default function ContactSection() {
     if (!accessKey) {
       setStatus("error");
       setErrorMessage(
-        "Formulaire non configuré : clé Web3Forms manquante (VITE_WEB3FORMS_KEY).",
+        "Formulaire non configuré : clé Web3Forms manquante (VITE_WEB3FORMS_KEY).",
       );
       return;
     }
@@ -55,13 +55,13 @@ export default function ContactSection() {
       } else {
         setStatus("error");
         setErrorMessage(
-          result.message ?? "L'envoi a échoué, merci de réessayer.",
+          result.message ?? "L’envoi a échoué, merci de réessayer.",
         );
       }
     } catch {
       setStatus("error");
       setErrorMessage(
-        "Impossible d'envoyer le message pour le moment, merci de réessayer.",
+        "Impossible d’envoyer le message pour le moment, merci de réessayer.",
       );
     }
   }
@@ -75,7 +75,7 @@ export default function ContactSection() {
             Un devis gratuit sous 48&nbsp;h
           </h2>
           <p className="contact-copy">
-            Envoyez-nous une photo de la jante ou de l'impact. On vous répond
+            Envoyez-nous une photo de la jante ou de l’impact. On vous répond
             avec un prix ferme, sans engagement.
           </p>
 
@@ -101,7 +101,7 @@ export default function ContactSection() {
             <div className="contact-detail">
               <dt>Horaires</dt>
               <dd>
-                Lundi au vendredi, 8h–18h
+                Lundi au vendredi, 8&nbsp;h–18&nbsp;h
               </dd>
             </div>
           </dl>
@@ -149,7 +149,7 @@ export default function ContactSection() {
             }
           >
             {status === "success" &&
-              "Merci, votre demande a bien été envoyée. On revient vers vous sous 48h."}
+              "Merci, votre demande a bien été envoyée. On revient vers vous sous 48 h."}
             {status === "error" && (errorMessage ?? "Une erreur est survenue.")}
           </p>
         </form>

@@ -153,10 +153,14 @@ a:focus-visible {
 #realisations,
 #avis,
 #contact {
-  scroll-margin-top: 1rem;
+  scroll-margin-top: 5.5rem;
 }
 
 /* ---------- Navbar ---------- */
+
+body.menu-open {
+  overflow: hidden;
+}
 
 .site-header {
   position: sticky;
@@ -393,8 +397,8 @@ a:focus-visible {
 }
 
 /* ---------- Chiffres clés ---------- */
-/* Ligne typographique sobre : 4 statistiques alignées, séparées par de
-   fins traits verticaux, sans carte ni fond coloré ni icône. */
+/* Ligne typographique sobre : 4 statistiques dans des cadres fins
+   individuels, sans fond coloré ni icône. */
 
 .stats {
   background: var(--white);
@@ -406,6 +410,7 @@ a:focus-visible {
   display: flex;
   margin: 0 auto;
   padding: 0;
+  gap: clamp(1rem, 2vw, 1.5rem);
   max-width: 78rem;
 }
 
@@ -414,17 +419,8 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 0 clamp(1.25rem, 2.6vw, 2.25rem);
-  border-left: 1px solid var(--line);
-}
-
-.stats-item:first-child {
-  padding-left: 0;
-  border-left: none;
-}
-
-.stats-item:last-child {
-  padding-right: 0;
+  padding: clamp(1.5rem, 2.6vw, 2rem) clamp(1.25rem, 2.6vw, 2.25rem);
+  border: 1px solid var(--line);
 }
 
 .stats-value {
@@ -1765,26 +1761,16 @@ a:focus-visible {
       );
   }
 
-  /* Tablette : 2 colonnes x 2 lignes, mêmes séparateurs fins,
-     toujours sans carte ni fond coloré. */
+  /* Tablette : 2 colonnes x 2 lignes, mêmes cadres fins individuels,
+     toujours sans fond coloré ni icône. */
   .stats-grid {
     flex-wrap: wrap;
     row-gap: clamp(1.5rem, 3vw, 2.25rem);
   }
 
   .stats-item {
-    flex: 1 1 50%;
+    flex: 1 1 calc(50% - clamp(0.5rem, 1vw, 0.75rem));
     min-width: 12rem;
-  }
-
-  .stats-item:nth-child(2n + 1) {
-    padding-left: 0;
-    border-left: none;
-  }
-
-  .stats-item:nth-child(n + 3) {
-    padding-top: clamp(1.5rem, 3vw, 2.25rem);
-    border-top: 1px solid var(--line);
   }
 
   /* Tablette : cartes un peu plus étroites, tags verticaux conservés. */
@@ -1880,26 +1866,11 @@ a:focus-visible {
     padding-block: 3rem;
   }
 
-  /* Mobile : empilement simple, une colonne, séparateurs horizontaux fins,
-     toujours sans carte ni fond coloré. */
+  /* Mobile : empilement simple, une colonne, mêmes cadres fins individuels,
+     toujours sans fond coloré ni icône. */
   .stats-grid {
     flex-direction: column;
     gap: clamp(1.25rem, 6vw, 1.75rem);
-  }
-
-  .stats-item {
-    padding: 0 0 clamp(1.25rem, 6vw, 1.75rem);
-    border-left: none;
-    border-top: 1px solid var(--line);
-  }
-
-  .stats-item:first-child {
-    padding-top: 0;
-    border-top: none;
-  }
-
-  .stats-item:last-child {
-    padding-bottom: 0;
   }
 
   .stats-label {

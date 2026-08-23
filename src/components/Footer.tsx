@@ -8,12 +8,12 @@ export default function Footer() {
     <footer className="site-footer" aria-labelledby="footer-title">
       <div className="footer-main">
         <div className="footer-brand-block">
-          <a className="footer-brand" href="#accueil" aria-label="Novacar, retour à l'accueil">
+          <a className="footer-brand" href="/#accueil" aria-label="Novacar, retour à l’accueil">
             <img src={logoNovacar} alt="Novacar" />
             <span className="footer-brand-name">Novacar</span>
           </a>
           <h2 id="footer-title" className="footer-title">
-            Retouche peinture &amp; rénovation jantes
+            Retouche de peinture &amp; rénovation de jantes
           </h2>
           <p className="footer-brand-copy">
             Une remise en état précise, en atelier ou en intervention mobile en Île-de-France.
@@ -25,7 +25,7 @@ export default function Footer() {
           <ul>
             {SITE_NAVIGATION.map((item) => (
               <li key={item.href}>
-                <a href={item.href}>{item.label}</a>
+                <a href={`/${item.href}`}>{item.label}</a>
               </li>
             ))}
             <li>
@@ -70,7 +70,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <p>© {currentYear} Novacar. Tous droits réservés.</p>
-        <a href="#accueil">Retour en haut <span aria-hidden="true">↑</span></a>
+        <a href="/#accueil">Retour en haut <span aria-hidden="true">↑</span></a>
       </div>
     </footer>
   );

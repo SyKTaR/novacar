@@ -356,9 +356,14 @@ export default function App() {
       gsap.ticker.add(updateLenis);
       gsap.ticker.lagSmoothing(0);
 
+      // Exposé pour permettre au menu mobile (Header) de suspendre le scroll
+      // fluide pendant l'ouverture, sans coupler Header au cycle de vie de Lenis.
+      window.__lenis = lenis;
+
       cleanup = () => {
         gsap.ticker.remove(updateLenis);
         lenis.destroy();
+        window.__lenis = undefined;
         context.revert();
       };
     }
@@ -385,12 +390,12 @@ export default function App() {
           </div>
 
           <div className="hero-content">
-            <p className="hero-kicker">Retouche Jantes &amp; carrosserie en Île-de-France</p>
+            <p className="hero-kicker">Retouche de jantes &amp; de carrosserie en Île-de-France</p>
 
             <BlurText
               as="h1"
               id="hero-title"
-              text="Vos jantes et votre carrosserie, comme sorties d'usine"
+              text="Vos jantes et votre carrosserie, comme sorties d’usine"
               delay={40}
               animateBy="words"
               direction="bottom"
@@ -399,8 +404,8 @@ export default function App() {
             />
 
             <p className="hero-copy">
-              Rénovation de jantes, retouche peinture et lustrage. Devis
-              gratuit, intervention sous 72h en moyenne.
+              Rénovation de jantes, retouche de peinture et lustrage. Devis
+              gratuit, intervention sous 72&nbsp;h en moyenne.
             </p>
 
             <div className="hero-actions">

@@ -33,7 +33,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     rating: 5,
     quote:
-      "Un élargisseur et une baguette de porte reprises le même jour. Devis annoncé, devis respecté. Je n'irai plus ailleurs.",
+      "Un élargisseur et une baguette de porte repris le même jour. Devis annoncé, devis respecté. Je n’irai plus ailleurs.",
     author: "Karim D.",
     role: "Particulier — Colombes",
   },
