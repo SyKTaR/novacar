@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Header from "./components/Header";
 import BlurText from "./components/BlurText";
 import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
@@ -6,36 +7,10 @@ import RealisationsSection from "./components/RealisationsSection";
 import TestimonialsSection from "./components/TestimonialsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import { SITE_NAVIGATION } from "./data/navigation";
-import logoNovacar from "./assets/brand/logo_fondclair.svg";
 import heroBackground from "./assets/brand/fond3.png";
 
 export default function App() {
   const appRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && isMenuOpen) {
-        setIsMenuOpen(false);
-        menuButtonRef.current?.focus();
-      }
-    }
-
-    function handleViewportChange(event: MediaQueryListEvent) {
-      if (event.matches) setIsMenuOpen(false);
-    }
-
-    const desktopViewport = window.matchMedia("(min-width: 62rem)");
-    document.addEventListener("keydown", handleKeyDown);
-    desktopViewport.addEventListener("change", handleViewportChange);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      desktopViewport.removeEventListener("change", handleViewportChange);
-    };
-  }, [isMenuOpen]);
 
   useEffect(() => {
     let cleanup = () => {};
@@ -401,44 +376,7 @@ export default function App() {
       <a className="skip-link" href="#main-content">
         Aller au contenu principal
       </a>
-      <header className={`site-header${isMenuOpen ? " site-header--menu-open" : ""}`}>
-        <div className="nav-left">
-          <a className="brand" href="#accueil" aria-label="Novacar, accueil">
-            <img src={logoNovacar} alt="Novacar" />
-          </a>
-          <span className="nav-divider" aria-hidden="true" />
-          <button
-            ref={menuButtonRef}
-            type="button"
-            className="nav-menu-button"
-            aria-controls="main-navigation"
-            aria-expanded={isMenuOpen}
-            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            <span aria-hidden="true" />
-            <span aria-hidden="true" />
-          </button>
-          <nav
-            id="main-navigation"
-            className={`nav-links${isMenuOpen ? " nav-links--open" : ""}`}
-            aria-label="Navigation principale"
-          >
-            {SITE_NAVIGATION.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
-                {item.label}
-              </a>
-            ))}
-            <a className="nav-mobile-cta" href="#contact" onClick={() => setIsMenuOpen(false)}>
-              Demander un devis
-            </a>
-          </nav>
-        </div>
-
-        <a className="nav-cta" href="#contact">
-          Prendre contact
-        </a>
-      </header>
+      <Header />
 
       <main id="main-content">
         <section id="accueil" className="hero" aria-labelledby="hero-title">

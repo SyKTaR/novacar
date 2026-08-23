@@ -49,7 +49,16 @@ export default function ServiceCarousel({ items, ariaLabel }: ServiceCarouselPro
         {items.map((item) => (
           <li className="service-card" key={item.title}>
             <div className="service-card-media" aria-hidden="true">
-              <span className="service-card-media-caption">Photo à venir</span>
+              {item.photo ? (
+                <img
+                  className="service-card-media-img"
+                  src={item.photo}
+                  alt=""
+                  loading="lazy"
+                />
+              ) : (
+                <span className="service-card-media-caption">Photo à venir</span>
+              )}
             </div>
             <div className="service-card-body">
               <p className="service-card-title">

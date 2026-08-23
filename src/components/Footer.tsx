@@ -31,6 +31,12 @@ export default function Footer() {
             <li>
               <a href="/mentions-legales">Mentions légales</a>
             </li>
+            <li>
+              <a href="/politique-confidentialite">Politique de confidentialité</a>
+            </li>
+            <li>
+              <a href="/cookies">Gestion des cookies</a>
+            </li>
           </ul>
         </nav>
 
@@ -40,27 +46,24 @@ export default function Footer() {
             <div>
               <dt>Téléphone</dt>
               <dd>
-                01 00 00 00 00
-                <span className="footer-placeholder-flag"> (à confirmer)</span>
+                01 85 10 00 01
               </dd>
             </div>
             <div>
               <dt>E-mail</dt>
               <dd>
-                contact@novacar.fr
-                <span className="footer-placeholder-flag"> (à confirmer)</span>
+                contact@nova-car.fr
               </dd>
             </div>
             <div>
               <dt>Atelier</dt>
               <dd>
                 Adresse à compléter — Île-de-France
-                <span className="footer-placeholder-flag"> (à confirmer)</span>
               </dd>
             </div>
           </dl>
           <p className="footer-social-placeholder">
-            Réseaux sociaux — à compléter par Lucas
+            Réseaux sociaux
           </p>
         </div>
       </div>

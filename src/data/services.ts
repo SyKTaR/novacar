@@ -7,9 +7,16 @@ export type ServiceItem = {
   /**
    * Brief interne pour le photographe (ce que doit montrer la photo à venir),
    * repris du concept de la maquette. Conservé dans la donnée pour préparer
-   * les futures prises de vue ; l'interface affiche un placeholder générique.
+   * les futures prises de vue ; l'interface affiche un placeholder générique
+   * tant qu'aucune photo n'est fournie (voir `photo`).
    */
   shotBrief: string;
+  /**
+   * Photo réelle de la prestation, une fois fournie par Lucas
+   * (src/assets/photos_sections). Si absente, le carrousel affiche le
+   * placeholder "Photo à venir".
+   */
+  photo?: string;
   /**
    * true = contenu non confirmé à signaler dans l'interface. Tous les
    * tarifs présents dans la liste actuelle ont été fournis par Lucas ; la
@@ -17,6 +24,12 @@ export type ServiceItem = {
    */
   isPlaceholder?: boolean;
 };
+
+import janteClassique from "../assets/photos_sections/janteclassique.png";
+import jantePoliBiTon from "../assets/photos_sections/Jantepolibi-ton.png";
+import janteNoir from "../assets/photos_sections/jantenoir.png";
+import janteMatSatinee from "../assets/photos_sections/jante-mat-satinee.png";
+import janteChrome from "../assets/photos_sections/janteschromes.png";
 
 export type ServiceCategory = {
   id: ServiceCategoryId;
@@ -50,30 +63,35 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         price: 79,
         unit: "HT / jante",
         shotBrief: "Jante alu argent brossée, 3/4 face, fond sombre",
+        photo: janteClassique,
       },
       {
         title: "Jante poli bi-ton",
         price: 120,
         unit: "HT / jante",
         shotBrief: "Jante bi-ton : face polie brillante + creux anthracite",
+        photo: jantePoliBiTon,
       },
       {
         title: "Jante noir",
         price: 100,
         unit: "HT / jante",
         shotBrief: "Jante noire rénovée, vue de face sur fond sombre",
+        photo: janteNoir,
       },
       {
         title: "Jante mat / satinée",
         price: 120,
         unit: "HT / jante",
         shotBrief: "Jante finition mate ou satinée, détail de matière",
+        photo: janteMatSatinee,
       },
       {
         title: "Jante teinte spécial effet chrome",
         price: 120,
         unit: "HT / jante",
         shotBrief: "Jante avec finition effet chrome, éclairage contrôlé",
+        photo: janteChrome,
       },
       {
         title: "Jante avec arrachement / vernie / repeinte",

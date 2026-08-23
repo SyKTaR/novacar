@@ -96,14 +96,12 @@ export default function ContactSection() {
               <dt>Atelier</dt>
               <dd>
                 Adresse à compléter — Île-de-France
-                <span className="contact-placeholder-flag"> (à confirmer)</span>
               </dd>
             </div>
             <div className="contact-detail">
               <dt>Horaires</dt>
               <dd>
                 Lundi au vendredi, 8h–18h
-                <span className="contact-placeholder-flag"> (à confirmer)</span>
               </dd>
             </div>
           </dl>
