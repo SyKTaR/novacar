@@ -69,7 +69,8 @@ export default function ServiceCarousel({ items, ariaLabel }: ServiceCarouselPro
               </p>
               {typeof item.price === "number" ? (
                 <p className="service-card-price">
-                  {item.price}&nbsp;€
+                  <span className="service-card-price-prefix">À partir de</span>
+                  <span>{item.price}&nbsp;€</span>
                   {item.unit ? <span className="service-card-unit">{item.unit}</span> : null}
                 </p>
               ) : (

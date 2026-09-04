@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { SITE_NAVIGATION } from "../data/navigation";
-import logoNovacar from "../assets/brand/logo_fondclair.svg";
+import logoNovacarLight from "../assets/brand/logo_fondclair.svg";
+import logoNovacarDark from "../assets/brand/logo_fondsombre.svg";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -50,7 +52,12 @@ export default function Header() {
     <header className={`site-header${isMenuOpen ? " site-header--menu-open" : ""}`}>
       <div className="nav-left">
         <a className="brand" href="/#accueil" aria-label="Novacar, accueil">
-          <img src={logoNovacar} alt="Novacar" />
+          <img
+            className="brand-logo brand-logo--light"
+            src={logoNovacarLight}
+            alt="Novacar"
+          />
+          <img className="brand-logo brand-logo--dark" src={logoNovacarDark} alt="" />
         </a>
         <span className="nav-divider" aria-hidden="true" />
         <button
@@ -83,6 +90,9 @@ export default function Header() {
             Demander un devis
           </a>
         </nav>
+        {/* Thème sombre uniquement pour le moment (décision Lucas du 2026-09-02) :
+            switch masqué, pas supprimé, pour réactivation facile plus tard. */}
+        {/* <ThemeToggle /> */}
       </div>
 
       <a className="nav-cta" href="/#contact">

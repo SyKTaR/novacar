@@ -5,6 +5,7 @@ import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
 import RealisationsSection from "./components/RealisationsSection";
 import TestimonialsSection from "./components/TestimonialsSection";
+import PartnersSection from "./components/PartnersSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import heroBackground from "./assets/brand/fond3.png";
@@ -40,7 +41,7 @@ export default function App() {
             duration: 0.55,
           }, 0)
           .from(
-            ".nav-links a, .nav-divider",
+            ".nav-links a, .nav-divider, .theme-toggle",
             {
               y: -8,
               opacity: 0,
@@ -343,6 +344,26 @@ export default function App() {
             },
           });
         }
+
+        const partnerItems = gsap.utils.toArray<HTMLElement>(".partner-placeholder");
+        if (partnerItems.length) {
+          gsap.set(partnerItems, { autoAlpha: 0, y: 16 });
+
+          ScrollTrigger.create({
+            trigger: ".partners",
+            start: "top 84%",
+            once: true,
+            onEnter: () => {
+              gsap.to(partnerItems, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "expo.out",
+                stagger: 0.07,
+              });
+            },
+          });
+        }
       }, appRef);
 
       if (reduceMotion) {
@@ -420,6 +441,7 @@ export default function App() {
         </section>
 
         <StatsSection />
+        <PartnersSection />
         <ServicesSection />
         <RealisationsSection />
         <TestimonialsSection />

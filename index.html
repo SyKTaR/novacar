@@ -12,6 +12,13 @@
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+      (() => {
+        // Thème sombre uniquement pour le moment (décision Lucas du 2026-09-02) :
+        // le thème clair et le switch sont mis de côté, pas supprimés.
+        document.documentElement.dataset.theme = "dark";
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
