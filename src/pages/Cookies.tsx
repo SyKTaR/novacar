@@ -16,7 +16,7 @@ const RESOURCES = [
 export default function Cookies() {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Gestion des cookies — Novacar";
+    document.title = "Gestion des cookies | Novacar";
     window.scrollTo(0, 0);
 
     return () => {

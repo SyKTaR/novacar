@@ -1,0 +1,121 @@
+html.novacar-intro-active,
+html.novacar-intro-active body {
+  overflow: hidden;
+}
+
+html.novacar-intro-active {
+  scrollbar-gutter: stable;
+}
+
+.novacar-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.novacar-intro__panel {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: calc(50% + 1px);
+  background: #2d2d2d;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.novacar-intro__panel--top {
+  top: 0;
+}
+
+.novacar-intro__panel--bottom {
+  bottom: 0;
+}
+
+.novacar-intro__stage {
+  position: relative;
+  width: clamp(12rem, 28vw, 22rem);
+  aspect-ratio: 3552 / 1165;
+  transform: translateY(-0.5rem);
+}
+
+.novacar-intro__mark,
+.novacar-intro__pigment {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.novacar-intro__mark {
+  object-fit: contain;
+  opacity: 0;
+}
+
+.novacar-intro__pigment {
+  background-color: #d66429;
+  -webkit-mask: url("/novacar-mark.svg") center / contain no-repeat;
+  mask: url("/novacar-mark.svg") center / contain no-repeat;
+  opacity: 0;
+}
+
+.novacar-intro__pigment--coarse {
+  background-image: radial-gradient(
+    circle,
+    rgba(214, 100, 41, 0.96) 0 0.9px,
+    transparent 1.2px
+  );
+  background-color: transparent;
+  background-position: 17px -11px;
+  background-size: 7px 7px;
+}
+
+.novacar-intro__pigment--fine {
+  background-image:
+    radial-gradient(circle, rgba(214, 100, 41, 0.95) 0 0.65px, transparent 0.95px),
+    radial-gradient(circle, rgba(214, 100, 41, 0.58) 0 0.5px, transparent 0.8px);
+  background-color: transparent;
+  background-position: -9px 13px, 7px -5px;
+  background-size: 4px 4px, 9px 9px;
+}
+
+.novacar-intro__pigment--body {
+  clip-path: inset(47% 0 47% 0);
+}
+
+.novacar-intro__axis {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(72vw, 30rem);
+  height: 1px;
+  background: #d66429;
+  opacity: 0;
+  transform: translate(-50%, -50%) scaleX(0);
+  transform-origin: center;
+}
+
+@media (max-width: 40rem) {
+  .novacar-intro__stage {
+    width: clamp(10.5rem, 52vw, 14rem);
+  }
+
+  .novacar-intro__axis {
+    width: 78vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .novacar-intro__pigment,
+  .novacar-intro__axis {
+    display: none;
+  }
+}

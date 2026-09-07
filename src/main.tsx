@@ -2,23 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "lenis/dist/lenis.css";
 import "../styles.css";
-import App from "./App";
-import MentionsLegales from "./pages/MentionsLegales";
-import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
-import Cookies from "./pages/Cookies";
+import IntroOverlay, { consumeIntroSession } from "./components/IntroOverlay";
+import { normalizePath, resolveRoute } from "./routes";
 
-const normalizedPath = window.location.pathname.replace(/\/+$/, "") || "/";
-
-const ROUTES: Record<string, typeof App> = {
-  "/mentions-legales": MentionsLegales,
-  "/politique-confidentialite": PolitiqueConfidentialite,
-  "/cookies": Cookies,
-};
-
-const RootPage = ROUTES[normalizedPath] ?? App;
+const RootPage = resolveRoute(normalizePath(window.location.pathname));
+const playIntro = consumeIntroSession();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <IntroOverlay play={playIntro} />
     <RootPage />
   </StrictMode>,
 );

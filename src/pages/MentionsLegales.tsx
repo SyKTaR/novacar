@@ -24,7 +24,7 @@ const HEBERGEUR_FIELDS = [
 export default function MentionsLegales() {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Mentions légales — Novacar";
+    document.title = "Mentions légales | Novacar";
     window.scrollTo(0, 0);
 
     return () => {

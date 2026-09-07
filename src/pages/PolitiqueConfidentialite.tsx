@@ -24,7 +24,7 @@ const DESTINATAIRES = [
 export default function PolitiqueConfidentialite() {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Politique de confidentialité — Novacar";
+    document.title = "Politique de confidentialité | Novacar";
     window.scrollTo(0, 0);
 
     return () => {

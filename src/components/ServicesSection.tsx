@@ -28,7 +28,7 @@ export default function ServicesSection() {
           <header className="services-header">
             <p className="services-eyebrow">Nos prestations</p>
             <h2 id="services-title" className="services-title">
-              Tarifs jantes, peinture &amp; lustrage
+              Rénovation de jantes, retouche peinture &amp; lustrage
             </h2>
           </header>
 

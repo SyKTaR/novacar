@@ -51,9 +51,9 @@ export default function BlurText({
   onAnimationComplete,
   stepDuration = 0.35,
 }: BlurTextProps) {
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+  const reduceMotion =
+    typeof window === "undefined" ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lines = text.split("\n").map((line) =>
     animateBy === "words" ? line.split(" ") : line.split(""),
   );

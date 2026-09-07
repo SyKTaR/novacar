@@ -4,8 +4,8 @@ import BlurText from "./components/BlurText";
 import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
 import RealisationsSection from "./components/RealisationsSection";
-import TestimonialsSection from "./components/TestimonialsSection";
 import PartnersSection from "./components/PartnersSection";
+import SeoContentSection from "./components/SeoContentSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import heroBackground from "./assets/brand/fond3.png";
@@ -411,12 +411,12 @@ export default function App() {
           </div>
 
           <div className="hero-content">
-            <p className="hero-kicker">Retouche de jantes &amp; de carrosserie en Île-de-France</p>
+            <p className="hero-kicker">Intervention mobile en Île-de-France</p>
 
             <BlurText
               as="h1"
               id="hero-title"
-              text="Vos jantes et votre carrosserie, comme sorties d’usine"
+              text="Retouche peinture carrosserie & rénovation de jantes"
               delay={40}
               animateBy="words"
               direction="bottom"
@@ -425,8 +425,8 @@ export default function App() {
             />
 
             <p className="hero-copy">
-              Rénovation de jantes, retouche de peinture et lustrage. Devis
-              gratuit, intervention sous 72&nbsp;h en moyenne.
+              Novacar intervient à domicile ou en atelier pour la rénovation de
+              jantes, les retouches de peinture localisées et le lustrage automobile.
             </p>
 
             <div className="hero-actions">
@@ -444,7 +444,7 @@ export default function App() {
         <PartnersSection />
         <ServicesSection />
         <RealisationsSection />
-        <TestimonialsSection />
+        <SeoContentSection />
         <ContactSection />
       </main>
       <Footer />

@@ -12,9 +12,8 @@ type FormStatus = "idle" | "loading" | "success" | "error";
  * n'est pas renseignée, le formulaire affiche un message d'erreur explicite
  * au lieu d'échouer silencieusement.
  *
- * Coordonnées (téléphone, e-mail, adresse atelier, horaires) : PLACEHOLDER
- * repris de la maquette Figma de Lucas, à remplacer par les vraies
- * informations avant mise en ligne. Voir report.md.
+ * Le téléphone a été confirmé par Lucas. L'e-mail et l'adresse issus de la
+ * maquette restent masqués tant qu'ils ne sont pas validés.
  */
 export default function ContactSection() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -83,25 +82,19 @@ export default function ContactSection() {
             <div className="contact-detail">
               <dt>Téléphone</dt>
               <dd>
-                01 85 10 00 01
+                <a href="tel:+33185100001">01 85 10 00 01</a>
               </dd>
             </div>
             <div className="contact-detail">
-              <dt>E-mail</dt>
+              <dt>Zone d’intervention</dt>
               <dd>
-                contact@nova-car.fr
+                Paris et Île-de-France
               </dd>
             </div>
             <div className="contact-detail">
-              <dt>Atelier</dt>
+              <dt>Modalités</dt>
               <dd>
-                Adresse à compléter — Île-de-France
-              </dd>
-            </div>
-            <div className="contact-detail">
-              <dt>Horaires</dt>
-              <dd>
-                Lundi au vendredi, 8&nbsp;h–18&nbsp;h
+                Intervention mobile ou en atelier, selon le devis
               </dd>
             </div>
           </dl>

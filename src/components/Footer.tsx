@@ -41,30 +41,25 @@ export default function Footer() {
         </nav>
 
         <div className="footer-contact">
-          <p className="footer-column-title">Nous contacter</p>
+          <p className="footer-column-title">Intervention</p>
           <dl>
             <div>
               <dt>Téléphone</dt>
               <dd>
-                01 85 10 00 01
+                <a href="tel:+33185100001">01 85 10 00 01</a>
               </dd>
             </div>
             <div>
-              <dt>E-mail</dt>
-              <dd>
-                contact@nova-car.fr
-              </dd>
+              <dt>Zone desservie</dt>
+              <dd>Île-de-France</dd>
             </div>
             <div>
-              <dt>Atelier</dt>
+              <dt>Demande de devis</dt>
               <dd>
-                Adresse à compléter — Île-de-France
+                <a href="/#contact">Accéder au formulaire</a>
               </dd>
             </div>
           </dl>
-          <p className="footer-social-placeholder">
-            Réseaux sociaux
-          </p>
         </div>
       </div>
 
