@@ -21,10 +21,15 @@ for (const route of PRERENDER_ROUTES) {
       `<!--seo:start-->${buildSeoHead(route)}<!--seo:end-->`,
     )
     .replace("<!--app-html-->", render(route));
+  // "/404" est écrit en `404.html` à la racine de `dist/` (et non dans un
+  // dossier `404/`) : c'est le fichier que Vercel sert automatiquement pour
+  // toute route inconnue d'un déploiement statique.
   const outputPath =
     route === "/"
       ? join(DIST_DIR, "index.html")
-      : join(DIST_DIR, route.slice(1), "index.html");
+      : route === "/404"
+        ? join(DIST_DIR, "404.html")
+        : join(DIST_DIR, route.slice(1), "index.html");
 
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, pageHtml, "utf8");

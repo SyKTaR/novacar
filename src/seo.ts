@@ -103,6 +103,12 @@ const SEO_BY_PATH: Record<string, SeoConfig> = {
     path: "/cookies",
     robots: "noindex, follow",
   },
+  "/404": {
+    title: "Page introuvable | Novacar",
+    description: "Cette page n’existe pas ou a été déplacée. Retrouvez nos services Novacar depuis l’accueil.",
+    path: "/404",
+    robots: "noindex, follow",
+  },
 };
 
 function escapeAttribute(value: string) {

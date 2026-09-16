@@ -25,11 +25,11 @@ export type ServiceItem = {
   isPlaceholder?: boolean;
 };
 
-import janteClassique from "../assets/photos_sections/janteclassique.png";
-import jantePoliBiTon from "../assets/photos_sections/Jantepolibi-ton.png";
-import janteNoir from "../assets/photos_sections/jantenoir.png";
-import janteMatSatinee from "../assets/photos_sections/jante-mat-satinee.png";
-import janteChrome from "../assets/photos_sections/janteschromes.png";
+import janteClassique from "../assets/photos_sections/janteclassique.jpg";
+import jantePoliBiTon from "../assets/photos_sections/Jantepolibi-ton.jpg";
+import janteNoir from "../assets/photos_sections/jantenoir.jpg";
+import janteMatSatinee from "../assets/photos_sections/jante-mat-satinee.jpg";
+import janteChrome from "../assets/photos_sections/janteschromes.jpg";
 
 export type ServiceCategory = {
   id: ServiceCategoryId;

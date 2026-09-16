@@ -8,7 +8,7 @@ import PartnersSection from "./components/PartnersSection";
 import SeoContentSection from "./components/SeoContentSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import heroBackground from "./assets/brand/fond3.png";
+import heroBackground from "./assets/brand/fond3.jpg";
 
 export default function App() {
   const appRef = useRef<HTMLDivElement>(null);

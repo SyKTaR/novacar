@@ -53,121 +53,123 @@ export default function PolitiqueConfidentialite() {
           </div>
         </section>
 
-        <section className="legal-page-content" aria-labelledby="legal-responsable-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">1. Responsable</p>
-            <h2 id="legal-responsable-title">Responsable du traitement</h2>
-            <p>
-              Novacar est responsable du traitement des données personnelles collectées
-              via ce site.
-            </p>
-          </div>
+        <section className="legal-page-content">
+          <article className="legal-article" aria-labelledby="legal-responsable-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">1. Responsable</p>
+              <h2 id="legal-responsable-title">Responsable du traitement</h2>
+              <p>
+                Novacar est responsable du traitement des données personnelles collectées
+                via ce site.
+              </p>
+            </div>
 
-          <dl className="legal-page-list">
-            {RESPONSABLE_FIELDS.map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+            <dl className="legal-page-list">
+              {RESPONSABLE_FIELDS.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-donnees-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">2. Données collectées</p>
-            <h2 id="legal-donnees-title">Quelles données et pour quelle finalité</h2>
-            <p>
-              Novacar ne collecte que les données transmises volontairement via le
-              formulaire de contact du site, dans le but exclusif de répondre aux demandes
-              de devis et de contact.
-            </p>
-          </div>
+          <article className="legal-article" aria-labelledby="legal-donnees-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">2. Données collectées</p>
+              <h2 id="legal-donnees-title">Quelles données et pour quelle finalité</h2>
+              <p>
+                Novacar ne collecte que les données transmises volontairement via le
+                formulaire de contact du site, dans le but exclusif de répondre aux
+                demandes de devis et de contact.
+              </p>
+            </div>
 
-          <dl className="legal-page-list">
-            {DONNEES_COLLECTEES.map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+            <dl className="legal-page-list">
+              {DONNEES_COLLECTEES.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-base-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">3. Base légale</p>
-            <h2 id="legal-base-title">Fondement du traitement</h2>
-            <p>
-              Le traitement repose sur l’exécution de mesures précontractuelles prises à
-              la demande de la personne concernée (article 6.1.b du RGPD)&nbsp;: répondre à une
-              demande de devis suppose de traiter les informations transmises.
-            </p>
-          </div>
-        </section>
+          <article className="legal-article" aria-labelledby="legal-base-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">3. Base légale</p>
+              <h2 id="legal-base-title">Fondement du traitement</h2>
+              <p>
+                Le traitement repose sur l’exécution de mesures précontractuelles prises à
+                la demande de la personne concernée (article 6.1.b du RGPD)&nbsp;: répondre
+                à une demande de devis suppose de traiter les informations transmises.
+              </p>
+            </div>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-destinataires-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">4. Destinataires</p>
-            <h2 id="legal-destinataires-title">Qui a accès aux données</h2>
-            <p>
-              Les données transmises via le formulaire sont destinées à Novacar et à son
-              prestataire technique d’envoi de formulaire.
-            </p>
-          </div>
+          <article className="legal-article" aria-labelledby="legal-destinataires-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">4. Destinataires</p>
+              <h2 id="legal-destinataires-title">Qui a accès aux données</h2>
+              <p>
+                Les données transmises via le formulaire sont destinées à Novacar et à son
+                prestataire technique d’envoi de formulaire.
+              </p>
+            </div>
 
-          <dl className="legal-page-list">
-            {DESTINATAIRES.map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+            <dl className="legal-page-list">
+              {DESTINATAIRES.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-duree-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">5. Durée de conservation</p>
-            <h2 id="legal-duree-title">Combien de temps</h2>
-            <p>
-              Durée de conservation à confirmer par Novacar — recommandation CNIL usuelle
-              pour un contact commercial non suivi d’effet&nbsp;: 3 ans à compter du dernier
-              contact.
-            </p>
-          </div>
-        </section>
+          <article className="legal-article" aria-labelledby="legal-duree-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">5. Durée de conservation</p>
+              <h2 id="legal-duree-title">Combien de temps</h2>
+              <p>
+                Durée de conservation à confirmer par Novacar — recommandation CNIL
+                usuelle pour un contact commercial non suivi d’effet&nbsp;: 3 ans à compter
+                du dernier contact.
+              </p>
+            </div>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-droits-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">6. Vos droits</p>
-            <h2 id="legal-droits-title">Exercer vos droits</h2>
-            <p>
-              Conformément au RGPD, vous disposez d’un droit d’accès, de rectification,
-              d’effacement, de limitation, d’opposition et de portabilité de vos données.
-              Pour les exercer, contactez{" "}
-              <a href="mailto:contact@nova-car.fr">contact@nova-car.fr</a>. Vous pouvez
-              également introduire une réclamation auprès de la CNIL (
-              <a href="https://www.cnil.fr" target="_blank" rel="noreferrer">
-                www.cnil.fr
-              </a>
-              ).
-            </p>
-          </div>
-        </section>
+          <article className="legal-article" aria-labelledby="legal-droits-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">6. Vos droits</p>
+              <h2 id="legal-droits-title">Exercer vos droits</h2>
+              <p>
+                Conformément au RGPD, vous disposez d’un droit d’accès, de rectification,
+                d’effacement, de limitation, d’opposition et de portabilité de vos
+                données. Pour les exercer, contactez{" "}
+                <a href="mailto:contact@nova-car.fr">contact@nova-car.fr</a>. Vous pouvez
+                également introduire une réclamation auprès de la CNIL (
+                <a href="https://www.cnil.fr" target="_blank" rel="noreferrer">
+                  www.cnil.fr
+                </a>
+                ).
+              </p>
+            </div>
+          </article>
 
-        <section className="legal-page-content" aria-labelledby="legal-tiers-title">
-          <div className="legal-page-intro">
-            <p className="legal-page-eyebrow">7. Services tiers</p>
-            <h2 id="legal-tiers-title">Ressources externes chargées par le site</h2>
-            <p>
-              Le site charge la police Manrope depuis les serveurs Google Fonts, ce qui
-              transmet l’adresse IP du visiteur à Google lors du chargement de la page.
-              Aucun cookie n’est déposé par cette ressource. Le détail des cookies et
-              traceurs utilisés est disponible sur la page{" "}
-              <a href="/cookies">gestion des cookies</a>.
-            </p>
-          </div>
+          <article className="legal-article" aria-labelledby="legal-tiers-title">
+            <div className="legal-page-intro">
+              <p className="legal-page-eyebrow">7. Services tiers</p>
+              <h2 id="legal-tiers-title">Ressources externes chargées par le site</h2>
+              <p>
+                Le site charge la police Manrope depuis les serveurs Google Fonts, ce qui
+                transmet l’adresse IP du visiteur à Google lors du chargement de la page.
+                Aucun cookie n’est déposé par cette ressource. Le détail des cookies et
+                traceurs utilisés est disponible sur la page{" "}
+                <a href="/cookies">gestion des cookies</a>.
+              </p>
+            </div>
+          </article>
         </section>
       </main>
 

@@ -22,6 +22,19 @@ export default function ContactSection() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const form = event.currentTarget;
+
+    // Anti-spam honeypot : champ invisible pour un humain, rempli
+    // uniquement par les bots qui remplissent tous les champs du DOM.
+    // Convention reconnue par Web3Forms ("botcheck"). Si rempli, on simule
+    // un succès sans jamais appeler l'API, pour ne pas donner d'indice au bot.
+    const honeypot = form.elements.namedItem("botcheck") as HTMLInputElement | null;
+    if (honeypot?.checked) {
+      setStatus("success");
+      form.reset();
+      return;
+    }
+
     const accessKey = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined;
     if (!accessKey) {
       setStatus("error");
@@ -31,7 +44,6 @@ export default function ContactSection() {
       return;
     }
 
-    const form = event.currentTarget;
     const formData = new FormData(form);
     formData.append("access_key", accessKey);
     formData.append("subject", "Nouvelle demande de devis — Novacar");
@@ -100,7 +112,17 @@ export default function ContactSection() {
           </dl>
         </div>
 
-        <form className="contact-form" onSubmit={handleSubmit} noValidate>
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <input
+            type="checkbox"
+            name="botcheck"
+            id="contact-botcheck"
+            className="contact-honeypot"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
           <div className="contact-field">
             <label htmlFor="contact-name">Nom et prénom</label>
             <input id="contact-name" name="name" type="text" autoComplete="name" required />

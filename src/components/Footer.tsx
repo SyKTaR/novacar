@@ -1,8 +1,11 @@
 import logoNovacar from "../assets/brand/logo_fondsombre.svg";
 import { SITE_NAVIGATION } from "../data/navigation";
+import { requestReopenConsentBanner } from "../lib/consent";
+import { getGa4MeasurementId } from "../lib/analytics";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const ga4Configured = Boolean(getGa4MeasurementId());
 
   return (
     <footer className="site-footer" aria-labelledby="footer-title">
@@ -37,6 +40,17 @@ export default function Footer() {
             <li>
               <a href="/cookies">Gestion des cookies</a>
             </li>
+            {ga4Configured && (
+              <li>
+                <button
+                  type="button"
+                  className="footer-cookie-button"
+                  onClick={requestReopenConsentBanner}
+                >
+                  Gérer mes cookies
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
 

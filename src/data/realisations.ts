@@ -2,8 +2,8 @@ import janteAvant from "../assets/realisations/jante-avant.jpg";
 import janteApres from "../assets/realisations/jante-apres.jpg";
 import carrosserieAvant from "../assets/realisations/carrosserie-avant.jpg";
 import carrosserieApres from "../assets/realisations/carrosserie-apres.jpg";
-import lustrageAvant from "../assets/realisations/lustrage_avant.png";
-import lustrageApres from "../assets/realisations/lustrage_apres.png";
+import lustrageAvant from "../assets/realisations/lustrage_avant.jpg";
+import lustrageApres from "../assets/realisations/lustrage_apres.jpg";
 
 export type RealisationCategory = "jantes" | "peinture" | "lustrage";
 
