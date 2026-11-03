@@ -1,173 +1,29 @@
 import { useState } from "react";
-import type { FormEvent } from "react";
-
-type FormStatus = "idle" | "loading" | "success" | "error";
+import QuoteForm from "./quote/QuoteForm";
 
 /**
- * Section "Contact" — colonne infos (kicker, titre, coordonnées) + colonne
- * formulaire, envoyé via Web3Forms (pas de backend à héberger).
- *
- * Clé publique lue depuis `VITE_WEB3FORMS_KEY` (voir .env.example à la
- * racine du repo). Aucune clé réelle n'est commitée : tant que la variable
- * n'est pas renseignée, le formulaire affiche un message d'erreur explicite
- * au lieu d'échouer silencieusement.
- *
- * Le téléphone a été confirmé par Lucas. L'e-mail et l'adresse issus de la
- * maquette restent masqués tant qu'ils ne sont pas validés.
+ * Section « Contact » : parcours de devis en 3 étapes (besoin → photos et
+ * véhicule → coordonnées) puis confirmation. L'envoi passe par Web3Forms avec
+ * `VITE_WEB3FORMS_KEY` (voir .env.example) ; sans clé, le formulaire affiche
+ * une erreur explicite. Le HTML prérendu contient le titre et l'étape 1.
  */
 export default function ContactSection() {
-  const [status, setStatus] = useState<FormStatus>("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-
-    // Anti-spam honeypot : champ invisible pour un humain, rempli
-    // uniquement par les bots qui remplissent tous les champs du DOM.
-    // Convention reconnue par Web3Forms ("botcheck"). Si rempli, on simule
-    // un succès sans jamais appeler l'API, pour ne pas donner d'indice au bot.
-    const honeypot = form.elements.namedItem("botcheck") as HTMLInputElement | null;
-    if (honeypot?.checked) {
-      setStatus("success");
-      form.reset();
-      return;
-    }
-
-    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined;
-    if (!accessKey) {
-      setStatus("error");
-      setErrorMessage(
-        "Formulaire non configuré : clé Web3Forms manquante (VITE_WEB3FORMS_KEY).",
-      );
-      return;
-    }
-
-    const formData = new FormData(form);
-    formData.append("access_key", accessKey);
-    formData.append("subject", "Nouvelle demande de devis — Novacar");
-    formData.append("from_name", "Site Novacar");
-
-    setStatus("loading");
-    setErrorMessage(null);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
-      });
-      const result = await response.json();
-
-      if (result.success) {
-        setStatus("success");
-        form.reset();
-      } else {
-        setStatus("error");
-        setErrorMessage(
-          result.message ?? "L’envoi a échoué, merci de réessayer.",
-        );
-      }
-    } catch {
-      setStatus("error");
-      setErrorMessage(
-        "Impossible d’envoyer le message pour le moment, merci de réessayer.",
-      );
-    }
-  }
+  const [done, setDone] = useState(false);
 
   return (
     <section id="contact" className="contact" aria-labelledby="contact-title">
-      <div className="contact-grid">
+      <div className="contact-inner">
         <div className="contact-intro">
-          <p className="contact-eyebrow">Contact</p>
           <h2 id="contact-title" className="contact-title">
             Un devis gratuit sous 48&nbsp;h
           </h2>
-          <p className="contact-copy">
-            Envoyez-nous une photo de la jante ou de l’impact. On vous répond
-            avec un prix ferme, sans engagement.
-          </p>
-
-          <dl className="contact-details">
-            <div className="contact-detail">
-              <dt>Téléphone</dt>
-              <dd>
-                <a href="tel:+33185100001">01 85 10 00 01</a>
-              </dd>
-            </div>
-            <div className="contact-detail">
-              <dt>Zone d’intervention</dt>
-              <dd>
-                Paris et Île-de-France
-              </dd>
-            </div>
-            <div className="contact-detail">
-              <dt>Modalités</dt>
-              <dd>
-                Intervention mobile ou en atelier, selon le devis
-              </dd>
-            </div>
-          </dl>
+          <div className={`contact-copy-wrap${done ? " is-collapsed" : ""}`} aria-hidden={done ? true : undefined}>
+            <p className="contact-copy">
+              Trois étapes, moins d’une minute.<span className="contact-copy-extra"> Prix ferme, sans engagement.</span>
+            </p>
+          </div>
         </div>
-
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <input
-            type="checkbox"
-            name="botcheck"
-            id="contact-botcheck"
-            className="contact-honeypot"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-          />
-
-          <div className="contact-field">
-            <label htmlFor="contact-name">Nom et prénom</label>
-            <input id="contact-name" name="name" type="text" autoComplete="name" required />
-          </div>
-
-          <div className="contact-field">
-            <label htmlFor="contact-email">E-mail</label>
-            <input id="contact-email" name="email" type="email" autoComplete="email" required />
-          </div>
-
-          <div className="contact-field">
-            <label htmlFor="contact-phone">Téléphone</label>
-            <input id="contact-phone" name="phone" type="tel" autoComplete="tel" required />
-          </div>
-
-          <div className="contact-field">
-            <label htmlFor="contact-vehicle">Véhicule (marque, modèle)</label>
-            <input id="contact-vehicle" name="vehicle" type="text" required />
-          </div>
-
-          <div className="contact-field">
-            <label htmlFor="contact-need">Décrivez votre besoin</label>
-            <textarea id="contact-need" name="message" rows={4} required />
-          </div>
-
-          <button type="submit" className="btn btn-primary contact-submit" disabled={status === "loading"}>
-            {status === "loading" ? "Envoi en cours…" : "Envoyer ma demande"}
-          </button>
-
-          <p
-            role="status"
-            aria-live="polite"
-            className={
-              status === "success"
-                ? "contact-form-status contact-form-status--success"
-                : status === "error"
-                  ? "contact-form-status contact-form-status--error"
-                  : "contact-form-status"
-            }
-          >
-            {status === "success" &&
-              "Merci, votre demande a bien été envoyée. On revient vers vous sous 48 h."}
-            {status === "error" && (errorMessage ?? "Une erreur est survenue.")}
-          </p>
-        </form>
+        <QuoteForm onDone={setDone} />
       </div>
     </section>
   );

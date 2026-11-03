@@ -1,36 +1,37 @@
-import { PARTNER_LOGO_PLACEHOLDERS } from "../data/partners";
+import { PARTNERS, type Partner } from "../data/partners";
 
-/**
- * Emplacements de logos strictement temporaires : aucun nom ni logo réel
- * n'est simulé avant la réception des éléments officiels des partenaires.
- */
-export default function PartnersSection() {
+function PartnerTile({ partner }: { partner: Partner }) {
   return (
-    <section id="partenaires" className="partners" aria-labelledby="partners-title">
-      <div className="partners-inner">
-        <header className="partners-header">
-          <p className="partners-eyebrow">Partenaires</p>
-          <h2 id="partners-title" className="partners-title">
-            Nos partenaires
-          </h2>
-          <p className="partners-intro">
-            Les partenaires qui accompagnent Novacar seront présentés ici prochainement.
-          </p>
-        </header>
+    <li className="partner-tile">
+      {partner.logo ? (
+        <img src={partner.logo} alt={partner.name ? `Logo ${partner.name}` : "Logo partenaire"} />
+      ) : (
+        <>
+          <svg className="partner-tile-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" />
+            <circle cx="12" cy="12" r="4" stroke="currentColor" />
+          </svg>
+          <span className="partner-tile-label"><span className="partner-tile-label-long">Logo partenaire</span><span className="partner-tile-label-short">Logo</span></span>
+        </>
+      )}
+    </li>
+  );
+}
 
-        <ul className="partners-grid" role="list" aria-label="Logos partenaires à venir">
-          {PARTNER_LOGO_PLACEHOLDERS.map((partner) => (
-            <li className="partner-placeholder" key={partner.id}>
-              <span className="partner-placeholder-index" aria-hidden="true">
-                {partner.id.slice(-2)}
-              </span>
-              <span className="partner-placeholder-name">{partner.placeholderLabel}</span>
-              {partner.isPlaceholder ? (
-                <span className="partner-placeholder-status">Logo à venir</span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+export default function PartnersSection() {
+  const placeholdersOnly = PARTNERS.every((partner) => !partner.logo);
+  return (
+    <section id="partenaires" className="partners" aria-label="Partenaires">
+      <div className="partners-inner">
+        <div className="partners-marquee" aria-hidden={placeholdersOnly}>
+          <div className="partners-track">
+            {[0, 1].map((copy) => (
+              <ul className="partners-group" key={copy} aria-hidden={copy === 1}>
+                {PARTNERS.map((partner) => <PartnerTile key={`${copy}-${partner.id}`} partner={partner} />)}
+              </ul>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

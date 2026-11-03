@@ -10,7 +10,7 @@ export function consumeIntroSession() {
   try {
     if (window.sessionStorage.getItem(INTRO_SESSION_KEY)) return false;
     window.sessionStorage.setItem(INTRO_SESSION_KEY, "1");
-    return true;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   } catch {
     // Si le stockage est bloqué, la page reste immédiatement accessible.
     return false;
@@ -45,37 +45,25 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
       window.clearTimeout(failOpenTimer);
       document.documentElement.classList.remove("novacar-intro-active");
       setVisible(false);
+      window.dispatchEvent(new Event("novacar:intro-complete"));
     };
 
     document.documentElement.classList.add("novacar-intro-active");
     const failOpenTimer = window.setTimeout(finish, FAIL_OPEN_TIMEOUT_MS);
+
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onPreferenceChange = () => { if (preference.matches) finish(); };
+    preference.addEventListener("change", onPreferenceChange);
 
     async function runTimeline() {
       try {
         const { default: gsap } = await import("gsap");
         if (disposed) return;
 
-        const reducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
+        if (preference.matches) { finish(); return; }
 
         gsapContext = gsap.context(() => {
           const timeline = gsap.timeline({ onComplete: finish });
-
-          if (reducedMotion) {
-            timeline
-              .set(".novacar-intro__mark", {
-                autoAlpha: 1,
-                scale: 1,
-                filter: "blur(0px)",
-              })
-              .to(overlay, {
-                autoAlpha: 0,
-                duration: 0.16,
-                ease: "none",
-              }, 0.1);
-            return;
-          }
 
           timeline
             .fromTo(
@@ -85,16 +73,12 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
                 scale: 1.55,
                 x: -10,
                 y: 7,
-                filter: "blur(7px)",
-                backgroundPosition: "31px -19px",
               },
               {
                 autoAlpha: 0.58,
                 scale: 1.06,
                 x: 0,
                 y: 0,
-                filter: "blur(0.8px)",
-                backgroundPosition: "0px 0px",
                 duration: 0.58,
                 ease: "power3.out",
               },
@@ -107,18 +91,14 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
                 scale: 1.28,
                 x: 12,
                 y: -5,
-                filter: "blur(3px)",
-                backgroundPosition: "-21px 25px, 19px -17px",
               },
               {
                 autoAlpha: 0.52,
                 scale: 1,
                 x: 0,
                 y: 0,
-                filter: "blur(0px)",
-                backgroundPosition: "0px 0px, 0px 0px",
                 duration: 0.62,
-                ease: "steps(7)",
+                ease: "power3.out",
               },
               0.12,
             )
@@ -136,11 +116,10 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
             )
             .fromTo(
               ".novacar-intro__mark",
-              { autoAlpha: 0, scale: 0.992, filter: "blur(3px)" },
+              { autoAlpha: 0, scale: 0.992 },
               {
                 autoAlpha: 1,
                 scale: 1,
-                filter: "blur(0px)",
                 duration: 0.38,
                 ease: "power2.out",
               },
@@ -193,6 +172,7 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
     return () => {
       disposed = true;
       window.clearTimeout(failOpenTimer);
+      preference.removeEventListener("change", onPreferenceChange);
       gsapContext?.revert();
       document.documentElement.classList.remove("novacar-intro-active");
     };

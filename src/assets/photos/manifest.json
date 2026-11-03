@@ -1,0 +1,146 @@
+{
+  "01-jante-avant": {
+    "width": 1500,
+    "height": 2000,
+    "widths": [
+      240,
+      800,
+      1500
+    ]
+  },
+  "01-jante-apres": {
+    "width": 1500,
+    "height": 2000,
+    "widths": [
+      240,
+      800,
+      1500
+    ]
+  },
+  "02-bouclier-rouge-avant": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "02-bouclier-rouge-apres": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "03-bouclier-blanc-avant": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "03-bouclier-blanc-apres": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "04-jante-anthracite-avant": {
+    "width": 942,
+    "height": 1256,
+    "widths": [
+      240,
+      800,
+      942
+    ]
+  },
+  "04-jante-anthracite-apres": {
+    "width": 942,
+    "height": 1256,
+    "widths": [
+      240,
+      800,
+      942
+    ]
+  },
+  "jante-argent": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "jante-polie-biton": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "jante-noire": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "jante-anthracite-etrier-jaune": {
+    "width": 1086,
+    "height": 1448,
+    "widths": [
+      240,
+      800,
+      1086
+    ]
+  },
+  "jante-chrome": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "lustrage-avant": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "lustrage-apres": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "carrosserie-apres": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  }
+}

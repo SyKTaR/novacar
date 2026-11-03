@@ -4,11 +4,7 @@ export type Stat = {
   label: string;
 };
 
-/**
- * Chiffres placeholders fournis par la maquette de référence
- * (reference/target-look.png). À valider avec Lucas / le client
- * avant mise en ligne définitive.
- */
+/** Chiffres déjà présents dans le projet ; validation commerciale avant publication. */
 export const STATS: Stat[] = [
   {
     value: 1000,
@@ -21,12 +17,12 @@ export const STATS: Stat[] = [
   },
   {
     value: 72,
-    suffix: " h",
+    suffix: "H",
     label: "Délai moyen d’intervention",
   },
   {
     value: 2500,
-    label: "Jantes & éléments de carrosserie rénovés",
+    label: "Jantes et éléments de carrosserie rénovés",
   },
 ];
 
@@ -38,8 +34,10 @@ export default function StatsSection() {
       </h2>
 
       <ul className="stats-grid">
-        {STATS.map((stat) => (
+        {STATS.map((stat, index) => (
           <li className="stats-item" key={stat.label}>
+            {index > 0 && <span className="stats-divider" aria-hidden="true" />}
+            {index > 1 && <span className="stats-row-divider" aria-hidden="true" />}
             <p
               className="stats-value"
               data-value={stat.value}

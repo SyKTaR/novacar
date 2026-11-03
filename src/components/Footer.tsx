@@ -15,9 +15,9 @@ export default function Footer() {
             <img src={logoNovacar} alt="Novacar" />
             <span className="footer-brand-name">Novacar</span>
           </a>
-          <h2 id="footer-title" className="footer-title">
+          <p id="footer-title" className="footer-title">
             Retouche de peinture &amp; rénovation de jantes
-          </h2>
+          </p>
           <p className="footer-brand-copy">
             Une remise en état précise, en atelier ou en intervention mobile en Île-de-France.
           </p>
