@@ -1,19 +1,23 @@
 import { useEffect } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { requestReopenConsentBanner } from "../lib/consent";
+import {
+  LegalEssential,
+  LegalNote,
+  LegalPage,
+  LegalSection,
+  LegalTable,
+  LegalText,
+  type TocItem,
+} from "../components/legal/LegalKit";
+import { CONSENT_KEY, requestReopenConsentBanner } from "../lib/consent";
 import { getGa4MeasurementId } from "../lib/analytics";
 
-const RESOURCES = [
-  [
-    "Google Fonts (police Manrope)",
-    "Ressource externe chargée depuis les serveurs de Google pour l’affichage de la typographie du site. Ne dépose aucun cookie mais transmet l’adresse IP du visiteur à Google.",
-  ],
-  [
-    "Web3Forms",
-    "Service tiers utilisé uniquement lors de l’envoi du formulaire de contact, pour acheminer le message à Novacar. Ne dépose aucun cookie de suivi.",
-  ],
-] as const;
+const TOC: TocItem[] = [
+  { id: "definition", label: "Qu’est-ce qu’un cookie ?" },
+  { id: "cookies-utilises", label: "Cookies utilisés sur ce site" },
+  { id: "services-externes", label: "Services externes sans cookie" },
+  { id: "gerer", label: "Gérer vos choix" },
+  { id: "evolution", label: "Évolution de cette politique" },
+];
 
 export default function Cookies() {
   const ga4Configured = Boolean(getGa4MeasurementId());
@@ -22,123 +26,120 @@ export default function Cookies() {
     const previousTitle = document.title;
     document.title = "Gestion des cookies | Novacar";
     window.scrollTo(0, 0);
-
     return () => {
       document.title = previousTitle;
     };
   }, []);
 
+  const essentiel = [
+    {
+      label: "Aujourd’hui",
+      text: ga4Configured
+        ? "Aucun cookie de suivi ou de publicité n’est déposé sans votre accord."
+        : "Aucun cookie de suivi ou de publicité n’est déposé sur ce site.",
+    },
+    {
+      label: "Mesure d’audience",
+      text: ga4Configured
+        ? "Google Analytics 4 est actif uniquement avec votre accord."
+        : "Google Analytics est prévu. Il ne s’activera qu’avec votre accord.",
+    },
+    { label: "Votre choix", text: "Accepter, refuser ou changer d’avis à tout moment, aussi simplement." },
+    { label: "Durée de votre choix", text: "Il est conservé 6 mois, puis nous vous le redemandons." },
+  ];
+
   return (
-    <div className="app-shell legal-page">
-      <a className="skip-link" href="#legal-main-content">
-        Aller au contenu principal
-      </a>
+    <LegalPage
+      current="cookies"
+      title="Politique de cookies"
+      breadcrumbLabel="Politique de cookies"
+      intro="Les cookies et traceurs utilisés sur ce site, à quoi ils servent et comment modifier vos choix à tout moment, conformément aux recommandations de la CNIL."
+      toc={TOC}
+      contactTitle="Une question sur les cookies ?"
+    >
+      <LegalEssential items={essentiel} />
 
-      <Header />
+      <LegalSection id="definition" kicker="01" title="Qu’est-ce qu’un cookie ?">
+        <LegalText>
+          Un cookie est un petit fichier enregistré sur votre appareil quand vous visitez un site.
+          Certains sont indispensables au fonctionnement du site, d’autres servent par exemple à
+          mesurer l’audience et nécessitent votre accord (article 82 de la loi Informatique et
+          Libertés).
+        </LegalText>
+      </LegalSection>
 
-      <main id="legal-main-content">
-        <section className="legal-page-hero" aria-labelledby="legal-page-title">
-          <div className="legal-page-hero-inner">
-            <p className="legal-page-eyebrow">Informations du site</p>
-            <h1 id="legal-page-title">Gestion des cookies</h1>
-            <p className="legal-page-summary">
-              Conformément aux recommandations de la CNIL sur les cookies et autres
-              traceurs, cette page décrit précisément ce que le site Novacar dépose sur
-              votre appareil.
-            </p>
-          </div>
-        </section>
+      <LegalSection id="cookies-utilises" kicker="02" title="Cookies utilisés sur ce site">
+        <LegalTable
+          caption="Cookies et traceurs utilisés sur le site"
+          columns={["Nom", "Catégorie", "Finalité", "Durée", "Statut"]}
+          rows={[
+            [
+              CONSENT_KEY,
+              "Nécessaire",
+              "Mémorise vos choix sur les cookies (stockage local de votre navigateur)",
+              "6 mois",
+              ga4Configured ? "Actif" : "Actif quand le bandeau sera en place",
+            ],
+            [
+              "_ga",
+              "Mesure d’audience",
+              "Distingue les visiteurs (Google Analytics 4)",
+              "13 mois max.",
+              ga4Configured ? "Actif avec votre accord" : "Prévu, avec votre accord",
+            ],
+            [
+              "_ga_<ID>",
+              "Mesure d’audience",
+              "Conserve l’état de la session (Google Analytics 4)",
+              "13 mois max.",
+              ga4Configured ? "Actif avec votre accord" : "Prévu, avec votre accord",
+            ],
+          ]}
+        />
+        <LegalNote badge="À confirmer">
+          Le nom du choix mémorisé est fixé ({CONSENT_KEY}) ; l’identifiant Google Analytics
+          (_ga_&lt;ID&gt;) sera précisé à l’activation de la mesure d’audience.
+        </LegalNote>
+      </LegalSection>
 
-        <section className="legal-page-content">
-          <article className="legal-article" aria-labelledby="legal-etat-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">État actuel</p>
-              {ga4Configured ? (
-                <>
-                  <h2 id="legal-etat-title">Un traceur soumis à consentement&nbsp;: Google Analytics 4</h2>
-                  <p>
-                    Le site Novacar utilise Google Analytics 4 pour mesurer sa
-                    fréquentation (pages visitées, provenance du trafic). Ce traceur
-                    n’est chargé qu’après votre accord explicite via le bandeau affiché
-                    lors de votre première visite. Sans accord, aucun script Google
-                    Analytics n’est chargé et aucun cookie de mesure n’est déposé.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h2 id="legal-etat-title">Aucun cookie soumis à consentement pour le moment</h2>
-                  <p>
-                    À ce jour, le site Novacar ne dépose aucun cookie de mesure
-                    d’audience, de publicité ou de traceur nécessitant votre
-                    consentement au sens de l’article 82 de la loi Informatique et
-                    Libertés. L’intégration de Google Analytics 4 est en cours de mise
-                    en place et n’est pas encore active&nbsp;: le bandeau de consentement
-                    n’apparaîtra qu’une fois cette intégration effective.
-                  </p>
-                </>
-              )}
-            </div>
-          </article>
+      <LegalSection id="services-externes" kicker="03" title="Services externes sans cookie">
+        <LegalTable
+          caption="Services externes qui ne déposent pas de cookie"
+          columns={["Service", "Usage", "Ce qui est transmis"]}
+          rows={[
+            ["Google Fonts", "Affichage des polices du site", "Votre adresse IP à Google"],
+            ["Web3Forms", "Envoi du formulaire de devis", "Le contenu du formulaire, au moment de l’envoi"],
+          ]}
+        />
+      </LegalSection>
 
-          {ga4Configured && (
-            <article className="legal-article" aria-labelledby="legal-choix-title">
-              <div className="legal-page-intro">
-                <p className="legal-page-eyebrow">Votre choix</p>
-                <h2 id="legal-choix-title">Modifier votre consentement</h2>
-                <p>
-                  Vous pouvez accepter, refuser ou revenir sur votre choix concernant
-                  Google Analytics 4 à tout moment.
-                </p>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  style={{ marginTop: "1rem" }}
-                  onClick={requestReopenConsentBanner}
-                >
-                  Gérer mes cookies
-                </button>
-              </div>
-            </article>
-          )}
+      <LegalSection id="gerer" kicker="04" title="Gérer vos choix">
+        {ga4Configured ? (
+          <>
+            <LegalText>
+              Vous pouvez modifier vos préférences à tout moment avec le bouton ci-dessous ou depuis
+              le bouton «&nbsp;Cookies&nbsp;» en bas à gauche de chaque page. Vous pouvez aussi
+              bloquer les cookies dans les réglages de votre navigateur.
+            </LegalText>
+            <button type="button" className="legal-button" onClick={requestReopenConsentBanner}>
+              Modifier mes choix
+            </button>
+          </>
+        ) : (
+          <LegalText>
+            Aucun choix n’est à faire aujourd’hui&nbsp;: le bandeau de consentement n’apparaîtra
+            qu’à l’activation de la mesure d’audience. Vous pouvez aussi bloquer les cookies dans
+            les réglages de votre navigateur.
+          </LegalText>
+        )}
+      </LegalSection>
 
-          <article className="legal-article" aria-labelledby="legal-ressources-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Ressources externes</p>
-              <h2 id="legal-ressources-title">Ce que le site charge malgré tout</h2>
-              <p>
-                {ga4Configured
-                  ? "Deux ressources externes sont utilisées par le site sans dépôt de cookie de suivi, en plus de Google Analytics 4 décrit ci-dessus :"
-                  : "Deux ressources externes sont utilisées par le site, sans dépôt de cookie de suivi :"}
-              </p>
-            </div>
-
-            <dl className="legal-page-list">
-              {RESOURCES.map(([label, value]) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-
-          <article className="legal-article" aria-labelledby="legal-evolution-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Évolution</p>
-              <h2 id="legal-evolution-title">Si d’autres cookies sont ajoutés</h2>
-              <p>
-                Si Novacar ajoute un jour un pixel publicitaire ou tout autre traceur
-                non strictement nécessaire au fonctionnement du site, cette page sera
-                mise à jour et le bandeau de consentement couvrira également ce nouveau
-                traceur, avec possibilité d’accepter, de refuser et de retirer son
-                consentement à tout moment.
-              </p>
-            </div>
-          </article>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+      <LegalSection id="evolution" kicker="05" title="Évolution de cette politique">
+        <LegalText>
+          Si un nouveau traceur est ajouté, par exemple un pixel publicitaire, cette page sera mise
+          à jour et le bandeau vous redemandera votre accord.
+        </LegalText>
+      </LegalSection>
+    </LegalPage>
   );
 }

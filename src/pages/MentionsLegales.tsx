@@ -1,128 +1,102 @@
 import { useEffect } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  LegalInfoList,
+  LegalLinkCards,
+  LegalPage,
+  LegalSection,
+  LegalText,
+  type InfoRow,
+  type TocItem,
+} from "../components/legal/LegalKit";
 
-const EDITEUR_FIELDS = [
-  ["Nom commercial", "Novacar"],
-  ["Forme juridique", "À compléter — raison sociale et forme juridique (SASU, EURL, auto-entreprise…)"],
-  ["Capital social", "À compléter si société à capital (sans objet pour une entreprise individuelle)"],
-  ["Adresse du siège social", "À compléter — adresse complète"],
-  ["SIRET", "À compléter — numéro SIRET"],
-  ["RCS/RM", "À compléter — ville d’immatriculation et numéro"],
-  ["N° TVA intracommunautaire", "À compléter si assujetti à la TVA"],
-  ["Directeur de la publication", "À compléter — nom et qualité du responsable de publication"],
-  ["Téléphone", "01 85 10 00 01"],
-  ["E-mail", "contact@nova-car.fr"],
-] as const;
+const TOC: TocItem[] = [
+  { id: "editeur", label: "Éditeur du site" },
+  { id: "hebergement", label: "Hébergement" },
+  { id: "propriete", label: "Propriété intellectuelle" },
+  { id: "donnees", label: "Données personnelles et cookies" },
+];
 
-const HEBERGEUR_FIELDS = [
-  ["Hébergeur", "À compléter — raison sociale de l’hébergeur du site"],
-  ["Adresse", "À compléter — adresse de l’hébergeur"],
-  ["Téléphone", "À compléter — téléphone de l’hébergeur"],
-] as const;
+const EDITEUR_ROWS: InfoRow[] = [
+  { label: "Nom commercial", value: "Novacar" },
+  { label: "Forme juridique", badge: "À compléter", hint: "Raison sociale et forme (SASU, EURL, micro-entreprise…)" },
+  { label: "Capital social", badge: "À compléter", hint: "Si la société a un capital" },
+  { label: "Siège social", badge: "À compléter", hint: "Adresse complète" },
+  { label: "SIRET", badge: "À compléter" },
+  { label: "RCS ou RM", badge: "À compléter", hint: "Ville et numéro d’immatriculation" },
+  { label: "TVA intracommunautaire", badge: "À compléter", hint: "Si assujetti" },
+  { label: "Directeur de la publication", badge: "À compléter", hint: "Nom et prénom" },
+  { label: "Téléphone", value: CONTACT_PHONE },
+  { label: "E-mail", value: CONTACT_EMAIL },
+];
+
+const HEBERGEUR_ROWS: InfoRow[] = [
+  { label: "Hébergeur", badge: "À compléter", hint: "Nom de la société" },
+  { label: "Adresse", badge: "À compléter" },
+  { label: "Téléphone", badge: "À compléter" },
+];
 
 export default function MentionsLegales() {
   useEffect(() => {
     const previousTitle = document.title;
     document.title = "Mentions légales | Novacar";
     window.scrollTo(0, 0);
-
     return () => {
       document.title = previousTitle;
     };
   }, []);
 
   return (
-    <div className="app-shell legal-page">
-      <a className="skip-link" href="#legal-main-content">
-        Aller au contenu principal
-      </a>
+    <LegalPage
+      current="mentions"
+      title="Mentions légales"
+      breadcrumbLabel="Mentions légales"
+      intro="Qui édite ce site, qui l’héberge et comment utiliser son contenu, conformément à la loi pour la confiance dans l’économie numérique (LCEN)."
+      toc={TOC}
+      contactTitle="Une question sur cette page ?"
+    >
+      <LegalSection id="editeur" kicker="Article 1" title="Éditeur du site">
+        <LegalText>
+          Conformément aux articles 6-III et 19 de la loi n° 2004-575 du 21 juin 2004 (LCEN),
+          voici l’identité de l’éditeur du site Novacar.
+        </LegalText>
+        <LegalInfoList rows={EDITEUR_ROWS} />
+      </LegalSection>
 
-      <Header />
+      <LegalSection id="hebergement" kicker="Article 2" title="Hébergement">
+        <LegalText>Coordonnées de l’hébergeur du site, conformément à la LCEN.</LegalText>
+        <LegalInfoList rows={HEBERGEUR_ROWS} />
+      </LegalSection>
 
-      <main id="legal-main-content">
-        <section className="legal-page-hero" aria-labelledby="legal-page-title">
-          <div className="legal-page-hero-inner">
-            <p className="legal-page-eyebrow">Informations du site</p>
-            <h1 id="legal-page-title">Mentions légales</h1>
-            <p className="legal-page-summary">
-              Conformément aux articles 6-III et 19 de la loi n° 2004-575 du 21 juin 2004
-              pour la confiance dans l’économie numérique (LCEN), il est précisé aux
-              utilisateurs du site Novacar l’identité des différents intervenants dans le
-              cadre de sa réalisation et de son suivi.
-            </p>
-          </div>
-        </section>
+      <LegalSection id="propriete" kicker="Article 3" title="Propriété intellectuelle">
+        <LegalText>
+          Les contenus de ce site (textes, photos, logos, mise en page) appartiennent à Novacar ou
+          à ses partenaires, sauf mention contraire. Toute reproduction, représentation ou
+          diffusion, même partielle, sans autorisation écrite est interdite.
+        </LegalText>
+      </LegalSection>
 
-        <section className="legal-page-content">
-          <article className="legal-article" aria-labelledby="legal-editeur-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Article 1</p>
-              <h2 id="legal-editeur-title">Éditeur du site</h2>
-              <p>
-                Champs réglementaires obligatoires. Les valeurs marquées « à compléter »
-                seront remplacées par les informations réelles de Novacar avant mise en
-                ligne — aucune donnée n’est publiée sans validation.
-              </p>
-            </div>
-
-            <dl className="legal-page-list">
-              {EDITEUR_FIELDS.map(([label, value]) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-
-          <article className="legal-article" aria-labelledby="legal-hebergeur-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Article 2</p>
-              <h2 id="legal-hebergeur-title">Hébergement</h2>
-              <p>Coordonnées de l’hébergeur du site, conformément à la LCEN.</p>
-            </div>
-
-            <dl className="legal-page-list">
-              {HEBERGEUR_FIELDS.map(([label, value]) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-
-          <article className="legal-article" aria-labelledby="legal-pi-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Article 3</p>
-              <h2 id="legal-pi-title">Propriété intellectuelle</h2>
-              <p>
-                L’ensemble des éléments du site (textes, images, logos, mise en page) est
-                la propriété de Novacar ou de ses partenaires, sauf mention contraire.
-                Toute reproduction, représentation ou diffusion, totale ou partielle, sans
-                autorisation préalable est interdite.
-              </p>
-            </div>
-          </article>
-
-          <article className="legal-article" aria-labelledby="legal-donnees-title">
-            <div className="legal-page-intro">
-              <p className="legal-page-eyebrow">Article 4</p>
-              <h2 id="legal-donnees-title">Données personnelles</h2>
-              <p>
-                Le traitement des données personnelles collectées via le formulaire de
-                contact est détaillé dans la{" "}
-                <a href="/politique-confidentialite">politique de confidentialité</a>. Les
-                cookies et traceurs éventuellement utilisés sont décrits dans la page de{" "}
-                <a href="/cookies">gestion des cookies</a>.
-              </p>
-            </div>
-          </article>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+      <LegalSection id="donnees" kicker="Article 4" title="Données personnelles et cookies">
+        <LegalText>
+          Le traitement des données envoyées par le formulaire de devis et l’usage des cookies sont
+          détaillés sur deux pages dédiées.
+        </LegalText>
+        <LegalLinkCards
+          items={[
+            {
+              href: "/politique-confidentialite",
+              title: "Politique de confidentialité",
+              text: "Vos données, leur usage et vos droits",
+            },
+            {
+              href: "/cookies",
+              title: "Politique de cookies",
+              text: "Les traceurs utilisés sur ce site",
+            },
+          ]}
+        />
+      </LegalSection>
+    </LegalPage>
   );
 }

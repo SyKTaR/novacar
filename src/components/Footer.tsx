@@ -38,7 +38,7 @@ export default function Footer() {
               <a href="/politique-confidentialite">Politique de confidentialité</a>
             </li>
             <li>
-              <a href="/cookies">Gestion des cookies</a>
+              <a href="/cookies">Politique de cookies</a>
             </li>
             {ga4Configured && (
               <li>
