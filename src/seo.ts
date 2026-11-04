@@ -1,7 +1,14 @@
 import { FAQ_ITEMS } from "./data/faq.ts";
+import { SERVICE_CATEGORIES } from "./data/services.ts";
 
 const SITE_ORIGIN = "https://www.nova-car.fr";
-const SOCIAL_IMAGE_URL = `${SITE_ORIGIN}/apple-touch-icon.png`;
+const LOGO_URL = `${SITE_ORIGIN}/apple-touch-icon.png`;
+const SOCIAL_IMAGE_URL = `${SITE_ORIGIN}/og-image.jpg`;
+const SOCIAL_IMAGE_WIDTH = 1200;
+const SOCIAL_IMAGE_HEIGHT = 630;
+const WEBSITE_ID = `${SITE_ORIGIN}/#website`;
+const WEBPAGE_ID = `${SITE_ORIGIN}/#webpage`;
+const INSTAGRAM_URL = "https://www.instagram.com/novacar_smartrepair/";
 const BUSINESS_ID = `${SITE_ORIGIN}/#business`;
 const AREA_SERVED = {
   "@type": "AdministrativeArea",
@@ -16,16 +23,73 @@ type SeoConfig = {
   structuredData?: Record<string, unknown>;
 };
 
+// Tarifs réels (HT) issus de src/data/services.ts, sans valeur ajoutée.
+const NUMERIC_PRICES = SERVICE_CATEGORIES.flatMap((category) =>
+  category.items.flatMap((item) => (typeof item.price === "number" ? [item.price] : [])),
+);
+const PRICE_RANGE = `${Math.min(...NUMERIC_PRICES)} € - ${Math.max(...NUMERIC_PRICES)} € HT`;
+
+const OFFER_CATALOG = {
+  "@type": "OfferCatalog",
+  name: "Prestations et tarifs Novacar",
+  itemListElement: SERVICE_CATEGORIES.map((category) => ({
+    "@type": "OfferCatalog",
+    name: category.label,
+    itemListElement: category.items.map((item) => ({
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: item.title },
+      priceCurrency: "EUR",
+      ...(typeof item.price === "number"
+        ? {
+            priceSpecification: {
+              "@type": "UnitPriceSpecification",
+              price: item.price,
+              priceCurrency: "EUR",
+              valueAddedTaxIncluded: false,
+              ...(item.unit ? { unitText: item.unit.replace(/^HT\//, "") } : {}),
+            },
+          }
+        : {}),
+    })),
+  })),
+};
+
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": WEBSITE_ID,
+      url: `${SITE_ORIGIN}/`,
+      name: "Novacar",
+      inLanguage: "fr-FR",
+      publisher: { "@id": BUSINESS_ID },
+    },
+    {
+      "@type": "WebPage",
+      "@id": WEBPAGE_ID,
+      url: `${SITE_ORIGIN}/`,
+      name: "Retouche carrosserie mobile & jantes IDF | Novacar",
+      inLanguage: "fr-FR",
+      isPartOf: { "@id": WEBSITE_ID },
+      about: { "@id": BUSINESS_ID },
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: SOCIAL_IMAGE_URL,
+        width: SOCIAL_IMAGE_WIDTH,
+        height: SOCIAL_IMAGE_HEIGHT,
+      },
+    },
     {
       "@type": "AutoRepair",
       "@id": BUSINESS_ID,
       name: "Novacar",
       url: `${SITE_ORIGIN}/`,
-      logo: SOCIAL_IMAGE_URL,
+      logo: LOGO_URL,
       image: SOCIAL_IMAGE_URL,
+      sameAs: [INSTAGRAM_URL],
+      priceRange: PRICE_RANGE,
+      hasOfferCatalog: OFFER_CATALOG,
       description:
         "Retouche de peinture carrosserie mobile, rénovation de jantes et lustrage automobile en Île-de-France.",
       telephone: "+33185100001",
@@ -140,10 +204,10 @@ export function buildSeoHead(path: string) {
     `<meta property="og:description" content="${description}" />`,
     `<meta property="og:url" content="${canonical}" />`,
     `<meta property="og:image" content="${SOCIAL_IMAGE_URL}" />`,
-    `<meta property="og:image:width" content="180" />`,
-    `<meta property="og:image:height" content="180" />`,
+    `<meta property="og:image:width" content="${SOCIAL_IMAGE_WIDTH}" />`,
+    `<meta property="og:image:height" content="${SOCIAL_IMAGE_HEIGHT}" />`,
     `<meta property="og:image:alt" content="${imageAlt}" />`,
-    `<meta name="twitter:card" content="summary" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${description}" />`,
     `<meta name="twitter:image" content="${SOCIAL_IMAGE_URL}" />`,
