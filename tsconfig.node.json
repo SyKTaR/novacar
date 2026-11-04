@@ -8,5 +8,5 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "src/seo.ts", "src/data/faq.ts", "src/data/services.ts", "src/data/photos.ts", "src/assets/photos/manifest.json"]
+  "include": ["vite.config.ts", "src/seo.ts", "src/data/faq.ts", "src/data/services.ts", "src/data/photos.ts", "src/data/realisations.ts", "src/data/seoPages.ts", "src/data/seoPagesSeo.ts", "src/assets/photos/manifest.json"]
 }

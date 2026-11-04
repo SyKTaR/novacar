@@ -1,5 +1,6 @@
 import { FAQ_ITEMS } from "./data/faq.ts";
 import { SERVICE_CATEGORIES } from "./data/services.ts";
+import { SEO_PAGE_ENTRIES } from "./data/seoPagesSeo.ts";
 
 const SITE_ORIGIN = "https://www.nova-car.fr";
 const LOGO_URL = `${SITE_ORIGIN}/apple-touch-icon.png`;
@@ -167,6 +168,7 @@ const SEO_BY_PATH: Record<string, SeoConfig> = {
     path: "/cookies",
     robots: "noindex, follow",
   },
+  ...SEO_PAGE_ENTRIES,
   "/404": {
     title: "Page introuvable | Novacar",
     description: "Cette page n’existe pas ou a été déplacée. Retrouvez nos services Novacar depuis l’accueil.",

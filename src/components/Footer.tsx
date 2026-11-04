@@ -2,6 +2,12 @@ import logoNovacar from "../assets/brand/logo_fondsombre.svg";
 import { SITE_NAVIGATION } from "../data/navigation";
 import { requestReopenConsentBanner } from "../lib/consent";
 import { getGa4MeasurementId } from "../lib/analytics";
+import { SERVICE_PAGE_LIST, ZONES_PAGE } from "../data/seoPages";
+
+const SEO_FOOTER_LINKS = [
+  ...SERVICE_PAGE_LIST.map((page) => ({ path: page.path, label: page.navLabel })),
+  { path: ZONES_PAGE.path, label: ZONES_PAGE.navLabel },
+];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -29,6 +35,11 @@ export default function Footer() {
             {SITE_NAVIGATION.map((item) => (
               <li key={item.href}>
                 <a href={`/${item.href}`}>{item.label}</a>
+              </li>
+            ))}
+            {SEO_FOOTER_LINKS.map((link) => (
+              <li key={link.path}>
+                <a href={link.path}>{link.label}</a>
               </li>
             ))}
             <li>
@@ -65,7 +76,9 @@ export default function Footer() {
             </div>
             <div>
               <dt>Zone desservie</dt>
-              <dd>Île-de-France</dd>
+              <dd>
+                <a href={ZONES_PAGE.path}>Île-de-France</a>
+              </dd>
             </div>
             <div>
               <dt>Demande de devis</dt>
