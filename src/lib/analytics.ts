@@ -40,8 +40,11 @@ export function loadGoogleAnalytics() {
   loaded = true;
 
   window.dataLayer = window.dataLayer || [];
-  function gtag(...args: unknown[]) {
-    window.dataLayer!.push(args);
+  // gtag.js n'accepte que l'objet `arguments` (pas un tableau) dans le dataLayer.
+  // eslint-disable-next-line prefer-rest-params
+  function gtag(..._args: unknown[]) {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer!.push(arguments);
   }
   window.gtag = gtag;
   gtag("js", new Date());
