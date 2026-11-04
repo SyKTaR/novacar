@@ -20,21 +20,21 @@ const TOC: TocItem[] = [
 
 const EDITEUR_ROWS: InfoRow[] = [
   { label: "Nom commercial", value: "Novacar" },
-  { label: "Forme juridique", badge: "À compléter", hint: "Raison sociale et forme (SASU, EURL, micro-entreprise…)" },
-  { label: "Capital social", badge: "À compléter", hint: "Si la société a un capital" },
-  { label: "Siège social", badge: "À compléter", hint: "Adresse complète" },
-  { label: "SIRET", badge: "À compléter" },
-  { label: "RCS ou RM", badge: "À compléter", hint: "Ville et numéro d’immatriculation" },
-  { label: "TVA intracommunautaire", badge: "À compléter", hint: "Si assujetti" },
-  { label: "Directeur de la publication", badge: "À compléter", hint: "Nom et prénom" },
+  { label: "Forme juridique", value: "Société à responsabilité limitée (SARL)" },
+  { label: "Capital social", value: "10 000 €" },
+  { label: "Siège social", value: "45 allée de Chavannes, 93220 Gagny" },
+  { label: "SIRET", value: "105 640 007 00016" },
+  { label: "RCS ou RM", value: "SIREN 105 640 007", badge: "Greffe à confirmer", hint: "Ville du greffe du RCS" },
+  { label: "TVA intracommunautaire", value: "FR81105640007" },
+  { label: "Directeur de la publication", badge: "À compléter", hint: "Nom et prénom (l’un des gérants : Franck Roux ou Clement Soudry)" },
   { label: "Téléphone", value: CONTACT_PHONE },
   { label: "E-mail", value: CONTACT_EMAIL },
 ];
 
 const HEBERGEUR_ROWS: InfoRow[] = [
-  { label: "Hébergeur", badge: "À compléter", hint: "Nom de la société" },
-  { label: "Adresse", badge: "À compléter" },
-  { label: "Téléphone", badge: "À compléter" },
+  { label: "Hébergeur", value: "Vercel Inc." },
+  { label: "Adresse", value: "440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis" },
+  { label: "Site web", value: <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">vercel.com</a> },
 ];
 
 export default function MentionsLegales() {

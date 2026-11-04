@@ -78,7 +78,7 @@ export default function PolitiqueConfidentialite() {
         <LegalInfoList
           rows={[
             { label: "Responsable", value: "Novacar" },
-            { label: "Raison sociale", badge: "À compléter", hint: "Voir les mentions légales" },
+            { label: "Raison sociale", value: "Novacar, SARL au capital de 10 000 € (SIREN 105 640 007)" },
             {
               label: "Contact vie privée",
               value: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>,

@@ -3672,7 +3672,13 @@ body,
   :root {
     --nb-top: 1.25rem;
     --nb-height: 4.25rem;
-    --nb-side: clamp(1.5rem, 5.3vw, 5rem);
+    --nb-side: var(--page-gutter);
+  }
+
+  /* Même largeur que les sections (78rem max, mêmes marges latérales) */
+  .site-header {
+    max-width: 78rem;
+    margin-inline: auto;
   }
 
   .nb-bar {
