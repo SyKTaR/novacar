@@ -2,6 +2,7 @@ import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react"
 import { SERVICE_CATEGORIES, type ServiceItem } from "../data/services";
 import { SERVICE_PRESENTATION, minimumService } from "../data/servicePresentation";
 import Photo from "./Photo";
+import { SEO_PAGE_PATHS } from "../data/seoPages";
 
 function ServicePrice({ item }: { item: ServiceItem }) {
   return (
@@ -115,6 +116,7 @@ export default function ServicesSection() {
                         {minimum ? <><span>À partir de</span><ServicePrice item={minimum} /></> : "Sur devis"}
                       </p>
                       <a className="sv2-quote" href="#contact">Demander un devis</a>
+                      <a className="sv2-more" href={SEO_PAGE_PATHS[category.id]}>Détails de la prestation <span aria-hidden="true">→</span></a>
                     </div>
                   </div>
                 </article>
