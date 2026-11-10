@@ -5,7 +5,6 @@ import BlurText from "./components/BlurText";
 import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
 import RealisationsSection from "./components/RealisationsSection";
-import PartnersSection from "./components/PartnersSection";
 import SeoContentSection from "./components/SeoContentSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
@@ -77,7 +76,7 @@ export default function App() {
         </section>
 
         <StatsSection />
-        <PartnersSection />
+        {/* Partenaires masqués : aucun logo réel fourni (PartnersSection à réactiver quand le client les envoie) */}
         <ServicesSection />
         <RealisationsSection />
         <SeoContentSection />

@@ -3,9 +3,9 @@ import QuoteForm from "./quote/QuoteForm";
 
 /**
  * Section « Contact » : parcours de devis en 3 étapes (besoin → photos et
- * véhicule → coordonnées) puis confirmation. L'envoi passe par Web3Forms avec
- * `VITE_WEB3FORMS_KEY` (voir .env.example) ; sans clé, le formulaire affiche
- * une erreur explicite. Le HTML prérendu contient le titre et l'étape 1.
+ * véhicule → coordonnées) puis confirmation. L'envoi passe par la fonction
+ * serveur `/api/devis` (e-mail via Brevo, voir api/devis.ts et .env.example).
+ * Le HTML prérendu contient le titre et l'étape 1.
  */
 export default function ContactSection() {
   const [done, setDone] = useState(false);

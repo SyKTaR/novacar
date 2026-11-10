@@ -109,7 +109,7 @@ export default function PolitiqueConfidentialite() {
           columns={["Destinataire", "Rôle", "Données reçues"]}
           rows={[
             ["Novacar", "Traite votre demande et vous recontacte", "Toutes les données du formulaire"],
-            ["Web3Forms", "Transmet le formulaire à Novacar par e-mail", "Toutes les données du formulaire"],
+            ["Brevo", "Sous-traitant d’envoi d’e-mails : transmet le formulaire à Novacar", "Toutes les données du formulaire"],
           ]}
         />
         <LegalText>

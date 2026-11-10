@@ -256,8 +256,8 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
         setPhotosDropped(result.photosDropped);
         resetAll();
       });
-    } else if (result.reason === "no-key") {
-      setSendError("Formulaire non configuré : clé Web3Forms manquante (VITE_WEB3FORMS_KEY).");
+    } else if (result.reason === "rate-limited") {
+      setSendError(`Trop de tentatives d’envoi. Patientez quelques minutes, ou appelez-nous au ${PHONE_DISPLAY}.`);
     } else {
       setSendError(`L’envoi n’a pas abouti. Votre saisie est conservée : réessayez, ou appelez-nous au ${PHONE_DISPLAY}.`);
     }

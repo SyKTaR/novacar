@@ -108,7 +108,7 @@ export default function Cookies() {
           columns={["Service", "Usage", "Ce qui est transmis"]}
           rows={[
             ["Google Fonts", "Affichage des polices du site", "Votre adresse IP à Google"],
-            ["Web3Forms", "Envoi du formulaire de devis", "Le contenu du formulaire, au moment de l’envoi"],
+            ["Brevo", "Envoi du formulaire de devis par e-mail", "Le contenu du formulaire, au moment de l’envoi"],
           ]}
         />
       </LegalSection>
