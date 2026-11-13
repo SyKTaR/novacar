@@ -65,7 +65,6 @@ export default function ServicesSection() {
                 id={`service-tab-${category.id}`}
                 aria-controls={`service-panel-${category.id}`}
                 aria-selected={activeIndex === index}
-                aria-label={`${content.title}, ${category.items.length} prestations`}
                 tabIndex={activeIndex === index ? 0 : -1}
                 onClick={() => setActiveIndex(index)}
                 onKeyDown={(event) => handleTabKey(event, index)}
@@ -129,7 +128,7 @@ export default function ServicesSection() {
                   <ul>
                     {category.items.map((item, itemIndex) => (
                       <li key={item.title} className="sv2-row">
-                        <a href="#contact" className="sv2-service-link" aria-label={`Demander un devis : ${item.title}, ${typeof item.price === "number" ? `${item.price} € ${item.unit ?? ""}` : item.price}`}>
+                        <a href="#contact" className="sv2-service-link">
                           <span className="sv2-thumbnail" aria-hidden="true">
                             {item.photo ? <Photo name={item.photo} alt="" sizes="72px" minWidth={240} position="center 55%" /> : <span className="sv2-thumbnail-fallback">{String(itemIndex + 1).padStart(2, "0")}</span>}
                           </span>

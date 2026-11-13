@@ -6,9 +6,6 @@ const PHOTO_SIZES = "(min-width: 62rem) 30vw, 77vw";
 
 function RealisationCard({ realisation, index }: { realisation: Realisation; index: number }) {
   const [isAfter, setIsAfter] = useState(false);
-  const interacted = useRef(false);
-  const discovered = useRef(false);
-  const cardRef = useRef<HTMLLIElement>(null);
   const afterRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLSpanElement>(null);
 
@@ -28,25 +25,9 @@ function RealisationCard({ realisation, index }: { realisation: Realisation; ind
     return () => { disposed = true; cleanup?.(); };
   }, [isAfter]);
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card || discovered.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches || typeof IntersectionObserver === "undefined") return;
-    let timer = 0;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || discovered.current) return;
-      discovered.current = true;
-      observer.disconnect();
-      timer = window.setTimeout(() => {
-        if (!interacted.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) setIsAfter(true);
-      }, 1200 + index * 180);
-    }, { threshold: 0.35 });
-    observer.observe(card);
-    return () => { observer.disconnect(); window.clearTimeout(timer); };
-  }, [index]);
-
-  const choose = (after: boolean) => { interacted.current = true; setIsAfter(after); };
+  const choose = (after: boolean) => setIsAfter(after);
   return (
-    <li className="realisation-item" ref={cardRef}>
+    <li className="realisation-item">
       <div className="realisation-media">
         <div className="realisation-media-layer realisation-media-layer--before" aria-hidden={isAfter}>
           <Photo name={realisation.beforePhoto} alt={realisation.beforeAlt} sizes={PHOTO_SIZES} position={realisation.position} eager={index === 0} />

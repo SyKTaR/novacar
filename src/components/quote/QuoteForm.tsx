@@ -438,7 +438,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                   onChange={(event) => { setName(event.target.value); if (errors.name) recheck("name", validateName(event.target.value)); }}
                   {...fieldProps("name")}
                 />
-                {errors.name && <p className="quote-error" id={`${uid}-name-error`}>{errors.name}</p>}
+                {errors.name && <p className="quote-error" id={`${uid}-name-error`} role="alert">{errors.name}</p>}
               </div>
 
               <div className="quote-field-row">
@@ -456,7 +456,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                     onChange={(event) => { setPhone(event.target.value); if (errors.phone) recheck("phone", validatePhone(event.target.value)); }}
                     {...fieldProps("phone")}
                   />
-                  {errors.phone && <p className="quote-error" id={`${uid}-phone-error`}>{errors.phone}</p>}
+                  {errors.phone && <p className="quote-error" id={`${uid}-phone-error`} role="alert">{errors.phone}</p>}
                 </div>
                 <div className="quote-field">
                   <label htmlFor={`${uid}-email`}>E-mail</label>
@@ -472,7 +472,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                     onChange={(event) => { setEmail(event.target.value); if (errors.email) recheck("email", validateEmail(event.target.value)); }}
                     {...fieldProps("email")}
                   />
-                  {errors.email && <p className="quote-error" id={`${uid}-email-error`}>{errors.email}</p>}
+                  {errors.email && <p className="quote-error" id={`${uid}-email-error`} role="alert">{errors.email}</p>}
                 </div>
               </div>
 
@@ -494,7 +494,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                     </a>
                   </span>
                 </label>
-                {errors.consent && <p className="quote-error" id={`${uid}-consent-error`}>{errors.consent}</p>}
+                {errors.consent && <p className="quote-error" id={`${uid}-consent-error`} role="alert">{errors.consent}</p>}
               </div>
 
               {sendError && <p className="quote-send-error" role="alert">{sendError}</p>}

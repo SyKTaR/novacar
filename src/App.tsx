@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePageMotion } from "./motion/usePageMotion";
 import Header from "./components/Header";
 import BlurText from "./components/BlurText";
 import StatsSection from "./components/StatsSection";
+import AboutSection from "./components/AboutSection";
 import ServicesSection from "./components/ServicesSection";
 import RealisationsSection from "./components/RealisationsSection";
 import SeoContentSection from "./components/SeoContentSection";
@@ -14,14 +15,24 @@ import heroVideo from "./assets/brand/hero-video.mp4";
 export default function App() {
   const appRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const [heroMotionAllowed, setHeroMotionAllowed] = useState(false);
 
-  // Mouvement réduit : l'image d'affiche reste fixe, la vidéo ne démarre pas.
+  // La vidéo ne démarre qu'après lecture de la préférence système et s'arrête
+  // immédiatement si celle-ci change pendant la visite.
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setHeroMotionAllowed(!preference.matches);
+    sync();
+    preference.addEventListener("change", sync);
+    return () => preference.removeEventListener("change", sync);
+  }, []);
+
   useEffect(() => {
     const video = heroVideoRef.current;
-    if (video && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.pause();
-    }
-  }, []);
+    if (!video) return;
+    if (!heroMotionAllowed) video.pause();
+    else void video.play().catch(() => undefined);
+  }, [heroMotionAllowed]);
 
   usePageMotion(appRef);
 
@@ -39,11 +50,11 @@ export default function App() {
               ref={heroVideoRef}
               src={heroVideo}
               poster={heroPoster}
-              autoPlay
+              autoPlay={heroMotionAllowed}
               muted
               loop
               playsInline
-              preload="auto"
+              preload={heroMotionAllowed ? "auto" : "metadata"}
               disablePictureInPicture
               tabIndex={-1}
             />
@@ -77,6 +88,7 @@ export default function App() {
 
         <StatsSection />
         {/* Partenaires masqués : aucun logo réel fourni (PartnersSection à réactiver quand le client les envoie) */}
+        <AboutSection />
         <ServicesSection />
         <RealisationsSection />
         <SeoContentSection />

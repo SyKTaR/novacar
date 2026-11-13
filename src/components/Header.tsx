@@ -48,6 +48,7 @@ function findActiveId(): string | null {
 
 export default function Header() {
   const headerRef = useRef<HTMLElement>(null);
+  const navigationRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -82,10 +83,41 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    const desktopViewport = window.matchMedia("(min-width: 62rem)");
+    let focusFrame = 0;
+
+    if (isMenuOpen && !desktopViewport.matches) {
+      focusFrame = window.requestAnimationFrame(() => {
+        navigationRef.current?.querySelector<HTMLElement>("a[href]")?.focus();
+      });
+    }
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && isMenuOpen) {
+        event.preventDefault();
         setIsMenuOpen(false);
         menuButtonRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab" || !isMenuOpen || desktopViewport.matches) return;
+      const header = headerRef.current;
+      if (!header) return;
+      const focusable = Array.from(
+        header.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      ).filter((element) => {
+        const style = window.getComputedStyle(element);
+        return style.display !== "none" && style.visibility !== "hidden";
+      });
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
@@ -93,11 +125,11 @@ export default function Header() {
       if (event.matches) setIsMenuOpen(false);
     }
 
-    const desktopViewport = window.matchMedia("(min-width: 62rem)");
     document.addEventListener("keydown", handleKeyDown);
     desktopViewport.addEventListener("change", handleViewportChange);
 
     return () => {
+      if (focusFrame) window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       desktopViewport.removeEventListener("change", handleViewportChange);
     };
@@ -147,6 +179,7 @@ export default function Header() {
         </a>
 
         <nav
+          ref={navigationRef}
           id="main-navigation"
           className={`nb-links${isMenuOpen ? " nb-links--open" : ""}`}
           aria-label="Navigation principale"
