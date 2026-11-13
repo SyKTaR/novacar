@@ -1,14 +1,24 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { SERVICE_CATEGORIES, type ServiceItem } from "../data/services";
+import { formatServicePrice, SERVICE_CATEGORIES, type ServiceCategoryId, type ServiceItem } from "../data/services";
 import { SERVICE_PRESENTATION, minimumService } from "../data/servicePresentation";
 import Photo from "./Photo";
 import { SEO_PAGE_PATHS } from "../data/seoPages";
+import { QUOTE_NEED_EVENT, type NeedId } from "./quote/data";
+
+const QUOTE_NEED_BY_CATEGORY: Record<ServiceCategoryId, NeedId> = {
+  jantes: "jantes",
+  peinture: "carrosserie",
+  lustrage: "lustrage",
+  leasing: "leasing",
+};
 
 function ServicePrice({ item }: { item: ServiceItem }) {
+  const hasPrice = typeof item.priceTtc === "number";
   return (
-    <span className={`sv2-price${typeof item.price === "number" ? "" : " sv2-price--quote"}`}>
-      <strong>{typeof item.price === "number" ? `${item.price}\u00a0€` : item.price}</strong>
-      {item.unit && <span>{item.unit.replace("/", " / ")}</span>}
+    <span className={`sv2-price${hasPrice ? "" : " sv2-price--quote"}`}>
+      {hasPrice && <span className="sv2-price-prefix">À partir de</span>}
+      <strong>{hasPrice ? `${item.priceTtc}\u00a0€ TTC` : item.priceTtc}</strong>
+      {hasPrice && item.unit && <span>/ {item.unit}</span>}
     </span>
   );
 }
@@ -16,6 +26,10 @@ function ServicePrice({ item }: { item: ServiceItem }) {
 export default function ServicesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  function selectQuoteNeed(categoryId: ServiceCategoryId) {
+    window.dispatchEvent(new CustomEvent<NeedId>(QUOTE_NEED_EVENT, { detail: QUOTE_NEED_BY_CATEGORY[categoryId] }));
+  }
 
   function handleTabKey(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let next: number;
@@ -43,10 +57,10 @@ export default function ServicesSection() {
         <header className="sv2-header">
           <div>
             <p className="sv2-eyebrow">Nos prestations</p>
-            <h2 id="services-title">Tarifs jantes &amp; carrosserie</h2>
+            <h2 id="services-title">Prestations &amp; tarifs automobiles</h2>
           </div>
           <p className="sv2-intro">
-            Prix HT affichés, sans surprise.<br />
+            Prix TTC affichés « à partir de ».<br />
             Devis gratuit sous 48 h pour le reste.
           </p>
         </header>
@@ -89,7 +103,7 @@ export default function ServicesSection() {
               <div
                 key={category.id}
                 id={`service-panel-${category.id}`}
-                className="sv2-panel"
+                className={`sv2-panel${category.id === "leasing" ? " sv2-panel--leasing" : ""}`}
                 role="tabpanel"
                 aria-labelledby={`service-tab-${category.id}`}
                 aria-hidden={!active}
@@ -103,6 +117,7 @@ export default function ServicesSection() {
                   </div>
                   <div className="sv2-card-body">
                     <div className="sv2-card-copy">
+                      {content.packLabel && <p className="sv2-pack-label">{content.packLabel}</p>}
                       <h3>{content.title}</h3>
                       <p>{content.description}</p>
                       <ul className="sv2-benefits">
@@ -113,10 +128,14 @@ export default function ServicesSection() {
                     </div>
                     <div className="sv2-card-action">
                       <p className="sv2-starting-price">
-                        {minimum ? <><span>À partir de</span><ServicePrice item={minimum} /></> : "Sur devis"}
+                        {minimum ? <ServicePrice item={minimum} /> : <ServicePrice item={category.items[0]} />}
                       </p>
-                      <a className="sv2-quote" href="#contact">Demander un devis</a>
-                      <a className="sv2-more" href={SEO_PAGE_PATHS[category.id]}>Détails de la prestation <span aria-hidden="true">→</span></a>
+                      <a className="sv2-quote" href="#contact" onClick={() => selectQuoteNeed(category.id)}>
+                        {category.id === "leasing" ? "Demander le devis du pack" : "Demander un devis"}
+                      </a>
+                      {category.id !== "leasing" && (
+                        <a className="sv2-more" href={SEO_PAGE_PATHS[category.id]}>Détails de la prestation <span aria-hidden="true">→</span></a>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -124,12 +143,17 @@ export default function ServicesSection() {
                 <div className="sv2-list">
                   <div className="sv2-list-header">
                     <span>{category.items.length} {category.id === "jantes" ? "finitions" : "prestations"}</span>
-                    <span>Prix HT</span>
+                    <span>Tarif TTC</span>
                   </div>
                   <ul>
                     {category.items.map((item, itemIndex) => (
                       <li key={item.title} className="sv2-row">
-                        <a href="#contact" className="sv2-service-link" aria-label={`Demander un devis : ${item.title}, ${typeof item.price === "number" ? `${item.price} € ${item.unit ?? ""}` : item.price}`}>
+                        <a
+                          href="#contact"
+                          className="sv2-service-link"
+                          aria-label={`Demander un devis : ${item.title}, ${formatServicePrice(item)}`}
+                          onClick={() => selectQuoteNeed(category.id)}
+                        >
                           <span className="sv2-thumbnail" aria-hidden="true">
                             {item.photo ? <Photo name={item.photo} alt="" sizes="72px" minWidth={240} position="center 55%" /> : <span className="sv2-thumbnail-fallback">{String(itemIndex + 1).padStart(2, "0")}</span>}
                           </span>
@@ -139,7 +163,7 @@ export default function ServicesSection() {
                           </span>
                           <span className="sv2-row-price">
                             <ServicePrice item={item} />
-                            {category.id === "jantes" && item.price === "Sur devis" && <span className="sv2-quote-delay">sous 48 h</span>}
+                            {category.id === "jantes" && item.priceTtc === "Sur devis" && <span className="sv2-quote-delay">sous 48 h</span>}
                           </span>
                           <span className="sv2-row-arrow" aria-hidden="true"><span>→</span></span>
                         </a>

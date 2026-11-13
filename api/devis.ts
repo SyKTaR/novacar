@@ -34,6 +34,7 @@ const NEED_LABELS = {
   jantes: "Jantes",
   carrosserie: "Carrosserie",
   lustrage: "Lustrage et optiques",
+  leasing: "Restitution leasing",
   inconnu: "Je ne sais pas",
 } as const;
 type NeedId = keyof typeof NEED_LABELS;

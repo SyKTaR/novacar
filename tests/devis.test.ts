@@ -92,6 +92,13 @@ describe("api/devis", () => {
     assert.equal("attachment" in calls[0].json, false);
   });
 
+  test("succès : le besoin restitution leasing est accepté et transmis", async () => {
+    const res = await POST(req(validBody({ need: "leasing" })));
+    assert.equal(res.status, 200);
+    assert.equal(calls[0].json.subject, "Nouvelle demande de devis — Restitution leasing — Jean Dupont");
+    assert.match(calls[0].json.textContent, /Besoin : Restitution leasing/);
+  });
+
   test("repli sans photos : l'e-mail signale les photos non jointes", async () => {
     const res = await POST(req(validBody({ photosSkipped: 2 })));
     assert.equal(res.status, 200);

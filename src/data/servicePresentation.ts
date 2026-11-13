@@ -9,8 +9,9 @@ type ServicePresentation = {
   /** object-position du cadre paysage (jantes en portrait : moyeu centré). */
   imagePosition: string;
   description: string;
-  bullets: [string, string, string];
+  bullets: readonly string[];
   subtitles: Record<string, string>;
+  packLabel?: string;
 };
 
 /** Editorial content only. services.ts remains the authority for titles,
@@ -64,12 +65,30 @@ export const SERVICE_PRESENTATION: Record<ServiceCategoryId, ServicePresentation
       "Autre demande": "Précisez les éléments du véhicule à traiter",
     },
   },
+  leasing: {
+    title: "Préparation restitution leasing",
+    shortTitle: "Leasing",
+    image: "carrosserie-apres",
+    imagePosition: "center",
+    imageAlt: "Carrosserie grise après une retouche localisée",
+    packLabel: "Pack restitution",
+    description: "Avant la restitution de votre véhicule, Novacar établit un pack de préparation adapté aux reprises réellement nécessaires.",
+    bullets: [
+      "Retouches de peinture localisées",
+      "Lustrage des éléments concernés",
+      "Rénovation de jantes",
+      "Rénovation d’optiques avec vernis",
+    ],
+    subtitles: {
+      "Pack préparation restitution leasing": "Les reprises utiles sont regroupées dans un devis adapté au véhicule",
+    },
+  },
 };
 
 /** Return the whole item so the unit belongs to the actual minimum price. */
 export function minimumService(items: ServiceItem[]): ServiceItem | undefined {
   return items.reduce<ServiceItem | undefined>((minimum, item) => {
-    if (typeof item.price !== "number") return minimum;
-    return !minimum || typeof minimum.price !== "number" || item.price < minimum.price ? item : minimum;
+    if (typeof item.priceTtc !== "number") return minimum;
+    return !minimum || typeof minimum.priceTtc !== "number" || item.priceTtc < minimum.priceTtc ? item : minimum;
   }, undefined);
 }

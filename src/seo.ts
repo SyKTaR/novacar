@@ -24,11 +24,11 @@ type SeoConfig = {
   structuredData?: Record<string, unknown>;
 };
 
-// Tarifs réels (HT) issus de src/data/services.ts, sans valeur ajoutée.
+// Tarifs TTC issus de src/data/services.ts, sans valeur ajoutée.
 const NUMERIC_PRICES = SERVICE_CATEGORIES.flatMap((category) =>
-  category.items.flatMap((item) => (typeof item.price === "number" ? [item.price] : [])),
+  category.items.flatMap((item) => (typeof item.priceTtc === "number" ? [item.priceTtc] : [])),
 );
-const PRICE_RANGE = `${Math.min(...NUMERIC_PRICES)} € - ${Math.max(...NUMERIC_PRICES)} € HT`;
+const PRICE_RANGE = `À partir de ${Math.min(...NUMERIC_PRICES)} € TTC`;
 
 const OFFER_CATALOG = {
   "@type": "OfferCatalog",
@@ -40,14 +40,14 @@ const OFFER_CATALOG = {
       "@type": "Offer",
       itemOffered: { "@type": "Service", name: item.title },
       priceCurrency: "EUR",
-      ...(typeof item.price === "number"
+      ...(typeof item.priceTtc === "number"
         ? {
             priceSpecification: {
               "@type": "UnitPriceSpecification",
-              price: item.price,
+              minPrice: item.priceTtc,
               priceCurrency: "EUR",
-              valueAddedTaxIncluded: false,
-              ...(item.unit ? { unitText: item.unit.replace(/^HT\//, "") } : {}),
+              valueAddedTaxIncluded: true,
+              ...(item.unit ? { unitText: item.unit } : {}),
             },
           }
         : {}),
@@ -109,6 +109,16 @@ const HOME_STRUCTURED_DATA = {
     },
     {
       "@type": "Service",
+      "@id": `${SITE_ORIGIN}/#preparation-restitution-leasing`,
+      name: "Préparation de restitution leasing",
+      serviceType: "Préparation automobile avant restitution de leasing",
+      description:
+        "Pack sur devis regroupant les reprises utiles avant restitution : peinture localisée, lustrage, jantes et optiques.",
+      provider: { "@id": BUSINESS_ID },
+      areaServed: AREA_SERVED,
+    },
+    {
+      "@type": "Service",
       "@id": `${SITE_ORIGIN}/#retouche-peinture`,
       name: "Retouche de peinture carrosserie mobile",
       serviceType: "Retouche de peinture automobile",
@@ -145,7 +155,7 @@ const SEO_BY_PATH: Record<string, SeoConfig> = {
   "/": {
     title: "Retouche carrosserie mobile & jantes IDF | Novacar",
     description:
-      "Novacar réalise la retouche peinture carrosserie mobile, la rénovation de jantes et le lustrage à Paris et en Île-de-France. Devis gratuit.",
+      "Novacar réalise la retouche peinture, la rénovation de jantes, le lustrage et la préparation de restitution leasing à Paris et en Île-de-France.",
     path: "/",
     robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     structuredData: HOME_STRUCTURED_DATA,

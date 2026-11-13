@@ -36,6 +36,13 @@ export function NeedIcon({ id }: { id: NeedId }) {
           <path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z" />
         </g>
       )}
+      {id === "leasing" && (
+        <g {...line}>
+          <path d="M5 3.5h11a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z" />
+          <path d="M8 7h7M8 10.5h7M8 14h4" />
+          <path d="M18 8.5h1.5a1.5 1.5 0 0 1 0 3H18" />
+        </g>
+      )}
       {id === "inconnu" && (
         <g {...line}>
           <circle cx="12" cy="12" r="9" />

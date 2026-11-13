@@ -1,4 +1,4 @@
-import { SERVICE_CATEGORIES, type ServiceCategoryId, type ServiceItem } from "./services.ts";
+import { formatServicePrice, SERVICE_CATEGORIES, type ServiceCategoryId, type ServiceItem } from "./services.ts";
 import { REALISATIONS } from "./realisations.ts";
 import type { PhotoName } from "./photos.ts";
 import type { FaqItem } from "./faq.ts";
@@ -18,33 +18,33 @@ export const SEO_PAGE_PATHS = {
   zones: "/zones-intervention",
 } as const;
 
-export type ServicePageSlug = ServiceCategoryId;
+export type ServicePageSlug = Exclude<ServiceCategoryId, "leasing">;
 
-export function categoryOf(id: ServiceCategoryId) {
+export function categoryOf(id: ServicePageSlug) {
   const category = SERVICE_CATEGORIES.find((entry) => entry.id === id);
   if (!category) throw new Error(`Catégorie inconnue : ${id}`);
   return category;
 }
 
-export function itemOf(id: ServiceCategoryId, title: string): ServiceItem {
+export function itemOf(id: ServicePageSlug, title: string): ServiceItem {
   const item = categoryOf(id).items.find((entry) => entry.title === title);
   if (!item) throw new Error(`Prestation inconnue : ${title}`);
   return item;
 }
 
-/** « 79 € HT / jante » ou « Sur devis ». */
+/** « À partir de 95 € TTC / jante » ou « Sur devis ». */
 export function formatPrice(item: ServiceItem): string {
-  if (typeof item.price !== "number") return "Sur devis";
-  return `${item.price} € ${item.unit?.replace("/", " / ") ?? "HT"}`;
+  return formatServicePrice(item);
 }
 
-function priceHt(id: ServiceCategoryId, title: string): string {
-  const price = itemOf(id, title).price;
-  return `${price} € HT`;
+function startingPrice(id: ServicePageSlug, title: string): string {
+  const item = itemOf(id, title);
+  if (typeof item.priceTtc !== "number") return "sur devis";
+  return `à partir de ${item.priceTtc} € TTC`;
 }
 
-function minPrice(id: ServiceCategoryId): number {
-  const prices = categoryOf(id).items.flatMap((item) => (typeof item.price === "number" ? [item.price] : []));
+function minPrice(id: ServicePageSlug): number {
+  const prices = categoryOf(id).items.flatMap((item) => (typeof item.priceTtc === "number" ? [item.priceTtc] : []));
   return Math.min(...prices);
 }
 
@@ -103,20 +103,20 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
     schemaId: `${SITE_ORIGIN}/#renovation-jantes`,
     navLabel: "Rénovation de jantes",
     metaTitle: "Rénovation de jantes à domicile en IDF | Novacar",
-    metaDescription: `Rénovation de jantes en Île-de-France, à domicile ou en atelier : classique, bi-ton, noire, mate, chrome. Tarifs HT dès ${minPrice("jantes")} € la jante. Devis gratuit.`,
+    metaDescription: `Rénovation de jantes en Île-de-France, à domicile ou en atelier : classique, bi-ton, noire, mate, chrome. À partir de ${minPrice("jantes")} € TTC par jante. Devis gratuit.`,
     eyebrow: "Rénovation de jantes",
     h1: "Rénovation de jantes à domicile en Île-de-France",
     intro: [
       "Rayures de trottoir, éclats, envie de changer de teinte : Novacar reprend vos jantes pour les refaire à l’identique ou dans une autre finition, à domicile ou en atelier selon le véhicule et le lieu.",
-      `La prestation est facturée à la jante, à partir de ${minPrice("jantes")} € HT. Une jante avec arrachement, à vernir ou à repeindre, est évaluée à partir d’une photo et chiffrée sur devis.`,
+      `La prestation est proposée à partir de ${minPrice("jantes")} € TTC par jante. Une jante avec arrachement, à vernir ou à repeindre, est évaluée à partir d’une photo et chiffrée sur devis.`,
     ],
     heroPhoto: {
       name: "jante-polie-biton",
       alt: "Jante bi-ton, face diamantée et creux noirs, après rénovation",
       position: "center 55%",
     },
-    itemsTitle: "Finitions de jantes et tarifs HT",
-    itemsIntro: "Le prix dépend du type de jante et de la finition choisie. Montants hors taxes, par jante.",
+    itemsTitle: "Finitions de jantes et tarifs TTC",
+    itemsIntro: "Le prix dépend du type de jante et de la finition choisie. Les montants TTC sont indiqués « à partir de », par jante.",
     resultsTitle: "Jantes rénovées : avant et après",
     resultsIntro: "Deux jantes reprises par Novacar, photographiées avant et après l’intervention.",
     realisationIds: ["renovation-jante", "renovation-jante-anthracite"],
@@ -136,7 +136,7 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
       },
       {
         question: "Quel est le prix d’une rénovation de jante ?",
-        answer: `Le tarif est affiché par jante : ${priceHt("jantes", "Jante classique")} pour une jante classique, ${priceHt("jantes", "Jante noire")} pour une jante noire, ${priceHt("jantes", "Jante polie bi-ton")} pour une jante polie bi-ton, mate ou satinée, ou à finition effet chrome. Les jantes avec arrachement sont sur devis.`,
+        answer: `Le tarif est affiché par jante : ${startingPrice("jantes", "Jante classique")} pour une jante classique, ${startingPrice("jantes", "Jante noire")} pour une jante noire, ${startingPrice("jantes", "Jante polie bi-ton")} pour une jante polie bi-ton, mate ou satinée, ou à finition effet chrome. Les jantes avec arrachement sont sur devis.`,
       },
       {
         question: "Ma jante est très abîmée, est-ce réparable ?",
@@ -162,20 +162,20 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
     schemaId: `${SITE_ORIGIN}/#retouche-peinture`,
     navLabel: "Retouche peinture & carrosserie",
     metaTitle: "Retouche peinture & carrosserie mobile IDF | Novacar",
-    metaDescription: `Retouche de peinture carrosserie en Île-de-France : impacts, rétroviseurs, poignées, élargisseurs, baguettes. Tarifs HT dès ${minPrice("peinture")} €. Devis gratuit.`,
+    metaDescription: `Retouche de peinture carrosserie en Île-de-France : impacts, rétroviseurs, poignées, élargisseurs, baguettes. À partir de ${minPrice("peinture")} € TTC. Devis gratuit.`,
     eyebrow: "Retouche peinture & carrosserie",
     h1: "Retouche de peinture et carrosserie en Île-de-France",
     intro: [
       "Un impact sur une portière, un rétroviseur marqué, une poignée ou une baguette de porte abîmés : Novacar réalise des retouches de peinture localisées sur la zone concernée, en intervention mobile ou en atelier.",
-      `Chaque retouche est facturée à l’impact ou à l’élément, à partir de ${minPrice("peinture")} € HT. Les teintes nacrées ont leur propre tarif, et les dommages particuliers font l’objet d’un devis.`,
+      `Chaque retouche est proposée à partir de ${minPrice("peinture")} € TTC, à l’impact ou à l’élément. Les teintes nacrées ont leur propre tarif, et les dommages particuliers font l’objet d’un devis.`,
     ],
     heroPhoto: {
       name: "carrosserie-apres",
       alt: "Aile et portière grises après retouche de carrosserie",
       position: "center",
     },
-    itemsTitle: "Retouches de peinture et tarifs HT",
-    itemsIntro: "Le prix dépend de l’élément de carrosserie à reprendre. Montants hors taxes, à l’impact ou à l’élément.",
+    itemsTitle: "Retouches de peinture et tarifs TTC",
+    itemsIntro: "Le prix dépend de l’élément de carrosserie à reprendre. Les montants TTC sont indiqués « à partir de », à l’impact ou à l’élément.",
     resultsTitle: "Carrosserie retouchée : avant et après",
     resultsIntro: "Deux boucliers repris par Novacar, photographiés avant et après l’intervention.",
     realisationIds: ["retouche-bouclier", "reparation-bouclier"],
@@ -195,11 +195,11 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
       },
       {
         question: "Combien coûte une retouche de peinture ?",
-        answer: `Une retouche par choc est facturée ${priceHt("peinture", "Retouche par choc")} par impact. Un rétroviseur ou une poignée coûte ${priceHt("peinture", "Retouche de rétroviseur/poignée")}, un élargisseur ${priceHt("peinture", "Retouche d’élargisseur")}, une baguette de porte ${priceHt("peinture", "Retouche baguette de porte")} et une rénovation d’optique avec vernis ${priceHt("peinture", "Rénovation d’optique avec vernis")}, chacun par élément.`,
+        answer: `Une retouche par choc est proposée ${startingPrice("peinture", "Retouche par choc")} par impact. Un rétroviseur ou une poignée est proposé ${startingPrice("peinture", "Retouche de rétroviseur/poignée")}, un élargisseur ${startingPrice("peinture", "Retouche d’élargisseur")}, une baguette de porte ${startingPrice("peinture", "Retouche baguette de porte")} et une rénovation d’optique avec vernis ${startingPrice("peinture", "Rénovation d’optique avec vernis")}, chacun par élément.`,
       },
       {
         question: "La teinte nacrée change-t-elle le tarif ?",
-        answer: `Oui, la retouche par choc sur teinte nacrée est une prestation à part : ${priceHt("peinture", "Retouche par choc — teinte nacrée")} par impact, contre ${priceHt("peinture", "Retouche par choc")} pour une teinte classique.`,
+        answer: `Oui, la retouche par choc sur teinte nacrée est une prestation à part : ${startingPrice("peinture", "Retouche par choc — teinte nacrée")} par impact, contre ${startingPrice("peinture", "Retouche par choc")} pour une teinte classique.`,
       },
       {
         question: "Où se déroule la retouche ?",
@@ -220,14 +220,14 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
     schemaId: `${SITE_ORIGIN}/#lustrage`,
     navLabel: "Lustrage",
     metaTitle: "Lustrage voiture en Île-de-France | Novacar",
-    metaDescription: `Lustrage de carrosserie en Île-de-France, à domicile ou en atelier : ${minPrice("lustrage")} € HT par élément, autres demandes sur devis. Novacar, devis gratuit.`,
+    metaDescription: `Lustrage de carrosserie en Île-de-France, à domicile ou en atelier : à partir de ${minPrice("lustrage")} € TTC par élément. Autres demandes sur devis.`,
     eyebrow: "Lustrage",
     h1: "Lustrage de carrosserie en Île-de-France",
     intro: [
       "Une peinture ternie perd son reflet. Novacar propose un lustrage à l’échelle d’un élément de carrosserie, pour retrouver une surface nette, comme sur le capot photographié plus bas.",
-      `Le lustrage est facturé ${priceHt("lustrage", "Lustrage d’un élément")} par élément. Pour une autre demande, indiquez les éléments du véhicule à traiter : le tarif est établi sur devis.`,
+      `Le lustrage est proposé ${startingPrice("lustrage", "Lustrage d’un élément")} par élément. Pour une autre demande, indiquez les éléments du véhicule à traiter : le tarif est établi sur devis.`,
     ],
-    itemsTitle: "Lustrage et tarifs HT",
+    itemsTitle: "Lustrage et tarifs TTC",
     itemsIntro: "Deux cas de figure : un lustrage au tarif affiché, ou une demande personnalisée chiffrée sur devis.",
     resultsTitle: "Lustrage d’un capot : avant et après",
     resultsIntro: "Une carrosserie ternie reprise en lustrage, photographiée avant et après l’intervention.",
@@ -248,7 +248,7 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
       },
       {
         question: "Quel est le prix d’un lustrage ?",
-        answer: `${priceHt("lustrage", "Lustrage d’un élément")} par élément. Si vous souhaitez traiter plusieurs zones ou formuler une autre demande, précisez-les dans votre message pour recevoir un devis.`,
+        answer: `Le lustrage est proposé ${startingPrice("lustrage", "Lustrage d’un élément")} par élément. Si vous souhaitez traiter plusieurs zones ou formuler une autre demande, précisez-les dans votre message pour recevoir un devis.`,
       },
       {
         question: "Le lustrage se fait-il à domicile ?",
@@ -328,5 +328,5 @@ export const ZONES_PAGE = {
 export const ZONES_RELATED_SERVICES = SERVICE_PAGE_LIST.map((page) => ({
   path: page.path,
   label: page.navLabel,
-  from: `À partir de ${minPrice(page.id)} € HT`,
+  from: `À partir de ${minPrice(page.id)} € TTC`,
 }));

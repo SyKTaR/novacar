@@ -64,7 +64,7 @@ export default function ServicePage({ slug }: { slug: ServicePageSlug }) {
                   <h3>{item.title}</h3>
                   <p>{subtitles[item.title]}</p>
                 </div>
-                <p className={`sp-price${typeof item.price === "number" ? "" : " sp-price--quote"}`}>
+                <p className={`sp-price${typeof item.priceTtc === "number" ? "" : " sp-price--quote"}`}>
                   {formatPrice(item)}
                 </p>
               </li>

@@ -115,14 +115,14 @@ function serviceGraph(page: ServicePageContent) {
             "@type": "Offer",
             itemOffered: { "@type": "Service", name: item.title },
             priceCurrency: "EUR",
-            ...(typeof item.price === "number"
+            ...(typeof item.priceTtc === "number"
               ? {
                   priceSpecification: {
                     "@type": "UnitPriceSpecification",
-                    price: item.price,
+                    minPrice: item.priceTtc,
                     priceCurrency: "EUR",
-                    valueAddedTaxIncluded: false,
-                    ...(item.unit ? { unitText: item.unit.replace(/^HT\//, "") } : {}),
+                    valueAddedTaxIncluded: true,
+                    ...(item.unit ? { unitText: item.unit } : {}),
                   },
                 }
               : {}),
