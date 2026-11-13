@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { QuoteMotion } from "../../motion/quoteSteps";
-import { buildRecap, MAX_INPUT_BYTES, MAX_PHOTOS, NEEDS, PHONE_DISPLAY, PHONE_HREF, STEP_LABELS, type NeedId } from "./data";
+import { buildRecap, MAX_INPUT_BYTES, MAX_PHOTOS, NEEDS, PHONE_DISPLAY, PHONE_HREF, QUOTE_NEED_EVENT, STEP_LABELS, type NeedId } from "./data";
 import { compressImage } from "./image";
 import { CheckIcon, NeedIcon } from "./icons";
 import PhotoDropzone, { type QuotePhoto } from "./PhotoDropzone";
@@ -80,6 +80,17 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
       motion?.destroy();
       motionRef.current = null;
     };
+  }, []);
+
+  useEffect(() => {
+    const selectNeed = (event: Event) => {
+      const requestedNeed = (event as CustomEvent<NeedId>).detail;
+      if (!NEEDS.some((item) => item.id === requestedNeed)) return;
+      setNeed(requestedNeed);
+      setNeedError("");
+    };
+    window.addEventListener(QUOTE_NEED_EVENT, selectNeed);
+    return () => window.removeEventListener(QUOTE_NEED_EVENT, selectNeed);
   }, []);
 
   // Libère les aperçus au démontage.

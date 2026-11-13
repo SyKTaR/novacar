@@ -1,4 +1,6 @@
-export type NeedId = "jantes" | "carrosserie" | "lustrage" | "inconnu";
+export type NeedId = "jantes" | "carrosserie" | "lustrage" | "leasing" | "inconnu";
+
+export const QUOTE_NEED_EVENT = "novacar:quote-need";
 
 export const NEEDS: ReadonlyArray<{
   id: NeedId;
@@ -8,6 +10,7 @@ export const NEEDS: ReadonlyArray<{
   { id: "jantes", label: "Jantes", hint: "Rayures, éclats, changement de teinte" },
   { id: "carrosserie", label: "Carrosserie", hint: "Impact, rayure, rétroviseur, baguette" },
   { id: "lustrage", label: "Lustrage et optiques", hint: "Peinture ternie, phares jaunis" },
+  { id: "leasing", label: "Restitution leasing", hint: "Préparer le véhicule avant sa restitution" },
   { id: "inconnu", label: "Je ne sais pas", hint: "On vous conseille sur photo" },
 ];
 

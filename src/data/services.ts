@@ -1,8 +1,11 @@
-export type ServiceCategoryId = "jantes" | "peinture" | "lustrage";
+export type ServiceCategoryId = "jantes" | "peinture" | "lustrage" | "leasing";
 
 export type ServiceItem = {
   title: string;
-  price: number | "Sur devis";
+  /** Montant historique fourni par Lucas, conservé comme référence interne. */
+  priceBeforeTax?: number;
+  /** Montant affiché au public, ou absence de tarif fixe. */
+  priceTtc: number | "Sur devis";
   unit?: string;
   /**
    * Brief interne pour le photographe (ce que doit montrer la photo à venir),
@@ -43,10 +46,10 @@ export type ServiceCategory = {
  * Lucas le 20 août 2026. Les demandes sans montant fixe sont explicitement
  * représentées par la valeur "Sur devis".
  *
- * Unité affichée en HT uniquement, comme dans la maquette source. Point
- * juridique déjà identifié dans le handoff Astro (§1.3) : si la clientèle
- * cible inclut des particuliers, le prix TTC doit apparaître. Non tranché
- * ici, signalé dans report.md.
+ * Règle unique de conversion validée pour cette mission :
+ * prix TTC = Math.round(prix de référence × 1,20), soit un arrondi à l'euro
+ * le plus proche. Le montant TTC est stocké explicitement et constitue la
+ * seule source utilisée pour l'affichage public.
  */
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
@@ -56,42 +59,47 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Jante classique",
-        price: 79,
-        unit: "HT/jante",
+        priceBeforeTax: 79,
+        priceTtc: 95,
+        unit: "jante",
         shotBrief: "Jante alu argent brossée, 3/4 face, fond sombre",
         photo: "jante-argent",
       },
       {
         title: "Jante polie bi-ton",
-        price: 120,
-        unit: "HT/jante",
+        priceBeforeTax: 120,
+        priceTtc: 144,
+        unit: "jante",
         shotBrief: "Jante bi-ton : face polie brillante + creux anthracite",
         photo: "jante-polie-biton",
       },
       {
         title: "Jante noire",
-        price: 100,
-        unit: "HT/jante",
+        priceBeforeTax: 100,
+        priceTtc: 120,
+        unit: "jante",
         shotBrief: "Jante noire rénovée, vue de face sur fond sombre",
         photo: "jante-noire",
       },
       {
         title: "Jante mate/satinée",
-        price: 120,
-        unit: "HT/jante",
+        priceBeforeTax: 120,
+        priceTtc: 144,
+        unit: "jante",
         shotBrief: "Jante finition mate ou satinée, détail de matière",
         photo: "jante-anthracite-etrier-jaune",
       },
       {
         title: "Jante finition effet chrome",
-        price: 120,
-        unit: "HT/jante",
+        priceBeforeTax: 120,
+        priceTtc: 144,
+        unit: "jante",
         shotBrief: "Jante avec finition effet chrome, éclairage contrôlé",
         photo: "jante-chrome",
       },
       {
         title: "Jante avec arrachement, vernie ou repeinte",
-        price: "Sur devis",
+        priceTtc: "Sur devis",
         shotBrief: "Détail d’une jante nécessitant une reprise spécifique",
         photo: "01-jante-avant",
       },
@@ -104,39 +112,45 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Retouche par choc",
-        price: 89,
-        unit: "HT/impact",
+        priceBeforeTax: 89,
+        priceTtc: 107,
+        unit: "impact",
         shotBrief: "Impact de choc sur portière, lumière rasante",
         photo: "02-bouclier-rouge-apres",
       },
       {
         title: "Retouche par choc — teinte nacrée",
-        price: 100,
-        unit: "HT/impact",
+        priceBeforeTax: 100,
+        priceTtc: 120,
+        unit: "impact",
         shotBrief: "Peinture nacrée, détail du raccord de teinte au soleil",
       },
       {
         title: "Retouche de rétroviseur/poignée",
-        price: 45,
-        unit: "HT/élément",
+        priceBeforeTax: 45,
+        priceTtc: 54,
+        unit: "élément",
         shotBrief: "Rétroviseur ou poignée avec retouche localisée",
       },
       {
         title: "Retouche d’élargisseur",
-        price: 55,
-        unit: "HT/élément",
+        priceBeforeTax: 55,
+        priceTtc: 66,
+        unit: "élément",
         shotBrief: "Élargisseur d’aile avec retouche localisée",
       },
       {
         title: "Retouche baguette de porte",
-        price: 69,
-        unit: "HT/élément",
+        priceBeforeTax: 69,
+        priceTtc: 83,
+        unit: "élément",
         shotBrief: "Baguette de porte après reprise de peinture",
       },
       {
         title: "Rénovation d’optique avec vernis",
-        price: 55,
-        unit: "HT/élément",
+        priceBeforeTax: 55,
+        priceTtc: 66,
+        unit: "élément",
         shotBrief: "Optique rénové et reverni, détail avant/après",
       },
     ],
@@ -148,15 +162,34 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Lustrage d’un élément",
-        price: 55,
-        unit: "HT/élément",
+        priceBeforeTax: 55,
+        priceTtc: 66,
+        unit: "élément",
         shotBrief: "Élément de carrosserie lustré, reflet net en lumière rasante",
       },
       {
         title: "Autre demande",
-        price: "Sur devis",
+        priceTtc: "Sur devis",
         shotBrief: "Vue d’ensemble du véhicule pour une demande personnalisée",
       },
     ],
   },
+  {
+    id: "leasing",
+    label: "Préparation restitution leasing",
+    tag: "Leasing",
+    items: [
+      {
+        title: "Pack préparation restitution leasing",
+        priceTtc: "Sur devis",
+        shotBrief: "Vue d’ensemble d’un véhicule préparé avant restitution",
+        photo: "carrosserie-apres",
+      },
+    ],
+  },
 ];
+
+export function formatServicePrice(item: ServiceItem): string {
+  if (typeof item.priceTtc !== "number") return item.priceTtc;
+  return `À partir de ${item.priceTtc}\u00a0€ TTC${item.unit ? ` / ${item.unit}` : ""}`;
+}

@@ -12,12 +12,12 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Quelles prestations automobiles réalisez-vous ?",
     answer:
-      "Novacar prend en charge la rénovation de jantes, les retouches de peinture localisées sur la carrosserie, la rénovation d’optiques avec vernis et le lustrage. Les prestations disponibles et leurs tarifs sont détaillés sur cette page.",
+      "Novacar prend en charge la rénovation de jantes, les retouches de peinture localisées sur la carrosserie, la rénovation d’optiques avec vernis, le lustrage et la préparation d’un véhicule avant restitution de leasing. Les prestations disponibles et leurs tarifs sont détaillés sur cette page.",
   },
   {
     question: "Combien coûte une retouche de peinture ou une rénovation de jante ?",
     answer:
-      "Le prix dépend du type de jante, de la finition et de l’élément de carrosserie à reprendre. Les tarifs indicatifs sont affichés dans la section prestations ; les dommages particuliers et les autres demandes font l’objet d’un devis.",
+      "Le prix dépend du type de jante, de la finition et de l’élément de carrosserie à reprendre. Les tarifs TTC sont présentés comme des prix « à partir de » dans la section prestations ; les dommages particuliers, le pack de préparation leasing et les autres demandes font l’objet d’un devis.",
   },
   {
     question: "Comment obtenir un devis pour mon véhicule ?",

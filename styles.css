@@ -2784,7 +2784,7 @@ body,
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   padding: .375rem;
   margin-bottom: 2.5rem;
   border: 1px solid var(--theme-line);
@@ -2797,7 +2797,7 @@ body,
   top: .375rem;
   bottom: .375rem;
   left: .375rem;
-  width: calc((100% - .75rem) / 3);
+  width: calc((100% - .75rem) / 4);
   border-radius: 999px;
   background: var(--orange-action);
   transform: translateX(calc(var(--sv2-active-index) * 100%));
@@ -2905,6 +2905,18 @@ body,
 }
 .sv2-card-copy h3 {
   margin: 0 0 1rem;
+}
+.sv2-card-copy > .sv2-pack-label {
+  margin: 0 0 .55rem;
+  color: var(--sv2-accent-text);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.sv2-panel--leasing .sv2-card-copy h3 {
+  max-width: 18ch;
 }
 .sv2-card-copy > p {
   margin: 0 0 1rem;
@@ -3296,18 +3308,16 @@ body,
     top: .25rem;
     bottom: .25rem;
     left: .25rem;
-    width: calc((100% - .5rem) / 3);
+    width: calc((100% - .5rem) / 4);
   }
   .sv2-tab {
     gap: .35rem;
-    min-height: 2.875rem;
+    min-height: 3rem;
     padding: .65rem .25rem;
     font-size: .75rem;
   }
   .sv2-tab-count {
-    min-width: 1.5rem;
-    height: 1.5rem;
-    font-size: .75rem;
+    display: none;
   }
   .sv2-card, .sv2-list {
     border-radius: 1.5rem;
