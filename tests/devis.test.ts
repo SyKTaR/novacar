@@ -77,7 +77,7 @@ describe("api/devis", () => {
     assert.deepEqual(json.sender, { name: "Site Novacar", email: "from@example.com" });
     assert.deepEqual(json.to, [{ email: "to@example.com" }]);
     assert.deepEqual(json.replyTo, { email: "jean.dupont@example.com", name: "Jean Dupont" });
-    assert.equal(json.subject, "Nouvelle demande de devis — Jantes — Jean Dupont");
+    assert.equal(json.subject, "Nouvelle demande de devis — Rénovation de jantes — Jean Dupont");
     assert.equal(json.attachment.length, 2);
     assert.equal(json.attachment[0].name, "photo-1.jpg");
     assert.equal(json.attachment[0].content, jpegBase64());
@@ -95,8 +95,8 @@ describe("api/devis", () => {
   test("succès : le besoin restitution leasing est accepté et transmis", async () => {
     const res = await POST(req(validBody({ need: "leasing" })));
     assert.equal(res.status, 200);
-    assert.equal(calls[0].json.subject, "Nouvelle demande de devis — Restitution leasing — Jean Dupont");
-    assert.match(calls[0].json.textContent, /Besoin : Restitution leasing/);
+    assert.equal(calls[0].json.subject, "Nouvelle demande de devis — Retour de leasing — Jean Dupont");
+    assert.match(calls[0].json.textContent, /Besoin : Retour de leasing/);
   });
 
   test("repli sans photos : l'e-mail signale les photos non jointes", async () => {

@@ -17,7 +17,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Combien coûte une retouche de peinture ou une rénovation de jante ?",
     answer:
-      "Le prix dépend du type de jante, de la finition et de l’élément de carrosserie à reprendre. Les tarifs TTC sont présentés comme des prix « à partir de » dans la section prestations ; les dommages particuliers, le pack de préparation leasing et les autres demandes font l’objet d’un devis.",
+      "Le prix dépend du type de jante, de la finition et de l’élément de carrosserie à reprendre. Les tarifs TTC sont présentés comme des prix « à partir de » dans la section prestations ; les jantes avec arrachement, la rénovation d’optiques, le lustrage et les dommages particuliers font l’objet d’un devis. Les packs de restitution leasing (LLD / LOA) ont aussi un prix de départ.",
   },
   {
     question: "Comment obtenir un devis pour mon véhicule ?",

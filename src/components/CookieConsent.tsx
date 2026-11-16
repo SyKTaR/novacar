@@ -80,6 +80,7 @@ export default function CookieConsent() {
   const hasChoiceRef = useRef(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const reminderRef = useRef<HTMLButtonElement>(null);
+  const bannerCustomizeRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 
   const changeMode = useCallback((next: Mode) => {
@@ -170,6 +171,7 @@ export default function CookieConsent() {
       window.requestAnimationFrame(() => {
         const opener = openerRef.current;
         if (opener && document.contains(opener)) opener.focus();
+        else if (bannerCustomizeRef.current) bannerCustomizeRef.current.focus();
         else reminderRef.current?.focus();
       });
     };
@@ -217,7 +219,7 @@ export default function CookieConsent() {
               Tout accepter
             </button>
           </div>
-          <button type="button" className="cc-link cc-customize" onClick={openModal}>
+          <button ref={bannerCustomizeRef} type="button" className="cc-link cc-customize" onClick={openModal}>
             Personnaliser mes choix
           </button>
         </section>

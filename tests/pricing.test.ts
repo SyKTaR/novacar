@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 
 type ServiceItem = {
   title: string;
-  priceBeforeTax?: number;
   priceTtc: number | "Sur devis";
   unit?: string;
 };
@@ -17,16 +16,6 @@ const { formatServicePrice, SERVICE_CATEGORIES } = await import(servicesModulePa
 describe("tarifs publics TTC", () => {
   const items = SERVICE_CATEGORIES.flatMap((category) => category.items);
 
-  test("chaque montant suit l’unique règle de conversion et d’arrondi", () => {
-    const pricedItems = items.filter((item) => typeof item.priceTtc === "number");
-    assert.ok(pricedItems.length > 0);
-
-    for (const item of pricedItems) {
-      assert.equal(typeof item.priceBeforeTax, "number", item.title);
-      assert.equal(item.priceTtc, Math.round(item.priceBeforeTax! * 1.2), item.title);
-    }
-  });
-
   test("chaque montant public est présenté comme un prix de départ TTC", () => {
     for (const item of items) {
       const label = formatServicePrice(item);
@@ -38,10 +27,9 @@ describe("tarifs publics TTC", () => {
     }
   });
 
-  test("le pack de préparation leasing reste sans prix fixe", () => {
+  test("les packs leasing ont un prix de départ TTC", () => {
     const leasing = SERVICE_CATEGORIES.find((category) => category.id === "leasing");
     assert.ok(leasing);
-    assert.equal(leasing.items.length, 1);
-    assert.equal(leasing.items[0].priceTtc, "Sur devis");
+    assert.deepEqual(leasing.items.map((item) => item.priceTtc), [159, 279, 399]);
   });
 });

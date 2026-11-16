@@ -15,7 +15,7 @@ interface Props {
   busy: boolean;
   message: string;
   onFiles: (files: File[]) => void;
-  onRemove: (id: string) => void;
+  onRemove: (id: string) => Promise<void>;
 }
 
 export default function PhotoDropzone({ photos, busy, message, onFiles, onRemove }: Props) {
@@ -25,6 +25,18 @@ export default function PhotoDropzone({ photos, busy, message, onFiles, onRemove
   const [dragging, setDragging] = useState(false);
   const active = photos.filter((photo) => !photo.leaving);
   const full = active.length >= MAX_PHOTOS;
+
+  const removeAndRestoreFocus = async (id: string) => {
+    const index = active.findIndex((photo) => photo.id === id);
+    const fallbackId = active[index + 1]?.id ?? active[index - 1]?.id;
+    await onRemove(id);
+    window.requestAnimationFrame(() => {
+      const fallback = fallbackId
+        ? document.querySelector<HTMLButtonElement>(`[data-photo-id="${fallbackId}"] .quote-thumb-remove`)
+        : inputRef.current;
+      (fallback ?? inputRef.current)?.focus();
+    });
+  };
 
   const onDrop = (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
@@ -81,7 +93,7 @@ export default function PhotoDropzone({ photos, busy, message, onFiles, onRemove
                 type="button"
                 className="quote-thumb-remove"
                 aria-label={`Retirer la photo ${index + 1}`}
-                onClick={() => onRemove(photo.id)}
+                onClick={() => void removeAndRestoreFocus(photo.id)}
                 disabled={photo.leaving}
               >
                 <CloseIcon />

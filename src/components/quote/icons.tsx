@@ -10,6 +10,7 @@ const line = {
 
 export function NeedIcon({ id }: { id: NeedId }) {
   return (
+    <span className="quote-need-tile" aria-hidden="true">
     <svg className="quote-need-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
       {id === "jantes" && (
         <g {...line}>
@@ -19,28 +20,24 @@ export function NeedIcon({ id }: { id: NeedId }) {
         </g>
       )}
       {id === "carrosserie" && (
-        <g {...line}>
-          <path d="M4.5 17H3.8A1.3 1.3 0 0 1 2.5 15.7v-2.4c0-.8.5-1.5 1.3-1.7L6 11l1.7-3.3A2 2 0 0 1 9.5 6.6h5a2 2 0 0 1 1.8 1.1L18 11l2.2.6c.8.2 1.3.9 1.3 1.7v2.4c0 .7-.6 1.3-1.3 1.3h-.7" />
-          <path d="M6 11h12" />
-          <circle cx="7" cy="17" r="1.6" />
-          <circle cx="17" cy="17" r="1.6" />
-          <path d="M8.6 17h6.8" />
-          <g stroke="var(--orange)" strokeWidth="1.5">
-            <path d="M12 2.2v1.8M9.4 3l.9 1.4M14.6 3l-.9 1.4" />
-          </g>
+        <g {...line} transform="translate(-0.25 0.27)">
+          <path d="M16.5 3.5 20.5 7.5 8 20H4v-4z" />
+          <path d="M13.5 6.5l4 4" />
         </g>
       )}
       {id === "lustrage" && (
-        <g {...line}>
+        <g {...line} transform="translate(0.3 0)">
           <path d="M10 3.5 11.9 9 17.5 11l-5.6 1.9L10 18.5 8.1 12.9 2.5 11 8.1 9z" />
           <path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z" />
         </g>
       )}
       {id === "leasing" && (
-        <g {...line}>
-          <path d="M5 3.5h11a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z" />
-          <path d="M8 7h7M8 10.5h7M8 14h4" />
-          <path d="M18 8.5h1.5a1.5 1.5 0 0 1 0 3H18" />
+        <g {...line} transform="translate(0 -0.6)">
+          <path d="M4.5 17H3.8A1.3 1.3 0 0 1 2.5 15.7v-2.4c0-.8.5-1.5 1.3-1.7L6 11l1.7-3.3A2 2 0 0 1 9.5 6.6h5a2 2 0 0 1 1.8 1.1L18 11l2.2.6c.8.2 1.3.9 1.3 1.7v2.4c0 .7-.6 1.3-1.3 1.3h-.7" />
+          <path d="M6 11h12" />
+          <circle cx="7" cy="17" r="1.6" />
+          <circle cx="17" cy="17" r="1.6" />
+          <path d="M8.6 17h6.8" />
         </g>
       )}
       {id === "inconnu" && (
@@ -51,6 +48,7 @@ export function NeedIcon({ id }: { id: NeedId }) {
         </g>
       )}
     </svg>
+    </span>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { focusAnchorTarget } from "../../lib/focusAnchor";
 import Header from "../Header";
 import Footer from "../Footer";
 
@@ -78,10 +79,12 @@ function LegalToc({ items }: { items: TocItem[] }) {
   const ids = useRef(items.map((item) => item.id)).current;
   const [active, setActive] = useScrollSpy(ids);
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   return (
     <nav className="legal-toc" aria-label="Sommaire" data-open={open}>
       <button
+        ref={toggleRef}
         type="button"
         className="legal-toc-toggle"
         aria-expanded={open}
@@ -103,6 +106,7 @@ function LegalToc({ items }: { items: TocItem[] }) {
               onClick={() => {
                 setActive(item.id);
                 setOpen(false);
+                focusAnchorTarget(item.id, toggleRef.current);
               }}
             >
               {item.label}
@@ -267,34 +271,37 @@ export function LegalTable({
   rows: ReactNode[][];
 }) {
   return (
-    <div className="legal-table-wrap" role="region" aria-label={caption} tabIndex={0}>
-      <table className="legal-table">
-        <caption className="sr-only">{caption}</caption>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column} scope="col">
-                {column}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              {row.map((cell, cellIndex) =>
-                cellIndex === 0 ? (
-                  <th key={cellIndex} scope="row">
-                    {cell}
-                  </th>
-                ) : (
-                  <td key={cellIndex}>{cell}</td>
-                ),
-              )}
+    <div className="legal-table-region">
+      <p className="legal-table-hint">Faire défiler horizontalement pour voir toutes les colonnes&nbsp;→</p>
+      <div className="legal-table-wrap" role="region" aria-label={`${caption}. Tableau défilant horizontalement.`} tabIndex={0}>
+        <table className="legal-table">
+          <caption className="sr-only">{caption}</caption>
+          <thead>
+            <tr>
+              {columns.map((column) => (
+                <th key={column} scope="col">
+                  {column}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row, index) => (
+              <tr key={index}>
+                {row.map((cell, cellIndex) =>
+                  cellIndex === 0 ? (
+                    <th key={cellIndex} scope="row">
+                      {cell}
+                    </th>
+                  ) : (
+                    <td key={cellIndex}>{cell}</td>
+                  ),
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

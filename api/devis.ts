@@ -31,10 +31,10 @@ const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 
 const NEED_LABELS = {
-  jantes: "Jantes",
-  carrosserie: "Carrosserie",
-  lustrage: "Lustrage et optiques",
-  leasing: "Restitution leasing",
+  jantes: "Rénovation de jantes",
+  carrosserie: "Peinture & carrosserie",
+  lustrage: "Lustrage",
+  leasing: "Retour de leasing",
   inconnu: "Je ne sais pas",
 } as const;
 type NeedId = keyof typeof NEED_LABELS;

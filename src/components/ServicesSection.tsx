@@ -141,7 +141,7 @@ export default function ServicesSection() {
 
                 <div className="sv2-list">
                   <div className="sv2-list-header">
-                    <span>{category.items.length} {category.id === "jantes" ? "finitions" : "prestations"}</span>
+                    <span>{category.items.length} {category.id === "jantes" ? "finitions" : category.id === "leasing" ? (category.items.length > 1 ? "packs" : "pack") : category.items.length > 1 ? "prestations" : "prestation"}</span>
                     <span>Tarif TTC</span>
                   </div>
                   <ul>

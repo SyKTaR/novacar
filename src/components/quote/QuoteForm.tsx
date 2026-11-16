@@ -52,6 +52,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
   const panelRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const sendErrorRef = useRef<HTMLParagraphElement>(null);
   const firstNeedRef = useRef<HTMLInputElement | null>(null);
   const fieldRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const motionRef = useRef<QuoteMotion | null>(null);
@@ -63,6 +64,12 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
   const seenThumbs = useRef(new Set<string>());
   const sendingRef = useRef(false);
   photosRef.current = photos;
+
+  useEffect(() => {
+    if (!sendError) return;
+    const frame = window.requestAnimationFrame(() => sendErrorRef.current?.focus());
+    return () => window.cancelAnimationFrame(frame);
+  }, [sendError]);
 
   // Chargement dynamique de gsap (comme le reste du site) : le formulaire fonctionne sans.
   useEffect(() => {
@@ -298,9 +305,10 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
     motionRef.current?.pick(icon ?? null);
   };
 
+  const requiredHintId = `${uid}-required-hint`;
   const fieldProps = (key: keyof ContactErrors) => ({
     "aria-invalid": errors[key] ? (true as const) : undefined,
-    "aria-describedby": errors[key] ? `${uid}-${key}-error` : undefined,
+    "aria-describedby": [requiredHintId, errors[key] ? `${uid}-${key}-error` : ""].filter(Boolean).join(" "),
     ref: (node: HTMLInputElement | null) => {
       fieldRefs.current[key] = node;
     },
@@ -344,15 +352,17 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
               <h3 className="quote-step-title" id={`${uid}-title`} tabIndex={-1} ref={headingRefCb}>
                 Quel est votre besoin ?
               </h3>
+              <p className="quote-required-hint" id={`${uid}-need-required-hint`}>Choisissez un besoin. Ce champ est obligatoire.</p>
               <fieldset
                 className="quote-needs"
                 role="radiogroup"
                 aria-labelledby={`${uid}-title`}
-                aria-describedby={needError ? `${uid}-need-error` : undefined}
+                aria-describedby={[`${uid}-need-required-hint`, needError ? `${uid}-need-error` : ""].filter(Boolean).join(" ")}
+                aria-required="true"
                 aria-invalid={needError ? true : undefined}
               >
                 {NEEDS.map((item, index) => (
-                  <label key={item.id} className={`quote-need${need === item.id ? " is-selected" : ""}`}>
+                  <label key={item.id} data-need={item.id} className={`quote-need${need === item.id ? " is-selected" : ""}`}>
                     <input
                       ref={index === 0 ? firstNeedRef : undefined}
                       className="quote-need-input"
@@ -360,6 +370,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                       name="need"
                       value={item.id}
                       checked={need === item.id}
+                      required
                       onChange={(event) => onNeedChange(event, item.id)}
                     />
                     <NeedIcon id={item.id} />
@@ -427,6 +438,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
           {step === 3 && (
             <div className="quote-panel" key="step-3" ref={panelRefCb}>
               <h3 className="quote-step-title" tabIndex={-1} ref={headingRefCb}>Vos coordonnées</h3>
+              <p className="quote-required-hint" id={requiredHintId}>Tous les champs ci-dessous sont obligatoires.</p>
 
               <div className="quote-recap">
                 <div>
@@ -446,6 +458,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                   enterKeyHint="next"
                   placeholder="Ex. Jean Dupont"
                   value={name}
+                  required
                   onChange={(event) => { setName(event.target.value); if (errors.name) recheck("name", validateName(event.target.value)); }}
                   {...fieldProps("name")}
                 />
@@ -464,6 +477,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                     enterKeyHint="next"
                     placeholder="06 12 34 56 78"
                     value={phone}
+                    required
                     onChange={(event) => { setPhone(event.target.value); if (errors.phone) recheck("phone", validatePhone(event.target.value)); }}
                     {...fieldProps("phone")}
                   />
@@ -480,6 +494,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                     enterKeyHint="send"
                     placeholder="jean@exemple.fr"
                     value={email}
+                    required
                     onChange={(event) => { setEmail(event.target.value); if (errors.email) recheck("email", validateEmail(event.target.value)); }}
                     {...fieldProps("email")}
                   />
@@ -488,27 +503,28 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
               </div>
 
               <div className="quote-consent-wrap">
-                <label className="quote-consent">
-                  <input
-                    className="quote-consent-input"
-                    type="checkbox"
-                    name="consent"
-                    checked={consent}
-                    onChange={(event) => { setConsent(event.target.checked); if (errors.consent) recheck("consent", validateConsent(event.target.checked)); }}
-                    {...fieldProps("consent")}
-                  />
-                  <span className="quote-checkbox" aria-hidden="true"><CheckIcon className="quote-checkbox-icon" /></span>
-                  <span className="quote-consent-text">
-                    J’accepte que mes données soient utilisées pour traiter ma demande de devis.{" "}
-                    <a href="/politique-confidentialite" target="_blank" rel="noopener">
-                      Politique de confidentialité<span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
-                    </a>
-                  </span>
-                </label>
+                <div className="quote-consent-row">
+                  <label className="quote-consent">
+                    <input
+                      className="quote-consent-input"
+                      type="checkbox"
+                      name="consent"
+                      checked={consent}
+                      required
+                      onChange={(event) => { setConsent(event.target.checked); if (errors.consent) recheck("consent", validateConsent(event.target.checked)); }}
+                      {...fieldProps("consent")}
+                    />
+                    <span className="quote-checkbox" aria-hidden="true"><CheckIcon className="quote-checkbox-icon" /></span>
+                    <span className="quote-consent-text">J’accepte que mes données soient utilisées pour traiter ma demande de devis.</span>
+                  </label>
+                  <a className="quote-consent-policy" href="/politique-confidentialite" target="_blank" rel="noopener">
+                    Politique de confidentialité<span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
+                  </a>
+                </div>
                 {errors.consent && <p className="quote-error" id={`${uid}-consent-error`} role="alert">{errors.consent}</p>}
               </div>
 
-              {sendError && <p className="quote-send-error" role="alert">{sendError}</p>}
+              {sendError && <p ref={sendErrorRef} className="quote-send-error" role="alert" tabIndex={-1}>{sendError}</p>}
 
               <div className="quote-actions quote-actions--split quote-actions--final">
                 <button type="button" className="btn quote-back" onClick={() => void go(2, -1)} disabled={sending}>

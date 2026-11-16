@@ -19,9 +19,10 @@ export function consumeIntroSession() {
 
 interface IntroOverlayProps {
   play: boolean;
+  onFinish: () => void;
 }
 
-export default function IntroOverlay({ play }: IntroOverlayProps) {
+export default function IntroOverlay({ play, onFinish }: IntroOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(play);
 
@@ -31,6 +32,7 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
     const overlay = overlayRef.current;
     if (!overlay) {
       setVisible(false);
+      onFinish();
       return;
     }
     const animationScope = overlay;
@@ -44,6 +46,7 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
       finished = true;
       window.clearTimeout(failOpenTimer);
       document.documentElement.classList.remove("novacar-intro-active");
+      onFinish();
       setVisible(false);
       window.dispatchEvent(new Event("novacar:intro-complete"));
     };
@@ -176,7 +179,7 @@ export default function IntroOverlay({ play }: IntroOverlayProps) {
       gsapContext?.revert();
       document.documentElement.classList.remove("novacar-intro-active");
     };
-  }, [play, visible]);
+  }, [onFinish, play, visible]);
 
   if (!visible) return null;
 

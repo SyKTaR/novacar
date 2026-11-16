@@ -7,11 +7,11 @@ export const NEEDS: ReadonlyArray<{
   label: string;
   hint: string;
 }> = [
-  { id: "jantes", label: "Jantes", hint: "Rayures, éclats, changement de teinte" },
-  { id: "carrosserie", label: "Carrosserie", hint: "Impact, rayure, rétroviseur, baguette" },
-  { id: "lustrage", label: "Lustrage et optiques", hint: "Peinture ternie, phares jaunis" },
-  { id: "leasing", label: "Restitution leasing", hint: "Préparer le véhicule avant sa restitution" },
-  { id: "inconnu", label: "Je ne sais pas", hint: "On vous conseille sur photo" },
+  { id: "jantes", label: "Rénovation de jantes", hint: "Rayures de trottoir, éclats, nouvelle teinte." },
+  { id: "carrosserie", label: "Peinture & carrosserie", hint: "Impacts, rayures, rétroviseurs, poignées." },
+  { id: "lustrage", label: "Lustrage", hint: "Une carrosserie qui retrouve son éclat." },
+  { id: "leasing", label: "Retour de leasing", hint: "Remise à neuf avant l’état des lieux de restitution." },
+  { id: "inconnu", label: "Je ne sais pas", hint: "On vous conseille sur photo." },
 ];
 
 export const STEP_LABELS = ["Votre besoin", "Photos et véhicule", "Vos coordonnées"] as const;

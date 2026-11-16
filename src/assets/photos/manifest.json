@@ -142,5 +142,50 @@
       800,
       1448
     ]
+  },
+  "lustrage-service": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "leasing-section": {
+    "width": 1448,
+    "height": 1086,
+    "widths": [
+      240,
+      800,
+      1448
+    ]
+  },
+  "leasing-pack-1": {
+    "width": 1254,
+    "height": 1254,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "leasing-pack-classique": {
+    "width": 1254,
+    "height": 1254,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
+  },
+  "leasing-pack-biton": {
+    "width": 1254,
+    "height": 1254,
+    "widths": [
+      240,
+      800,
+      1200
+    ]
   }
 }

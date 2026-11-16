@@ -2,8 +2,6 @@ export type ServiceCategoryId = "jantes" | "peinture" | "lustrage" | "leasing";
 
 export type ServiceItem = {
   title: string;
-  /** Montant historique fourni par Lucas, conservé comme référence interne. */
-  priceBeforeTax?: number;
   /** Montant affiché au public, ou absence de tarif fixe. */
   priceTtc: number | "Sur devis";
   unit?: string;
@@ -46,9 +44,8 @@ export type ServiceCategory = {
  * Lucas le 20 août 2026. Les demandes sans montant fixe sont explicitement
  * représentées par la valeur "Sur devis".
  *
- * Règle unique de conversion validée pour cette mission :
- * prix TTC = Math.round(prix de référence × 1,20), soit un arrondi à l'euro
- * le plus proche. Le montant TTC est stocké explicitement et constitue la
+ * Mise à jour du 16 novembre 2026 : tarifs particuliers TTC fournis directement
+ * par Novacar (plus de conversion depuis un montant HT). Le montant TTC est la
  * seule source utilisée pour l'affichage public.
  */
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
@@ -59,40 +56,35 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Jante classique",
-        priceBeforeTax: 79,
-        priceTtc: 95,
+        priceTtc: 79,
         unit: "jante",
         shotBrief: "Jante alu argent brossée, 3/4 face, fond sombre",
         photo: "jante-argent",
       },
       {
         title: "Jante polie bi-ton",
-        priceBeforeTax: 120,
-        priceTtc: 144,
+        priceTtc: 99,
         unit: "jante",
         shotBrief: "Jante bi-ton : face polie brillante + creux anthracite",
         photo: "jante-polie-biton",
       },
       {
         title: "Jante noire",
-        priceBeforeTax: 100,
-        priceTtc: 120,
+        priceTtc: 89,
         unit: "jante",
         shotBrief: "Jante noire rénovée, vue de face sur fond sombre",
         photo: "jante-noire",
       },
       {
         title: "Jante mate/satinée",
-        priceBeforeTax: 120,
-        priceTtc: 144,
+        priceTtc: 89,
         unit: "jante",
         shotBrief: "Jante finition mate ou satinée, détail de matière",
         photo: "jante-anthracite-etrier-jaune",
       },
       {
         title: "Jante finition effet chrome",
-        priceBeforeTax: 120,
-        priceTtc: 144,
+        priceTtc: 99,
         unit: "jante",
         shotBrief: "Jante avec finition effet chrome, éclairage contrôlé",
         photo: "jante-chrome",
@@ -112,45 +104,38 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Retouche par choc",
-        priceBeforeTax: 89,
-        priceTtc: 107,
+        priceTtc: 89,
         unit: "impact",
         shotBrief: "Impact de choc sur portière, lumière rasante",
         photo: "02-bouclier-rouge-apres",
       },
       {
         title: "Retouche par choc — teinte nacrée",
-        priceBeforeTax: 100,
-        priceTtc: 120,
+        priceTtc: 99,
         unit: "impact",
         shotBrief: "Peinture nacrée, détail du raccord de teinte au soleil",
       },
       {
         title: "Retouche de rétroviseur/poignée",
-        priceBeforeTax: 45,
-        priceTtc: 54,
+        priceTtc: 29,
         unit: "élément",
         shotBrief: "Rétroviseur ou poignée avec retouche localisée",
       },
       {
         title: "Retouche d’élargisseur",
-        priceBeforeTax: 55,
-        priceTtc: 66,
+        priceTtc: 29,
         unit: "élément",
         shotBrief: "Élargisseur d’aile avec retouche localisée",
       },
       {
         title: "Retouche baguette de porte",
-        priceBeforeTax: 69,
-        priceTtc: 83,
+        priceTtc: 39,
         unit: "élément",
         shotBrief: "Baguette de porte après reprise de peinture",
       },
       {
         title: "Rénovation d’optique avec vernis",
-        priceBeforeTax: 55,
-        priceTtc: 66,
-        unit: "élément",
+        priceTtc: "Sur devis",
         shotBrief: "Optique rénové et reverni, détail avant/après",
       },
     ],
@@ -162,15 +147,9 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     items: [
       {
         title: "Lustrage d’un élément",
-        priceBeforeTax: 55,
-        priceTtc: 66,
-        unit: "élément",
-        shotBrief: "Élément de carrosserie lustré, reflet net en lumière rasante",
-      },
-      {
-        title: "Autre demande",
         priceTtc: "Sur devis",
-        shotBrief: "Vue d’ensemble du véhicule pour une demande personnalisée",
+        photo: "lustrage-service",
+        shotBrief: "Élément de carrosserie lustré, reflet net en lumière rasante",
       },
     ],
   },
@@ -180,10 +159,22 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     tag: "Leasing",
     items: [
       {
-        title: "Pack préparation restitution leasing",
-        priceTtc: "Sur devis",
-        shotBrief: "Vue d’ensemble d’un véhicule préparé avant restitution",
-        photo: "carrosserie-apres",
+        title: "Pack 1 jante + 1 retouche de peinture",
+        priceTtc: 159,
+        shotBrief: "Une jante monoton sans arrachement et une retouche de peinture (format A4)",
+        photo: "leasing-pack-1",
+      },
+      {
+        title: "Pack 4 jantes classiques",
+        priceTtc: 279,
+        shotBrief: "Quatre jantes classiques rénovées avant restitution",
+        photo: "leasing-pack-classique",
+      },
+      {
+        title: "Pack 4 jantes polies bi-ton",
+        priceTtc: 399,
+        shotBrief: "Quatre jantes polies bi-ton rénovées avant restitution",
+        photo: "leasing-pack-biton",
       },
     ],
   },

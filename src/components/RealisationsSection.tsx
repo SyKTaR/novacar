@@ -129,7 +129,7 @@ export default function RealisationsSection() {
         <ul className="realisations-grid" ref={trackRef} onScroll={updateActive} aria-label="Réalisations avant et après">
           {REALISATIONS.map((realisation, index) => <RealisationCard realisation={realisation} index={index} key={realisation.id} />)}
         </ul>
-        <div className="realisations-controls" aria-label="Navigation des réalisations">
+        <div className="realisations-controls" role="group" aria-label="Navigation des réalisations">
           <div className="realisations-dots">
             {Array.from({ length: stops }, (_, index) => (
               <button

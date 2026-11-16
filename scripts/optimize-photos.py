@@ -26,7 +26,12 @@ SOURCES = {
     "legacy/janteschromes.jpg": "jante-chrome",
     "legacy/lustrage_avant.jpg": "lustrage-avant",
     "legacy/lustrage_apres.jpg": "lustrage-apres",
+    "legacy/lustrage-service.png": "lustrage-service",
     "legacy/carrosserie-apres.jpg": "carrosserie-apres",
+    "legacy/leasing.png": "leasing-section",
+    "legacy/leasing-1.png": "leasing-pack-1",
+    "legacy/leasing-2.png": "leasing-pack-classique",
+    "legacy/leasing-3.png": "leasing-pack-biton",
 }
 
 def main(src_dir: str) -> None:

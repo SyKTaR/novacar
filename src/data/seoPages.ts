@@ -48,6 +48,12 @@ function minPrice(id: ServicePageSlug): number {
   return Math.min(...prices);
 }
 
+/** « À partir de X € TTC » ou « Sur devis » quand la catégorie n'a aucun tarif fixe. */
+function fromLabel(id: ServicePageSlug): string {
+  const hasPrice = categoryOf(id).items.some((item) => typeof item.priceTtc === "number");
+  return hasPrice ? `À partir de ${minPrice(id)} € TTC` : "Sur devis";
+}
+
 export type PageRealisation = {
   id: string;
   title: string;
@@ -220,15 +226,15 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
     schemaId: `${SITE_ORIGIN}/#lustrage`,
     navLabel: "Lustrage",
     metaTitle: "Lustrage voiture en Île-de-France | Novacar",
-    metaDescription: `Lustrage de carrosserie en Île-de-France, à domicile ou en atelier : à partir de ${minPrice("lustrage")} € TTC par élément. Autres demandes sur devis.`,
+    metaDescription: `Lustrage de carrosserie en Île-de-France, à domicile ou en atelier. Tarif sur devis, selon les éléments à traiter.`,
     eyebrow: "Lustrage",
     h1: "Lustrage de carrosserie en Île-de-France",
     intro: [
       "Une peinture ternie perd son reflet. Novacar propose un lustrage à l’échelle d’un élément de carrosserie, pour retrouver une surface nette, comme sur le capot photographié plus bas.",
-      `Le lustrage est proposé ${startingPrice("lustrage", "Lustrage d’un élément")} par élément. Pour une autre demande, indiquez les éléments du véhicule à traiter : le tarif est établi sur devis.`,
+      "Le lustrage est chiffré sur devis. Indiquez les éléments du véhicule à traiter : le tarif est établi selon leur nombre et leur état.",
     ],
     itemsTitle: "Lustrage et tarifs TTC",
-    itemsIntro: "Deux cas de figure : un lustrage au tarif affiché, ou une demande personnalisée chiffrée sur devis.",
+    itemsIntro: "Le lustrage n’a pas de tarif fixe : il est chiffré sur devis, selon les éléments à traiter.",
     resultsTitle: "Lustrage d’un capot : avant et après",
     resultsIntro: "Une carrosserie ternie reprise en lustrage, photographiée avant et après l’intervention.",
     realisationIds: ["lustrage"],
@@ -248,7 +254,7 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
       },
       {
         question: "Quel est le prix d’un lustrage ?",
-        answer: `Le lustrage est proposé ${startingPrice("lustrage", "Lustrage d’un élément")} par élément. Si vous souhaitez traiter plusieurs zones ou formuler une autre demande, précisez-les dans votre message pour recevoir un devis.`,
+        answer: "Le lustrage est chiffré sur devis. Précisez les éléments à traiter dans votre message, avec une photo si possible, pour recevoir un tarif.",
       },
       {
         question: "Le lustrage se fait-il à domicile ?",

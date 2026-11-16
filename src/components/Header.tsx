@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SITE_NAVIGATION } from "../data/navigation";
 import logoNovacar from "../assets/brand/logo-wordmark-blanc.png";
+import { focusAnchorTarget } from "../lib/focusAnchor";
 import ThemeToggle from "./ThemeToggle";
 
 /* Libellés propres à la navbar. Le footer continue d'utiliser SITE_NAVIGATION
@@ -24,7 +25,6 @@ const NAV_ITEMS = SITE_NAVIGATION.map((item) => ({
  *  navbar (là où atterrit un clic sur le lien), sinon « Prestations » ne
  *  serait jamais actif. */
 function findActiveId(): string | null {
-  const line = window.innerHeight * 0.35;
   const elements = NAV_ITEMS.map((item) => document.getElementById(item.id));
   let activeId: string | null = null;
   let activeTop = -Infinity;
@@ -32,10 +32,7 @@ function findActiveId(): string | null {
   NAV_ITEMS.forEach((item, index) => {
     const element = elements[index];
     if (!element) return;
-    const isNested = elements.some((other) => other && other !== element && other.contains(element));
-    const limit = isNested
-      ? (parseFloat(getComputedStyle(element).scrollMarginTop) || 0) + 12
-      : line;
+    const limit = (parseFloat(getComputedStyle(element).scrollMarginTop) || 0) + 12;
     const top = element.getBoundingClientRect().top;
     if (top <= limit && top > activeTop) {
       activeTop = top;
@@ -53,6 +50,11 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  const activateAnchor = (id: string) => {
+    setIsMenuOpen(false);
+    focusAnchorTarget(id, menuButtonRef.current);
+  };
 
   // Scroll-spy + état « scrollé », sans dépendance au moteur de scroll :
   // écouteur passif regroupé par requestAnimationFrame.
@@ -190,12 +192,12 @@ export default function Header() {
               className="nb-link"
               href={`/${item.href}`}
               aria-current={activeId === item.id ? "location" : undefined}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => activateAnchor(item.id)}
             >
               {item.label}
             </a>
           ))}
-          <a className="nb-mobile-cta" href="/#contact" onClick={() => setIsMenuOpen(false)}>
+          <a className="nb-mobile-cta" href="/#contact" onClick={() => activateAnchor("contact")}>
             Demander un devis
           </a>
         </nav>
