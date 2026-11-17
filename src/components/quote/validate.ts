@@ -1,4 +1,6 @@
-export type ContactErrors = Partial<Record<"name" | "phone" | "email" | "consent", string>>;
+import { DEPARTMENTS } from "./data";
+
+export type ContactErrors = Partial<Record<"name" | "phone" | "email" | "department" | "consent", string>>;
 
 export function validateName(value: string) {
   return value.trim().length >= 2 ? "" : "Indiquez votre nom et prénom.";
@@ -20,19 +22,25 @@ export function validateEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed) ? "" : "Saisissez une adresse e-mail valide.";
 }
 
+export function validateDepartment(value: string) {
+  return DEPARTMENTS.includes(value) ? "" : "Sélectionnez votre département.";
+}
+
 export function validateConsent(checked: boolean) {
   return checked ? "" : "Cochez la case pour que nous puissions traiter votre demande.";
 }
 
-export function validateContact(values: { name: string; phone: string; email: string; consent: boolean }) {
+export function validateContact(values: { name: string; phone: string; email: string; department: string; consent: boolean }) {
   const errors: ContactErrors = {};
   const name = validateName(values.name);
   const phone = validatePhone(values.phone);
   const email = validateEmail(values.email);
+  const department = validateDepartment(values.department);
   const consent = validateConsent(values.consent);
   if (name) errors.name = name;
   if (phone) errors.phone = phone;
   if (email) errors.email = email;
+  if (department) errors.department = department;
   if (consent) errors.consent = consent;
   return errors;
 }

@@ -8,6 +8,7 @@ export interface QuotePayload {
   name: string;
   phone: string;
   email: string;
+  department: string;
   photos: File[];
 }
 
@@ -54,7 +55,7 @@ async function post(body: Record<string, unknown>): Promise<Attempt> {
  * PHOTOS_DROPPED_NOTE.
  */
 export async function submitQuote(payload: QuotePayload): Promise<SubmitResult> {
-  const { need, vehicle, details, name, phone, email, photos } = payload;
+  const { need, vehicle, details, name, phone, email, department, photos } = payload;
   const base = {
     need,
     vehicle: vehicle.trim(),
@@ -62,6 +63,7 @@ export async function submitQuote(payload: QuotePayload): Promise<SubmitResult> 
     name: name.trim(),
     phone: phone.trim(),
     email: email.trim(),
+    department: department.trim(),
     consent: true, // case cochée et validée avant l'envoi
   };
 

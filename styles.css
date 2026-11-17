@@ -1697,6 +1697,7 @@ body,
 }
 
 .quote-field input,
+.quote-field select,
 .quote-field textarea {
   width: 100%;
   min-height: 3.25rem;
@@ -1721,13 +1722,15 @@ body,
 }
 
 .quote-field input:focus-visible,
+.quote-field select:focus-visible,
 .quote-field textarea:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 0;
   border-color: var(--orange);
 }
 
-.quote-field input[aria-invalid="true"] {
+.quote-field input[aria-invalid="true"],
+.quote-field select[aria-invalid="true"] {
   border-color: var(--q-accent-text);
 }
 

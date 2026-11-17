@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { QuoteMotion } from "../../motion/quoteSteps";
-import { buildRecap, MAX_INPUT_BYTES, MAX_PHOTOS, NEEDS, PHONE_DISPLAY, PHONE_HREF, QUOTE_NEED_EVENT, STEP_LABELS, type NeedId } from "./data";
+import { buildRecap, DEPARTMENTS, MAX_INPUT_BYTES, MAX_PHOTOS, NEEDS, PHONE_DISPLAY, PHONE_HREF, QUOTE_NEED_EVENT, STEP_LABELS, type NeedId } from "./data";
 import { compressImage } from "./image";
 import { CheckIcon, NeedIcon } from "./icons";
 import PhotoDropzone, { type QuotePhoto } from "./PhotoDropzone";
 import Stepper from "./Stepper";
 import { PHOTOS_DROPPED_NOTE, submitQuote } from "./submit";
-import { validateConsent, validateEmail, validateName, validatePhone, validateContact, type ContactErrors } from "./validate";
+import { validateConsent, validateDepartment, validateEmail, validateName, validatePhone, validateContact, type ContactErrors } from "./validate";
 
 type Step = 1 | 2 | 3 | "done";
 type Direction = 1 | -1;
@@ -38,6 +38,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [department, setDepartment] = useState("");
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [sending, setSending] = useState(false);
@@ -54,7 +55,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
   const honeypotRef = useRef<HTMLInputElement>(null);
   const sendErrorRef = useRef<HTMLParagraphElement>(null);
   const firstNeedRef = useRef<HTMLInputElement | null>(null);
-  const fieldRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const fieldRefs = useRef<Record<string, HTMLInputElement | HTMLSelectElement | null>>({});
   const motionRef = useRef<QuoteMotion | null>(null);
   const navToken = useRef(0);
   const pendingNav = useRef<{ direction: Direction; height: number }>({ direction: 1, height: 0 });
@@ -232,6 +233,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
     setName("");
     setPhone("");
     setEmail("");
+    setDepartment("");
     setConsent(false);
     setErrors({});
     setPhotoMessage("");
@@ -239,9 +241,9 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
 
   const send = async () => {
     if (sendingRef.current || !need) return;
-    const found = validateContact({ name, phone, email, consent });
+    const found = validateContact({ name, phone, email, department, consent });
     setErrors(found);
-    const order = ["name", "phone", "email", "consent"] as const;
+    const order = ["name", "phone", "email", "department", "consent"] as const;
     const firstInvalid = order.find((key) => found[key]);
     if (firstInvalid) {
       fieldRefs.current[firstInvalid]?.focus();
@@ -265,6 +267,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
       name,
       phone,
       email,
+      department,
       photos: activePhotos.map((photo) => photo.file),
     });
     sendingRef.current = false;
@@ -309,7 +312,7 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
   const fieldProps = (key: keyof ContactErrors) => ({
     "aria-invalid": errors[key] ? (true as const) : undefined,
     "aria-describedby": [requiredHintId, errors[key] ? `${uid}-${key}-error` : ""].filter(Boolean).join(" "),
-    ref: (node: HTMLInputElement | null) => {
+    ref: (node: HTMLInputElement | HTMLSelectElement | null) => {
       fieldRefs.current[key] = node;
     },
   });
@@ -500,6 +503,23 @@ export default function QuoteForm({ onDone }: { onDone?: (done: boolean) => void
                   />
                   {errors.email && <p className="quote-error" id={`${uid}-email-error`} role="alert">{errors.email}</p>}
                 </div>
+              </div>
+
+              <div className="quote-field">
+                <label htmlFor={`${uid}-department`}>Département</label>
+                <select
+                  id={`${uid}-department`}
+                  name="department"
+                  autoComplete="address-level1"
+                  value={department}
+                  required
+                  onChange={(event) => { setDepartment(event.target.value); if (errors.department) recheck("department", validateDepartment(event.target.value)); }}
+                  {...fieldProps("department")}
+                >
+                  <option value="">Choisissez votre département</option>
+                  {DEPARTMENTS.map((dep) => <option key={dep} value={dep}>{dep}</option>)}
+                </select>
+                {errors.department && <p className="quote-error" id={`${uid}-department-error`} role="alert">{errors.department}</p>}
               </div>
 
               <div className="quote-consent-wrap">

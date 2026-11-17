@@ -134,6 +134,7 @@ interface Quote {
   name: string;
   phone: string;
   email: string;
+  department: string;
   photos: Photo[];
   /** Nombre de photos choisies par le client mais non jointes (repli sans photos). */
   photosSkipped: number;
@@ -163,7 +164,8 @@ export function parseQuote(input: unknown): Parsed {
   const rawName = str("name");
   const rawPhone = str("phone");
   const rawEmail = str("email");
-  if (!need || !(need in NEED_LABELS) || rawName === null || rawPhone === null || rawEmail === null) {
+  const rawDepartment = str("department");
+  if (!need || !(need in NEED_LABELS) || rawName === null || rawPhone === null || rawEmail === null || rawDepartment === null) {
     return { ok: false, kind: "invalid" };
   }
   const rawVehicle = data.vehicle === undefined ? "" : str("vehicle");
@@ -174,10 +176,12 @@ export function parseQuote(input: unknown): Parsed {
   const name = oneLine(rawName);
   const phone = oneLine(rawPhone);
   const email = rawEmail.trim();
+  const department = oneLine(rawDepartment);
   const vehicle = oneLine(rawVehicle);
   const details = cleanMultiline(rawDetails);
 
   if (name.length < 2 || name.length > MAX_NAME) return { ok: false, kind: "invalid" };
+  if (department.length < 2 || department.length > 60) return { ok: false, kind: "invalid" };
   const digits = phone.replace(/\D/g, "");
   if (!/^\+?[\d\s().-]+$/.test(phone) || digits.length < 10 || digits.length > 15) return { ok: false, kind: "invalid" };
   if (email.length > MAX_EMAIL || !/^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]{2,}$/.test(email)) return { ok: false, kind: "invalid" };
@@ -204,7 +208,7 @@ export function parseQuote(input: unknown): Parsed {
     photosSkipped = skipped;
   }
 
-  return { ok: true, quote: { need: need as NeedId, vehicle, details, name, phone, email, photos, photosSkipped } };
+  return { ok: true, quote: { need: need as NeedId, vehicle, details, name, phone, email, department, photos, photosSkipped } };
 }
 
 /* ------------------------------------------------------------------ */
@@ -236,6 +240,7 @@ export function buildText(quote: Quote) {
     "Coordonnées du client",
     `Nom : ${quote.name}`,
     `Téléphone : ${quote.phone}`,
+    `Département : ${quote.department}`,
     `E-mail : ${quote.email}`,
     "",
     "Le client a accepté que ses données soient utilisées pour traiter cette demande.",
@@ -268,6 +273,7 @@ export function buildHtml(quote: Quote) {
     `<table role="presentation" style="border-collapse:collapse;width:100%">`,
     row("Nom", e(quote.name)),
     row("Téléphone", e(quote.phone)),
+    row("Département", e(quote.department)),
     row("E-mail", e(quote.email)),
     `</table>`,
     skipped ? `<p style="margin:20px 0 0;padding:10px 12px;background:#fff4e5;border-radius:6px;color:#7a4300">${e(skipped)}</p>` : "",
