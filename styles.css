@@ -2931,6 +2931,10 @@ body,
 .sv2-panel[data-active="false"] {
   visibility: hidden;
   pointer-events: none;
+  /* Un panneau inactif ne réserve aucune hauteur : la section suivante suit
+     la hauteur du panneau actif (le texte reste dans le HTML). */
+  height: 0;
+  overflow: hidden;
 }
 .sv2-panel[data-active="true"] {
   z-index: 1;
