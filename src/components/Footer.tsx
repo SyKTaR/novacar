@@ -29,6 +29,16 @@ function PhoneIcon() {
   );
 }
 
+function InstagramIcon() {
+  return (
+    <svg className="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
 function CookieIcon() {
   return (
     <svg className="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -90,10 +100,20 @@ export default function Footer() {
         </nav>
 
         <div className="footer-col footer-contact">
-          <p className="footer-label">Intervention</p>
+          <p className="footer-label">Contact</p>
           <a className="footer-phone" href="tel:+33185100001">
             <PhoneIcon />
             <span>01 85 10 00 01</span>
+          </a>
+          <a
+            className="footer-phone footer-instagram"
+            href="https://www.instagram.com/novacar_smartrepair/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Novacar sur Instagram, @novacar_smartrepair (nouvel onglet)"
+          >
+            <InstagramIcon />
+            <span>@novacar_smartrepair</span>
           </a>
           <p className="footer-zone">Paris et Île-de-France</p>
           <a className="btn btn-primary footer-cta" href="/#contact">

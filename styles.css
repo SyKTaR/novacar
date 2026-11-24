@@ -2454,6 +2454,11 @@ body,
   color: var(--orange);
 }
 
+.footer-instagram {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .footer-zone {
   margin: 0.35rem 0 0;
   color: color-mix(in srgb, var(--white) 68%, transparent);
