@@ -336,5 +336,5 @@ export const ZONES_PAGE = {
 export const ZONES_RELATED_SERVICES = SERVICE_PAGE_LIST.map((page) => ({
   path: page.path,
   label: page.navLabel,
-  from: `À partir de ${minPrice(page.id)} € TTC`,
+  from: fromLabel(page.id),
 }));
