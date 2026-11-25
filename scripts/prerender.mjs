@@ -2,9 +2,17 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import {
   buildSeoHead,
+  isIndexable,
   PRERENDER_ROUTES,
   render,
+  SITE_ORIGIN,
 } from "../.prerender/entry-server.js";
+import {
+  buildSitemapXml,
+  readLastmodManifest,
+  updateLastmods,
+  writeLastmodManifest,
+} from "./sitemap.mjs";
 
 const DIST_DIR = "dist";
 const template = await readFile(join(DIST_DIR, "index.html"), "utf8");
@@ -13,6 +21,8 @@ const seoRegion = /<!--seo:start-->[\s\S]*?<!--seo:end-->/;
 if (!template.includes("<!--app-html-->") || !seoRegion.test(template)) {
   throw new Error("Les marqueurs de prerendering sont absents du HTML client.");
 }
+
+const indexablePages = [];
 
 for (const route of PRERENDER_ROUTES) {
   const pageHtml = template
@@ -33,6 +43,19 @@ for (const route of PRERENDER_ROUTES) {
 
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, pageHtml, "utf8");
+  if (isIndexable(route)) indexablePages.push({ path: route, html: pageHtml });
 }
+
+// Sitemap : uniquement les pages prérendues ET indexables (robots « index »).
+// Les pages noindex (mentions légales, confidentialité, cookies, 404) en sont
+// exclues automatiquement.
+const previousManifest = await readLastmodManifest();
+const { manifest, changed } = updateLastmods(indexablePages, previousManifest);
+await writeFile(join(DIST_DIR, "sitemap.xml"), buildSitemapXml(SITE_ORIGIN, manifest), "utf8");
+if (JSON.stringify(manifest) !== JSON.stringify(previousManifest)) {
+  await writeLastmodManifest(manifest);
+  console.log(`sitemap : lastmod mis à jour pour ${changed.join(", ") || "(pages retirées)"} → commiter scripts/sitemap-lastmod.json`);
+}
+console.log(`sitemap : ${indexablePages.length} URL indexables écrites dans dist/sitemap.xml`);
 
 await rm(".prerender", { recursive: true, force: true });

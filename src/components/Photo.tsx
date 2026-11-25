@@ -25,6 +25,8 @@ type PhotoProps = {
   /** Attribut `sizes` : largeur d'affichage réelle de l'image selon le breakpoint. */
   sizes: string;
   eager?: boolean;
+  /** Image principale au-dessus de la ligne de flottaison : priorité réseau haute. */
+  priority?: boolean;
   className?: string;
   /** Recadrage `object-position` (jantes en portrait dans un cadre paysage : `center 55%`). */
   position?: string;
@@ -37,7 +39,7 @@ type PhotoProps = {
  * native), dimensions intrinsèques renseignées (pas de décalage de mise en page).
  * Variantes générées par scripts/optimize-photos.py.
  */
-export default function Photo({ name, alt, sizes, eager = false, className, position, minWidth }: PhotoProps) {
+export default function Photo({ name, alt, sizes, eager = false, priority = false, className, position, minWidth }: PhotoProps) {
   const meta = PHOTOS[name];
   const widths = meta.widths.filter((w) => !minWidth || w >= minWidth);
   const fallbackWidth = widths.includes(800) ? 800 : widths[widths.length - 1];
@@ -53,7 +55,8 @@ export default function Photo({ name, alt, sizes, eager = false, className, posi
         alt={alt}
         width={meta.width}
         height={meta.height}
-        loading={eager ? "eager" : "lazy"}
+        loading={eager || priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
         decoding="async"
         style={style}
       />

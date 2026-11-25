@@ -142,7 +142,9 @@ export const SERVICE_PAGES: Record<ServicePageSlug, ServicePageContent> = {
       },
       {
         question: "Quel est le prix d’une rénovation de jante ?",
-        answer: `Le tarif est affiché par jante : ${startingPrice("jantes", "Jante classique")} pour une jante classique, ${startingPrice("jantes", "Jante noire")} pour une jante noire, ${startingPrice("jantes", "Jante polie bi-ton")} pour une jante polie bi-ton, mate ou satinée, ou à finition effet chrome. Les jantes avec arrachement sont sur devis.`,
+        // Correction factuelle (25/11/2026) : la jante mate/satinée était regroupée avec le tarif
+        // de la jante bi-ton, alors que la grille de prix de la même page l'affiche à part.
+        answer: `Le tarif est affiché par jante : ${startingPrice("jantes", "Jante classique")} pour une jante classique, ${startingPrice("jantes", "Jante noire")} pour une jante noire, ${startingPrice("jantes", "Jante mate/satinée")} pour une jante mate ou satinée, ${startingPrice("jantes", "Jante polie bi-ton")} pour une jante polie bi-ton et ${startingPrice("jantes", "Jante finition effet chrome")} pour une finition effet chrome. Les jantes avec arrachement sont sur devis.`,
       },
       {
         question: "Ma jante est très abîmée, est-ce réparable ?",

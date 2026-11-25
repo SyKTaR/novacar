@@ -1,4 +1,23 @@
+# Novacar — https://www.nova-car.fr
+# Tout le contenu public est ouvert à l'exploration, moteurs de recherche
+# classiques comme moteurs de réponse IA (le site doit pouvoir y être cité).
+
 User-agent: *
 Allow: /
+Disallow: /api/
+
+# Robots des moteurs de réponse IA, nommés explicitement pour lever toute
+# ambiguïté : OpenAI (ChatGPT Search), Perplexity, Anthropic (Claude),
+# Google (Gemini, Vertex AI) et Apple (Apple Intelligence).
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
 
 Sitemap: https://www.nova-car.fr/sitemap.xml
