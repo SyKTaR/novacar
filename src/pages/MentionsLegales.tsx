@@ -26,7 +26,7 @@ const EDITEUR_ROWS: InfoRow[] = [
   { label: "SIRET", value: "105 640 007 00016" },
   { label: "RCS ou RM", value: "SIREN 105 640 007", badge: "Greffe à confirmer", hint: "Ville du greffe du RCS" },
   { label: "TVA intracommunautaire", value: "FR81105640007" },
-  { label: "Directeur de la publication", badge: "À compléter", hint: "Nom et prénom (l’un des gérants : Franck Roux ou Clement Soudry)" },
+  { label: "Directeur de la publication", value: "Clément Soudry" },
   { label: "Téléphone", value: CONTACT_PHONE },
   { label: "E-mail", value: CONTACT_EMAIL },
 ];
