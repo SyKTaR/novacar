@@ -1,20 +1,20 @@
 import { FAQ_ITEMS } from "./data/faq.ts";
 import { SERVICE_CATEGORIES } from "./data/services.ts";
-import { SEO_PAGE_ENTRIES } from "./data/seoPagesSeo.ts";
+import {
+  AREA_SERVED,
+  BUSINESS_ID,
+  SITE_ORIGIN,
+  SOCIAL_IMAGE,
+  WEBSITE_ID,
+  WEBSITE_NODE,
+  businessNode,
+  offerCatalog,
+} from "./data/business.ts";
+import { SEO_PAGE_ENTRIES, serviceNode } from "./data/seoPagesSeo.ts";
+import { SERVICE_PAGE_LIST } from "./data/seoPages.ts";
 
-const SITE_ORIGIN = "https://www.nova-car.fr";
-const LOGO_URL = `${SITE_ORIGIN}/apple-touch-icon.png`;
-const SOCIAL_IMAGE_URL = `${SITE_ORIGIN}/og-image.jpg`;
-const SOCIAL_IMAGE_WIDTH = 1200;
-const SOCIAL_IMAGE_HEIGHT = 630;
-const WEBSITE_ID = `${SITE_ORIGIN}/#website`;
 const WEBPAGE_ID = `${SITE_ORIGIN}/#webpage`;
-const INSTAGRAM_URL = "https://www.instagram.com/novacar_smartrepair/";
-const BUSINESS_ID = `${SITE_ORIGIN}/#business`;
-const AREA_SERVED = {
-  "@type": "AdministrativeArea",
-  name: "Île-de-France",
-};
+const INDEX_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 
 type SeoConfig = {
   title: string;
@@ -24,121 +24,55 @@ type SeoConfig = {
   structuredData?: Record<string, unknown>;
 };
 
-// Tarifs TTC issus de src/data/services.ts, sans valeur ajoutée.
-const NUMERIC_PRICES = SERVICE_CATEGORIES.flatMap((category) =>
-  category.items.flatMap((item) => (typeof item.priceTtc === "number" ? [item.priceTtc] : [])),
-);
-const PRICE_RANGE = `À partir de ${Math.min(...NUMERIC_PRICES)} € TTC`;
+const HOME_TITLE = "Retouche carrosserie mobile & jantes IDF | Novacar";
+const HOME_DESCRIPTION =
+  "Novacar réalise la retouche peinture, la rénovation de jantes, le lustrage et la préparation de restitution leasing à Paris et en Île-de-France.";
 
-const OFFER_CATALOG = {
-  "@type": "OfferCatalog",
-  name: "Prestations et tarifs Novacar",
-  itemListElement: SERVICE_CATEGORIES.map((category) => ({
-    "@type": "OfferCatalog",
-    name: category.label,
-    itemListElement: category.items.map((item) => ({
-      "@type": "Offer",
-      itemOffered: { "@type": "Service", name: item.title },
-      priceCurrency: "EUR",
-      ...(typeof item.priceTtc === "number"
-        ? {
-            priceSpecification: {
-              "@type": "UnitPriceSpecification",
-              minPrice: item.priceTtc,
-              priceCurrency: "EUR",
-              valueAddedTaxIncluded: true,
-              ...(item.unit ? { unitText: item.unit } : {}),
-            },
-          }
-        : {}),
-    })),
-  })),
-};
+const leasingCategory = SERVICE_CATEGORIES.find((category) => category.id === "leasing");
 
 const HOME_STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": WEBSITE_ID,
-      url: `${SITE_ORIGIN}/`,
-      name: "Novacar",
-      inLanguage: "fr-FR",
-      publisher: { "@id": BUSINESS_ID },
-    },
+    WEBSITE_NODE,
     {
       "@type": "WebPage",
       "@id": WEBPAGE_ID,
       url: `${SITE_ORIGIN}/`,
-      name: "Retouche carrosserie mobile & jantes IDF | Novacar",
+      name: HOME_TITLE,
+      description: HOME_DESCRIPTION,
       inLanguage: "fr-FR",
       isPartOf: { "@id": WEBSITE_ID },
       about: { "@id": BUSINESS_ID },
       primaryImageOfPage: {
         "@type": "ImageObject",
-        url: SOCIAL_IMAGE_URL,
-        width: SOCIAL_IMAGE_WIDTH,
-        height: SOCIAL_IMAGE_HEIGHT,
+        url: SOCIAL_IMAGE.url,
+        width: SOCIAL_IMAGE.width,
+        height: SOCIAL_IMAGE.height,
       },
     },
-    {
-      "@type": "AutoRepair",
-      "@id": BUSINESS_ID,
-      name: "Novacar",
-      url: `${SITE_ORIGIN}/`,
-      logo: LOGO_URL,
-      image: SOCIAL_IMAGE_URL,
-      sameAs: [INSTAGRAM_URL],
-      priceRange: PRICE_RANGE,
-      hasOfferCatalog: OFFER_CATALOG,
-      description:
-        "Retouche de peinture carrosserie mobile, rénovation de jantes et lustrage automobile en Île-de-France.",
-      telephone: "+33185100001",
-      areaServed: AREA_SERVED,
-      knowsLanguage: "fr-FR",
-    },
-    {
-      "@type": "Service",
-      "@id": `${SITE_ORIGIN}/#renovation-jantes`,
-      name: "Rénovation de jantes à domicile",
-      serviceType: "Rénovation de jantes automobiles",
-      description:
-        "Rénovation de jantes classiques, polies bi-ton, noires, mates, satinées et à finition effet chrome.",
-      provider: { "@id": BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-    {
-      "@type": "Service",
-      "@id": `${SITE_ORIGIN}/#preparation-restitution-leasing`,
-      name: "Préparation de restitution leasing",
-      serviceType: "Préparation automobile avant restitution de leasing",
-      description:
-        "Pack sur devis regroupant les reprises utiles avant restitution : peinture localisée, lustrage, jantes et optiques.",
-      provider: { "@id": BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-    {
-      "@type": "Service",
-      "@id": `${SITE_ORIGIN}/#retouche-peinture`,
-      name: "Retouche de peinture carrosserie mobile",
-      serviceType: "Retouche de peinture automobile",
-      description:
-        "Retouches de peinture localisées sur impacts, rétroviseurs, poignées, élargisseurs et baguettes de porte.",
-      provider: { "@id": BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-    {
-      "@type": "Service",
-      "@id": `${SITE_ORIGIN}/#lustrage`,
-      name: "Lustrage automobile",
-      serviceType: "Lustrage d’éléments de carrosserie",
-      description: "Lustrage d’éléments de carrosserie automobile en Île-de-France.",
-      provider: { "@id": BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
+    businessNode({ withCatalog: true }),
+    // Mêmes nœuds Service (même @id, même contenu) que sur les pages dédiées.
+    ...SERVICE_PAGE_LIST.map(serviceNode),
+    ...(leasingCategory
+      ? [
+          {
+            "@type": "Service",
+            "@id": `${SITE_ORIGIN}/#preparation-restitution-leasing`,
+            name: "Préparation de restitution leasing",
+            serviceType: "Préparation automobile avant restitution de leasing",
+            // Reprend le texte visible de l'onglet « Préparation restitution leasing ».
+            description:
+              "Packs à prix de départ fixe avant la restitution d’un véhicule en LLD ou LOA : rénovation de jantes et retouche de peinture localisée.",
+            provider: { "@id": BUSINESS_ID },
+            areaServed: AREA_SERVED,
+            hasOfferCatalog: offerCatalog(leasingCategory),
+          },
+        ]
+      : []),
     {
       "@type": "FAQPage",
       "@id": `${SITE_ORIGIN}/#faq`,
+      isPartOf: { "@id": WEBPAGE_ID },
       mainEntity: FAQ_ITEMS.map((item) => ({
         "@type": "Question",
         name: item.question,
@@ -153,11 +87,10 @@ const HOME_STRUCTURED_DATA = {
 
 const SEO_BY_PATH: Record<string, SeoConfig> = {
   "/": {
-    title: "Retouche carrosserie mobile & jantes IDF | Novacar",
-    description:
-      "Novacar réalise la retouche peinture, la rénovation de jantes, le lustrage et la préparation de restitution leasing à Paris et en Île-de-France.",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     path: "/",
-    robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    robots: INDEX_ROBOTS,
     structuredData: HOME_STRUCTURED_DATA,
   },
   "/mentions-legales": {
@@ -187,6 +120,18 @@ const SEO_BY_PATH: Record<string, SeoConfig> = {
   },
 };
 
+/** Configuration SEO exacte d'un chemin (sans repli sur l'accueil). */
+export function getSeoConfig(path: string): SeoConfig | undefined {
+  return SEO_BY_PATH[path.replace(/\/+$/, "") || "/"];
+}
+
+/** Une page n'entre dans le sitemap que si elle est explicitement indexable. */
+export function isIndexable(path: string) {
+  return getSeoConfig(path)?.robots.startsWith("index") ?? false;
+}
+
+export { SITE_ORIGIN };
+
 function escapeAttribute(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -202,7 +147,7 @@ export function buildSeoHead(path: string) {
   const title = escapeAttribute(config.title);
   const description = escapeAttribute(config.description);
   const robots = escapeAttribute(config.robots);
-  const imageAlt = escapeAttribute("Novacar — retouche carrosserie et rénovation de jantes");
+  const imageAlt = escapeAttribute(SOCIAL_IMAGE.alt);
 
   const tags = [
     `<title>${title}</title>`,
@@ -215,14 +160,14 @@ export function buildSeoHead(path: string) {
     `<meta property="og:title" content="${title}" />`,
     `<meta property="og:description" content="${description}" />`,
     `<meta property="og:url" content="${canonical}" />`,
-    `<meta property="og:image" content="${SOCIAL_IMAGE_URL}" />`,
-    `<meta property="og:image:width" content="${SOCIAL_IMAGE_WIDTH}" />`,
-    `<meta property="og:image:height" content="${SOCIAL_IMAGE_HEIGHT}" />`,
+    `<meta property="og:image" content="${SOCIAL_IMAGE.url}" />`,
+    `<meta property="og:image:width" content="${SOCIAL_IMAGE.width}" />`,
+    `<meta property="og:image:height" content="${SOCIAL_IMAGE.height}" />`,
     `<meta property="og:image:alt" content="${imageAlt}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${description}" />`,
-    `<meta name="twitter:image" content="${SOCIAL_IMAGE_URL}" />`,
+    `<meta name="twitter:image" content="${SOCIAL_IMAGE.url}" />`,
     `<meta name="twitter:image:alt" content="${imageAlt}" />`,
   ];
 

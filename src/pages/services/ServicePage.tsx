@@ -44,7 +44,7 @@ export default function ServicePage({ slug }: { slug: ServicePageSlug }) {
                 alt={page.heroPhoto.alt}
                 sizes="(min-width: 62rem) 30rem, 90vw"
                 position={page.heroPhoto.position}
-                eager
+                priority
               />
             </div>
           )}
